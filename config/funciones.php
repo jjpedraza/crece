@@ -52,7 +52,7 @@ echo '                <div id="beta_buscar">';
 			echo '<td>                    <input required="required" type="text" id="beta_buscar_input" name="q" placeholder="'.$placeholder.'" /></td>';
 			echo '<td align="right" width="15px">                    
 			<button id="beta_buscar_boton">
-			<img  src="../icon/buscar.png"></button>
+			<img  src="icon/buscar.png"></button>
 			</td>';
 		echo '</tr></table>';
 	echo '</form>';
