@@ -8,7 +8,7 @@
 	}
 	else
 	{		
-		header("location:../login/index.php");		
+		header("location:login/index.php");		
 	}
 
 	

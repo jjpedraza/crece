@@ -14,7 +14,7 @@ echo "cliente nuevo";
 } else {
 
 	if (isset($_GET['x'])){ //usario seleccionado
-		echo "Se ha seleccionado, cliente con CURP: <b> ".$_GET['x']."</b>";
+		//echo "Se ha seleccionado, cliente con CURP: <b> ".$_GET['x']."</b>";
 		$sql = "SELECT * FROM clientes WHERE curp='".$_GET['x']."'";
 		$rc= $conexion -> query($sql);
 		if($cl = $rc -> fetch_array())
@@ -38,12 +38,16 @@ echo "cliente nuevo";
 				ife='".$_POST['IFE']."',
 				domicilio='".$_POST['domicilio']."',
 				municipio='".$_POST['municipio']."',
-				estado='".$_POST['estado']."'
-
+				estado='".$_POST['estado']."',
+				telefono='".$_POST['telefono']."',
+				fechadenacimiento='".$_POST['nacimiento']."'
 				WHERE curp='".$_POST['curp']."'";
-				//$r = $conexion -> query($sql);
-				if ($conexion->query($sql) == TRUE) {
-				return $f['nfoto'];
+			
+				if ($conexion->query($sql) == TRUE) { 
+					mensaje('Cliente Actualizado correctamente','clientes.php','');
+				}else
+				{
+					mensaje('Ha habido un error'.$sql,'index2.php','error');
 				}
 	
 
@@ -53,6 +57,7 @@ echo "cliente nuevo";
 		else {
 			historia($nuc, "ERROR: ".$sql);
 			mensaje("Ha habido un error, cliente no se encontro",'','error');
+			//sugerir hacer cliente nuevo
 		}
 		
 
