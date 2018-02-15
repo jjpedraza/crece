@@ -9,18 +9,46 @@ $id_aplicacion='ap3'; $nivel = aplicacion_nivel($id_aplicacion, $nuc);
 if (sanpedro($id_aplicacion,$nuc)==TRUE){
 if (isset($_GET['nuevo'])){ //usario seleccionado
 echo "cliente nuevo";
+			echo "<form action='clientes.php' method='get'>";
+			echo "<input name='nuevo' type='hidden' value=''>";
+			echo "<div><label>CURP: </label><input type='text' name='curp' value='' placerholder='CURP'></div>";
+			echo "<div><label>Nombre del cliente:</label><input type='text' name='nombre' value=''></div>";
+			echo "<div><label>Fecha de Nacimiento:</label><input type='date' name='nacimiento' value=''></div>";
+			echo "<div><label>Domicilio: </label><input type='text' name='domicilio' value=''></div>";
+			echo "<div><label>Municipio</label><input type='text' name='municipio' value=''></div>";
+			echo "<div><label>Estado</label><input type='text' name='estado' value=''></div>";
+			echo "<div><label>IFE:</label><input type='text' name='IFE' value=''></div>";
+			echo "<div><label>Telefono</label><input type='text' name='telefono' value=''></div>";
+			echo "<div><input type='submit' name='submit_nuevo' value='Guardar' class='btn btn-default'></div>";
 
+			echo "</form>";
+
+			if (isset($_GET['submit_nuevo'])){//guardar actualizacion
+				$sql = "INSERT INTO clientes
+				(curp, nombre, ife, domicilio, municipio, estado, telefono, fechadenacimiento)
+			VALUES
+				('".$_GET['curp']."', '".$_GET['nombre']."', '".$_GET['IFE']."', '".$_GET['domicilio']."', '".$_GET['municipio']."
+				', '".$_GET['estado']."', '".$_GET['telefono']."', '".$_GET['nacimiento']."')";
+			if ($conexion->query($sql) == TRUE) {
+					historia($nuc,"Creo nuevo cliente ".$_GET['nombre'].", CURP: ".$_GET['curp']);
+					mensaje('Cliente nuevo, registrado correctamente','clientes.php?x='.$_GET['curp'],'');
+				}else
+				{
+					historia($nuc, "ERROR: al intentar guardar cliente nuevo ".$sql);
+					mensaje('Ha habido un error'.$sql,'index2.php','error');
+				}
+			}
 
 } else {
-	//probando cambios segundo cambio
-	jhkk hkhk
+
 	if (isset($_GET['x'])){ //usario seleccionado
 		//echo "Se ha seleccionado, cliente con CURP: <b> ".$_GET['x']."</b>";
 		$sql = "SELECT * FROM clientes WHERE curp='".$_GET['x']."'";
 		$rc= $conexion -> query($sql);
 		if($cl = $rc -> fetch_array())
 		{//mostrar pantalla para actualizar datos del cliente
-			echo "<form action='clientes.php' method='post'>";
+			echo "<form action='clientes.php' method='get'>";
+			echo "<input name='x' type='hidden' value='".$_GET['x']."'>";
 			echo "<div><label>CURP: </label><input type='text' name='curp' readonly value='".$cl['curp']."'></div>";
 			echo "<div><label>Nombre del cliente:</label><input type='text' name='nombre' value='".$cl['nombre']."'></div>";
 			echo "<div><label>Fecha de Nacimiento:</label><input type='date' name='nacimiento' value='".$cl['fechadenacimiento']."'></div>";
@@ -33,21 +61,22 @@ echo "cliente nuevo";
 
 			echo "</form>";
 
-			if (isset($_POST['submit_act'])){//guardar actualizacion
+			if (isset($_GET['submit_act'])){//guardar actualizacion
 				$sql="UPDATE clientes SET
-				nombre='".$_POST['nombre']."',
-				ife='".$_POST['IFE']."',
-				domicilio='".$_POST['domicilio']."',
-				municipio='".$_POST['municipio']."',
-				estado='".$_POST['estado']."',
-				telefono='".$_POST['telefono']."',
-				fechadenacimiento='".$_POST['nacimiento']."'
-				WHERE curp='".$_POST['curp']."'";
-
+				nombre='".$_GET['nombre']."',
+				ife='".$_GET['IFE']."',
+				domicilio='".$_GET['domicilio']."',
+				municipio='".$_GET['municipio']."',
+				estado='".$_GET['estado']."',
+				telefono='".$_GET['telefono']."',
+				fechadenacimiento='".$_GET['nacimiento']."'
+				WHERE curp='".$_GET['curp']."'";
 				if ($conexion->query($sql) == TRUE) {
+					historia($nuc,"Actualizo datos del cliente ".$_GET['nombre'].", CURP: ".$_GET['curp']);
 					mensaje('Cliente Actualizado correctamente','clientes.php','');
 				}else
 				{
+					historia($nuc, "ERROR: al intentar guardar ".$sql);
 					mensaje('Ha habido un error'.$sql,'index2.php','error');
 				}
 
