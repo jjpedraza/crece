@@ -59,6 +59,7 @@ echo "cliente nuevo";
 			echo "<div><label>Telefono</label><input type='text' name='telefono' value='".$cl['telefono']."'></div>";
 			echo "<div><input type='submit' name='submit_act' value='Guardar' class='btn btn-default'></div>";
 
+<<<<<<< HEAD
 			echo "</form>";
 
 			if (isset($_GET['submit_act'])){//guardar actualizacion
@@ -77,6 +78,23 @@ echo "cliente nuevo";
 				}else
 				{
 					historia($nuc, "ERROR: al intentar guardar ".$sql);
+=======
+			if (isset($_POST['submit_act'])){//guardar actualizacion
+				$sql="UPDATE clientes SET 
+				nombre='".$_POST['nombre']."',
+				ife='".$_POST['IFE']."',
+				domicilio='".$_POST['domicilio']."',
+				municipio='".$_POST['municipio']."',
+				estado='".$_POST['estado']."',
+				telefono='".$_POST['telefono']."',
+				fechadenacimiento='".$_POST['nacimiento']."'
+				WHERE curp='".$_POST['curp']."'";
+			
+				if ($conexion->query($sql) == TRUE) { 
+					mensaje('Cliente Actualizado correctamente','clientes.php','');
+				}else
+				{
+>>>>>>> a8f1b04c4add709a270655ef6c116a2ef9bb9fc1
 					mensaje('Ha habido un error'.$sql,'index2.php','error');
 				}
 
