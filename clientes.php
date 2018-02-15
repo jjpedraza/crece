@@ -5,14 +5,15 @@
 include("config/html_menu.php"); ?>
 
 <?php
-$id_aplicacion='ap3'; $nivel = aplicacion_nivel($id_aplicacion, $nuc);	
+$id_aplicacion='ap3'; $nivel = aplicacion_nivel($id_aplicacion, $nuc);
 if (sanpedro($id_aplicacion,$nuc)==TRUE){
 if (isset($_GET['nuevo'])){ //usario seleccionado
 echo "cliente nuevo";
 
 
 } else {
-
+	//probando cambios segundo cambio
+	jhkk hkhk
 	if (isset($_GET['x'])){ //usario seleccionado
 		//echo "Se ha seleccionado, cliente con CURP: <b> ".$_GET['x']."</b>";
 		$sql = "SELECT * FROM clientes WHERE curp='".$_GET['x']."'";
@@ -29,11 +30,11 @@ echo "cliente nuevo";
 			echo "<div><label>IFE:</label><input type='text' name='IFE' value='".$cl['IFE']."'></div>";
 			echo "<div><label>Telefono</label><input type='text' name='telefono' value='".$cl['telefono']."'></div>";
 			echo "<div><input type='submit' name='submit_act' value='Guardar' class='btn btn-default'></div>";
-			
+
 			echo "</form>";
 
 			if (isset($_POST['submit_act'])){//guardar actualizacion
-				$sql="UPDATE clientes SET 
+				$sql="UPDATE clientes SET
 				nombre='".$_POST['nombre']."',
 				ife='".$_POST['IFE']."',
 				domicilio='".$_POST['domicilio']."',
@@ -42,14 +43,14 @@ echo "cliente nuevo";
 				telefono='".$_POST['telefono']."',
 				fechadenacimiento='".$_POST['nacimiento']."'
 				WHERE curp='".$_POST['curp']."'";
-			
-				if ($conexion->query($sql) == TRUE) { 
+
+				if ($conexion->query($sql) == TRUE) {
 					mensaje('Cliente Actualizado correctamente','clientes.php','');
 				}else
 				{
 					mensaje('Ha habido un error'.$sql,'index2.php','error');
 				}
-	
+
 
 			}
 
@@ -59,7 +60,7 @@ echo "cliente nuevo";
 			mensaje("Ha habido un error, cliente no se encontro",'','error');
 			//sugerir hacer cliente nuevo
 		}
-		
+
 
 	} else {
 	if (isset($_GET['q'])){	//ejecutamos la consulta
@@ -105,4 +106,4 @@ echo "cliente nuevo";
 }else {mensaje("Acceso denegado a esta aplicacion",'','error');}
 
 ?>
-<?php include("config/html_footer.php"); ?>	
+<?php include("config/html_footer.php"); ?>
