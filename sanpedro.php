@@ -94,7 +94,7 @@ if (sanpedro($id_aplicacion,$nuc)==TRUE){
 	if (isset($_GET['q'])){	//ejecutamos la consulta
 		$sql = "SELECT * FROM empleados WHERE nombre like'%".$_GET['q']."%' ";
 		$r2= $conexion -> query($sql);
-		echo "<h3>Resultados de <b style='color: #64002B;'>".$_GET['q']."</b>:</h3>";
+		echo "<h3>Resultados de <b style='color: #2A2C2E;'>".$_GET['q']."</b>:</h3>";
 		echo "<table class='tabla'>";
 		$c=0;
 		while($fr = $r2 -> fetch_array())

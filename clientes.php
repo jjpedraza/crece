@@ -97,7 +97,7 @@ echo "cliente nuevo";
 		historia($nuc,$sql);
 		historia($nuc,"busco a ".$_GET['q']);
 		$r2= $conexion -> query($sql);
-		echo "<h3>Resultados de <b style='color: #64002B;'>".$_GET['q']."</b>:</h3>";
+		echo "<h3>Resultados de <b style='color: #2A2C2E;'>".$_GET['q']."</b>:</h3>";
 		echo "<table class='tabla'>";
 		echo "<th class='pc' width=200px>CURP</th>";
 		echo "<th>Nombre</th>";
@@ -107,7 +107,7 @@ echo "cliente nuevo";
 		{
 			echo "<tr>";
 			echo "<td class='pc'>".$fr['curp']."</td>";
-			echo "<td><b>".$fr['nombre']."</b><br><span style='font-size:8pt;'>".$fr['domicilio']."</span><span class='pc' style='font-size: 8pt; color:#64002B;'> | ".$fr['telefono']."</span></td>";
+			echo "<td><b>".$fr['nombre']."</b><br><span style='font-size:8pt;'>".$fr['domicilio']."</span><span class='pc' style='font-size: 8pt; color:#2A2C2E;'> | ".$fr['telefono']."</span></td>";
 			echo "<td width=50px>"; //acciones
 				echo "<a class='btn btn-default' style='display:block;' href='?x=".$fr['curp']."' style='text-decoration:none '><img src='icon/entrar.png'></a>";
 			echo "</td>";

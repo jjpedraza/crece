@@ -363,7 +363,7 @@ input[type="text"]:focus, input[type="text"]:hover, input[type="number"]:focus, 
 
 h1, h2, h3 {
   background-color: transparent;
-  color:  #64002B;
+  color:  #2A2C2E;
 }
 h1 {
   font-size: 12pt;
@@ -517,18 +517,18 @@ s {
 }
 
 .btn-default {
-  background-color: #64002B;
+  background-color: #2A2C2E;
   color: white;
   font-family: "Compacta";
   font-weight: bold;
   text-shadow: 0 1px black;
-  box-shadow: 0 3px #CE0057;
+  box-shadow: 0 3px black;
   font-size: 14pt;
 }
 
 .btn-default:hover {
-  box-shadow: 0 1px #64002B;
-  background-color: #CE0057;
+  box-shadow: 0 1px #2A2C2E;
+  background-color: #006699;
   top: 2px;
 }
 
@@ -544,17 +544,17 @@ s {
 
 .btn-default2 {
   background-color: white;
-  color: #64002B;
+  color: #2A2C2E;
   font-family: "Compacta";
   font-weight: bold;
   text-shadow: 0 1px black;
-  box-shadow: 0 3px #CE0057;
+  box-shadow: 0 3px #006699;
   font-size: 14pt;
 }
 
 .btn-default2:hover {
-  box-shadow: 0 1px #64002B;
-  background-color: #CE0057;
+  box-shadow: 0 1px #2A2C2E;
+  background-color: #006699;
   top: 2px;
 }
 
@@ -694,16 +694,16 @@ s {
 #footer {
   background-color: #DDC6D8;
   border-top-style: dashed;
-  border-top-color: #64002B;
+  border-top-color: #2A2C2E;
   border-top-width: 1px;
   margin-top: 200px;
-  color: #64002B;
+  color: #2A2C2E;
   padding: 20px;
   padding-bottom: 500px;
 }
 
 #footer a {
-  color: #64002B;
+  color: #2A2C2E;
   text-decoration: none;
 
   background-color: rgba(255, 255, 255, 0.8);
@@ -716,7 +716,7 @@ s {
   color: white;
   text-decoration: none;
 
-  background-color: #64002B;
+  background-color: #2A2C2E;
   padding: 10px;
   border-radius: 5px;
 }
@@ -755,7 +755,7 @@ s {
   position: fixed;
   top: 0;
   z-index: 1000;
-  background-color: #64002B;
+  background-color: #2A2C2E;
   transition: all .4s linear;
   border-bottom: 0px #C7D1CD solid;
   -moz-box-shadow: 0px 6px 6px  rgba(0, 0, 0, 0.5);
@@ -883,7 +883,7 @@ s {
 label {
   font-family: "Light";
   font-size: 8pt;
-  color: #64002B  ;
+  color: #2A2C2E  ;
 }
 input[type='text']{
   

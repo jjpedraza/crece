@@ -35,7 +35,7 @@ if (isset($_POST['submit']))
 	
 <style>
 	body {
-		background-color: #64002B;
+		background-color: #2A2C2E;
 		color: white;
 		font-size: 10pt;
 		font-family: "Light";
