@@ -24,8 +24,8 @@ $paginacion= 20;
 //PARAMETROS DE CONEXION A LA BASE DE DATOS
 	$dbhost = 'localhost';
 	$dbuser = 'root';
-	$dbpass = '';
-	$dbname = 'crece';
+	$dbpass = '3l-1t4vu'; 
+	$dbname = 'bd';
 	$conexion = new mysqli($dbhost,$dbuser,$dbpass,$dbname);
 	$acentos = $conexion->query("SET NAMES 'utf8'"); // para los acentos
 	global $conexion;
