@@ -2,6 +2,10 @@
 @font-face{font-family:"Light";src:url("../lib/OpenSans-Light.ttf") format("truetype")}
 @font-face{font-family:"Bold";src:url("../lib/OpenSans-ExtraBold.ttf") format("truetype")}
 
+#GranContenido{
+    margin-left:50px;
+    background-color:red;
+}
 #MenuTop{
     width: 95%;
     text-align: right;

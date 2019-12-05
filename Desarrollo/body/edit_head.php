@@ -18,11 +18,11 @@ include("admin_seguridad.php");
 		
 		<link rel="stylesheet" href="body/edit_estilo.css"/>
 		<link rel="shortcut icon" href="../icon/tam.ico" />
-		<script src="../lib/jquery-3.3.1.min.js"></script> 
-		<link rel="stylesheet" href="../lib/jquery.toast.min.css">
-		<script type="text/javascript" src="../lib/jquery.toast.min.js"></script>
-		<script type="text/javascript" src="../lib/pdz_functions.js"></script>
-		<script type="text/javascript" src='../lib/pdz_sintetizadodevoz.js'></script>
+		<script src="lib/jquery-3.3.1.min.js"></script> 
+		<link rel="stylesheet" href="lib/jquery.toast.min.css">
+		<script type="text/javascript" src="lib/jquery.toast.min.js"></script>
+		<script type="text/javascript" src="lib/pdz_functions.js"></script>
+		<script type="text/javascript" src='lib/pdz_sintetizadodevoz.js'></script>
 		<script>
 			function habla(quedigo){
 				// alert(quedigo);
@@ -31,6 +31,11 @@ include("admin_seguridad.php");
 			}
 				
 		</script>
+		<style>
+		body{
+			/* background-image: url('https://source.unsplash.com/random/1920x1080/?nature,trees,green'); */
+		}
+		</style>
 		
 </head>
 

@@ -381,6 +381,48 @@ function url_origin($s, $use_forwarded_host=false) {
 }
 
 
+function App_idapcat($idapp){
+    require("config.php");   
+    $sql = "SELECT * FROM aplicaciones WHERE (idapp='".$idapp."')";
+    $rc= $conexion -> query($sql);
+    if($f = $rc -> fetch_array())
+        {        
+            return $f['idapcat'];
+        }
+    else
+        { 
+            return '';
+        }
+}
 
+
+
+function SanPedro($idapp,$usuario){
+    require("config.php");   
+    if (App_idapcat($idapp) == 1 || App_idapcat($idapp) == 2){
+        return TRUE;
+    } else {
+        $sql = "SELECT * FROM aplicaciones_permisos WHERE (iduser='".$usuario."' AND idapp='".$idapp."')";
+        $rc= $conexion -> query($sql);
+        if($f = $rc -> fetch_array())
+            {        
+                return TRUE;
+            }
+        else
+            { 
+                return FALSE;
+            }
+    }
+    
+}
+
+function AppInit($idapp,$usuario){
+    require("config.php");   
+    if (SanPedro($idapp,$usuario) == TRUE){
+
+    } else {
+        
+    }
+}
 
 ?>
