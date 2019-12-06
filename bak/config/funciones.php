@@ -202,7 +202,7 @@ else
 
 }
 
-function sanpedro ($idapp,$usuario){
+function SanPedro ($idapp,$usuario){
 require("config.php");
 //funcion que otorga acceso a las aplicaciones
 //pero a san pedro no le importa tu nivel, si estas en la lista te deja pasar
@@ -220,7 +220,5 @@ else
 	return FALSE;
 	}
 }
-
-
 
 ?>

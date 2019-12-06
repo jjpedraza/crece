@@ -451,4 +451,45 @@ function MsgBox($mensaje, $link){
     
     }
 
+    
+
+function AppTitular($idapp){
+	require("config.php");
+	$sql = "SELECT * FROM aplicaciones WHERE idapp='".$idapp."'";
+	$rc= $conexion -> query($sql);
+	$msg="";
+	if($f = $rc -> fetch_array())
+	{
+		$msg="<div id='AppTitular'><a href='".$f['vinculo']."' style='cursor:pointer; margin-top:-100px;  z-index:5000;' 
+		title='Haga clic para regresar a la principal de esta aplicacion'>
+	<table border=0 width=100%><tr>";
+		$msg= $msg."<td align=center valign=middle width=20px>";
+			$archivo = "icon/".$f['icono'];
+			
+			$foto = "<img src='icon/".$f['icono']."' style='width:40px;'>";
+			$msg = $msg.$foto;			
+		$msg=  $msg. "</td>";
+		$msg = $msg."<td align=center valign=top><span class='app_titulo'>".$f['nombre']."</span><span class='app_version'></span><br>";
+		$msg = $msg."<span class='app_des'>".$f['descripcion']."</span></td>";
+        $msg = $msg."<td class='pc' width=30px>";
+        if ($f['ayuda']==''){
+
+        }else {
+            $msg = $msg."<a title='Ir a la ayuda de esta aplicacion ' href='".$f['ayuda']."'>
+            <img src='icon/ayuda.png' 
+            style=' width:30px; height:30px; margin-left:20px; opacity:0.4;
+            ';
+            ></a></span>";
+        }
+        $msg = $msg."</td>";
+        
+		
+
+	$msg= $msg."</tr></table></a></div>";
+	return $msg;
+	}
+	else
+	{ return FALSE;}
+	}
+
 ?>

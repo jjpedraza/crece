@@ -33,7 +33,9 @@ include("admin_seguridad.php");
 		</script>
 		<style>
 		body{
-			/* background-image: url('https://source.unsplash.com/random/1920x1080/?nature,trees,green'); */
+			/* background-image: url('https://source.unsplash.com/random/1920x1080/?nature,trees,green');
+			 */
+			/* background-image: url("img/dot1.png"); */
 		}
 		</style>
 		
