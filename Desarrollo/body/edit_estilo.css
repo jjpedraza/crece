@@ -1,7 +1,16 @@
 @font-face{font-family:"Regular";src:url("../lib/OpenSans-Regular.ttf") format("truetype")}
 @font-face{font-family:"Light";src:url("../lib/OpenSans-Light.ttf") format("truetype")}
 @font-face{font-family:"Bold";src:url("../lib/OpenSans-ExtraBold.ttf") format("truetype")}
-
+#modal_error{visibility:visible;opacity:1;background-color:#7D0000;opacity:0.9;position:fixed;top:0;left:0;right:0;bottom:0;margin:0;z-index:809;transition:all 1s;width:100%}
+#modal_oscuro{visibility:visible;opacity:1;background-color:rgba(0,0,0,0.8);opacity:0.9;position:fixed;top:0;left:0;right:0;bottom:0;margin:0;z-index:999;transition:all 1s;width:100%}
+#mensaje{color:black;text-align:center;border-radius:10px;border:2px solid white;background-color:white;width:50%;position:absolute;top:20%;left:20%;right:20%;z-index:2010;opacity:1;padding:20px;margin:10px;margin-top:100px;transition:all 5s cubic-bezier(.46,.03,.52,.96)}
+#mensaje p{font-size:12pt}
+#mensaje a{text-decoration:none}
+#mensaje img{width:60%;height:50%}
+#msg_error{color:red;text-align:center;border-radius:10px;border:2px solid red;background-color:white;width:50%;position:absolute;top:20%;left:20%;right:20%;z-index:2010;opacity:1;padding:20px;margin:10px;margin-top:100px;transition:all 5s cubic-bezier(.46,.03,.52,.96)}
+#msg_error p{font-size:12pt}
+#msg_error a{text-decoration:none}
+#msg_error img{width:60%;height:50%}
 #GranContenido{
     margin-left:50px;
     background-color:red;

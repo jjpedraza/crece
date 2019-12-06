@@ -7,7 +7,7 @@
 if (SanPedro("3",$PrymeCodeAdmin_IdUser) === TRUE){
     echo "Acceso concedido";
 } else {
-    echo "Denegado";
+    echo MsgBox("ERROR, no tienes acceso a está aplicación","");
 }
 
 
