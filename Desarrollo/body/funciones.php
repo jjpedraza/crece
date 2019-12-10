@@ -232,7 +232,7 @@ function LimpiarComillas($valor)
     }
 
 
-    function historia($IdUser, $IdHistoria, $Descripcion){
+    function historia($IdUser, $IdHistoria, $descripcion){
         require("config.php");
         $descripcion = addslashes($descripcion);
         
@@ -240,7 +240,7 @@ function LimpiarComillas($valor)
         $sql = "INSERT INTO historia
         (iduser, idhistoria,  fecha, hora, descripcion)
         VALUES
-        ('$nitavu_', '$fecha', '$hora','$Descripcion')";
+        ('$IdUser', '$fecha', '$hora','$descripcion')";
         // //echo $sql;
         
         if ($conexion->query($sql) == TRUE)
@@ -490,6 +490,40 @@ function AppTitular($idapp){
 	}
 	else
 	{ return FALSE;}
-	}
+}
+
+
+function Mensaje($mensaje, $link, $tipo){
+if ($link=="") {$link = "../index.php";}
+echo "<script>$('#R').show();</script>";
+if ($tipo==0)
+{
+        echo '<div id="modal_oscuro"></div>';
+        echo '<div id="mensaje">';
+        echo '<p>'.$mensaje.'</p>';
+        echo '<a class="btn btn-default" href="'.$link.'">Aceptar</a>  ';        
+        echo '</div>';
+        
+}
+
+if ($tipo==1) // error
+{
+    echo '<div id="modal_error"></div>';
+    echo '<div id="mensaje">ERROR:';
+    echo '<p>'.$mensaje.'</p>';
+    echo '<a class="btn btn-default" href="'.$link.'">Aceptar</a>  ';    
+    echo '</div>';
+
+}
+
+
+
+
+}
+
+
+
+
+
 
 ?>
