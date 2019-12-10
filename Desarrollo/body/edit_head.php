@@ -38,6 +38,9 @@ include("admin_seguridad.php");
 			/* background-image: url("img/dot1.png"); */
 		}
 		</style>
+
+	<link rel="stylesheet" type="text/css" href="lib/datatables.min.css"/> 
+	<script type="text/javascript" src="lib/datatables.min.js"></script>
 		
 </head>
 
