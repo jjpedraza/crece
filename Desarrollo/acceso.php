@@ -10,15 +10,27 @@ if (SanPedro($IdApp,$PrymeCodeAdmin_IdUser) === TRUE){
     echo AppTitular($IdApp);
     historia($IdUsuario, $IdApp, "Acceso a la aplicacion para cambiar Administrar permisos");
 
+    echo "<div id='Programas' style='
+    width:96%;
+    padding:10px;
+    display:inline-block;
+    '>";
+
+    echo "</div>";
     $sql="select 
 *   from html_usuarios
     ";
     
     echo "<div id='Usuarios' style='
-    width:97%;
+    width:96%;
     padding:10px;
+    display:inline-block;
+    background-color:antiquewhite;
+    margin: 10px;
+    border-radius: 5px;
+    text-align:center;
     '>";
-    TablaDinamica_MySQL("",$sql, "MiIdDivTabla2", "IdTabla2", "", 2); //0 = Basica, 1 = ScrollVertical, 2 = Scroll Horizontal
+    TablaDinamica_MySQL("",$sql, "MiIdDivTabla2", "IdTabla2", "", 0); //0 = Basica, 1 = ScrollVertical, 2 = Scroll Horizontal
     echo "</div>";
 
 
