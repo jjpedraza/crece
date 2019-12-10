@@ -9,31 +9,60 @@ $IdUsuario = $PrymeCodeAdmin_IdUser;
 if (SanPedro($IdApp,$PrymeCodeAdmin_IdUser) === TRUE){
     echo AppTitular($IdApp);
     historia($IdUsuario, $IdApp, "Acceso a la aplicacion para cambiar Administrar permisos");
-
-    echo "<div id='Programas' style='
-    width:96%;
-    padding:10px;
-    display:inline-block;
-    '>";
-
-    echo "</div>";
-    $sql="select 
-*   from html_usuarios
-    ";
     
-    echo "<div id='Usuarios' style='
-    width:96%;
-    padding:10px;
-    display:inline-block;
-    background-color:antiquewhite;
-    margin: 10px;
-    border-radius: 5px;
-    text-align:center;
-    '>";
-    TablaDinamica_MySQL("",$sql, "MiIdDivTabla2", "IdTabla2", "", 0); //0 = Basica, 1 = ScrollVertical, 2 = Scroll Horizontal
-    echo "</div>";
+
+    if (isset($_GET['idapp']) or isset($_GET['IdUser'])){
+        $IdApp = ""; $IdUser = "";
+        //Limpiar variables
+        if (isset($_GET['idapp'])){
+            $IdApp = $_GET['idapp']; if (ValidaVAR($IdApp)==TRUE){$IdApp = LimpiarVAR($IdApp);} else {$IdApp = "";}
+        }
+        if (isset($_GET['IdUser'])){
+            $IdUser = $_GET['IdUser']; if (ValidaVAR($IdUser)==TRUE){$IdUser = LimpiarVAR($IdUser);} else {$IdUser = "";}
+        }
+        if ($IdUser <> '' or $IdApp <> '' ){
+
+        } else {Toast("Seleccione un Usuario o Modulo Valido",3,"");}
+
+    } else {
+        //muestra paneles de seleccion:
+            $sql="select 
+        *   from html_usuarios
+            ";
+            
+            echo "<div id='Usuarios' style='
+            width:40%;
+            padding:10px;
+            display:inline-block;
+            background-color:antiquewhite;
+            margin: 10px;
+            border-radius: 5px;
+            text-align:center;
+            '>";
+            echo "<h3>Usuarios:</h3>";
+            TablaDinamica_MySQL("",$sql, "MiIdDivTabla2", "IdTabla2", "", 0); //0 = Basica, 1 = ScrollVertical, 2 = Scroll Horizontal
+            echo "</div>";
 
 
+
+            $sql=" 
+            select CONCAT('<a href=?idapp=',idapp,'>',nombre,'</a>') as App from aplicaciones
+                ";
+                
+                echo "<div id='Programas' style='
+                width:40%;
+                padding:10px;
+                display:inline-block;
+                background-color:#f9e2f9;
+                margin: 10px;
+                border-radius: 5px;
+                text-align:center;
+                '>";
+                echo "<h3>Modulos:</h3>";
+                TablaDinamica_MySQL("",$sql, "MiIdDivTabla3", "IdTabla3", "", 0); //0 = Basica, 1 = ScrollVertical, 2 = Scroll Horizontal
+                echo "</div>";
+            
+    }
 
 } else {echo MsgBox("ERROR, no tienes acceso a está aplicación","");}
 
