@@ -99,8 +99,8 @@
 
 .Buble {
     display: inline-block;
-    padding: 10px;
-    border-radius: 20px;
+    padding: 5px;
+    border-radius: 5px;
     margin: 10px;
 }
 
@@ -161,10 +161,13 @@
     left: 0px;
 }
 
-.EncabezadoReporte {}
+.EncabezadoReporte {
+    color: white;
+}
 
 .ReporteFooter {
     font-size: 8pt;
+    color: white;
 }
 
 .ContenedorDeReporte {

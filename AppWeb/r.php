@@ -92,7 +92,7 @@ $ClaseDiv  = "ContenedorDeReporte"; $ClaseTabla = "";
                 echo "<form id='FormVar' action='r.php?id=".$id_rep."' method='POST' style='
                 width: 100%;
                 padding: 10px;
-                background-color: #ffffff5c;
+                background-color: white;
                 margin: 7px;
                 border-radius: 8px;
 

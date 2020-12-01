@@ -16,7 +16,7 @@ if($RConF = $RCon -> fetch_array())
     // var_dump($RConF);
     // var_dump($RConF);
     // 1. Validacion de Datos necesarios
-    if ($RConF['dbhost'] <>'' &&  $RConF['dbname']<>'' && $RConF['dbuser']<>'' && $RConF['dbpassword']<>'')    {
+    if ($RConF['dbhost'] <>'' &&  $RConF['dbname']<>'' && $RConF['dbuser']<>'')    {
         $Con_host = $RConF['dbhost'];
         $Con_user = $RConF['dbuser'];
         $Con_pass = $RConF['dbpassword'];

@@ -2784,7 +2784,10 @@ function UltimasBusquedas_buble($IdUser){
         
         while($fx= $rx -> fetch_array()) {  
            
-            echo "<a class='Buble'  style='background-color:".Preference("ColorSecundario", "", "").";'           
+            // echo "<a class='Buble'  style='background-color:".Preference("ColorSecundario", "", "").";'           
+            // href='index.php?q=".$fx['Search']."' title='haga clic aqui para realizar esta busqueda'>".$fx['Search']."</a>";
+
+            echo "<a class='Buble'  style='background-color:#dbc2ac; color:white;'           
             href='index.php?q=".$fx['Search']."' title='haga clic aqui para realizar esta busqueda'>".$fx['Search']."</a>";
             
         }

@@ -41,10 +41,11 @@ require("components.php");
         body {
             /* background-image: url('img/fondo3.jpg'); */
             background-size: 150%;
-            background-color: #416f35;
+            background-color: #370018;
+            color:white;
             /* background-color: #919191;
             background-blend-mode: screen; */
-            color:white;
+            
 
         }
 
