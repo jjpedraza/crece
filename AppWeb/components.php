@@ -2527,7 +2527,7 @@ function Error($Mensaje){
     '
     ><table width=100%><tr><td
     style='color:white;'
-    >".$Mensaje."</td><td width=50px><a href='index.php' class='btn btn-Warning'>Reintentar</a></td></tr></table></div>";
+    >".$Mensaje."</td><td width=50px><a href='index.php' class='btn btn-warning'>Reintentar</a></td></tr></table></div>";
     
     Historia("","ERROR",$Mensaje);
     $CorreoDestino = "printepolis@gmail.com";

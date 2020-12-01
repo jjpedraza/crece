@@ -3,8 +3,10 @@
     src: url("HelveticaNeueLTStd-Lt.otf") format("truetype")
 }
 
-
-/* @font-face{font-family:"Light";src:url("OpenSans-Light.ttf") format("truetype")} */
+@font-face {
+    font-family: "Light";
+    src: url("OpenSans-Light.ttf") format("truetype")
+}
 
 @font-face {
     font-family: "ExtraBold";
@@ -29,6 +31,19 @@
 @font-face {
     font-family: "Bold";
     src: url("OpenSans-ExtraBold.ttf") format("truetype")
+}
+
+body * {
+    font-family: "Light";
+}
+
+#ClienteForm {
+    background-color: white;
+    height: 100%;
+    margin: 10px;
+    border-radius: 5px;
+    padding: 11px;
+    font-family: Light;
 }
 
 #Dashboard {
@@ -746,7 +761,6 @@ hr {
     margin-top: 20px;
     margin-bottom: 2 0px;
     border: 1px dashed gray;
-    opacity: 0.5;
 }
 
 .Mbtn {

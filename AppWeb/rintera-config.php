@@ -15,18 +15,6 @@ $db0_pass = '';
 $db0_name = 'rintera_crece';
 
 
-// Usuario c1551508_rintera
-// Clave: renine01PO
-// Base de datos: c1551508_rintera
-// Servidor: localhost
-
-
-// $db0_host = 'localhost';	
-// $db0_user = 'c1551508_rintera';
-// $db0_pass = 'renine01PO'; 
-// // $db0_pass = ''; 
-// $db0_name = 'c1551508_rintera';
-
 if (function_exists('mysqli_connect')) {		
     $db0 = new mysqli($db0_host,$db0_user,$db0_pass,$db0_name);
 	$acentos = $db0->query("SET NAMES 'utf8'"); // para los acentos
@@ -38,6 +26,25 @@ if (function_exists('mysqli_connect')) {
 }
 
 
+
+
+//CONEXION DE LA BASE DE DATOS DE RINTERA	
+$db1_host = 'localhost';	
+$db1_user = 'root';
+$db1_pass = ''; 
+// $db0_pass = ''; 
+$db1_name = 'crece';
+
+
+if (function_exists('mysqli_connect')) {		
+    $db1 = new mysqli($db1_host,$db1_user,$db1_pass,$db1_name);
+	$acentos2 = $db1->query("SET NAMES 'utf8'"); // para los acentos
+	// var_dump($db0);
+        // global $db0;
+        
+    }else{			
+        die ("Error en la conexion a la base de datos principal de CRECE");
+}
 
 
 

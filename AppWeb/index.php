@@ -137,17 +137,31 @@ if (Preference("MostrarApps", "", "")=='TRUE'){
      $rF= $db0 -> query("select * from reportes where Portada=1");    
      $repos = 0; $repolist="";
      while($Fr = $rF -> fetch_array()) {   
-         $repolist.= "<a href='r.php?id=".$Fr['id_rep']."' title='Haga Clic aqui para ver el reporte' class='btn btn-Light'
+         $repolist.= "<a          
+         href='r.php?id=".$Fr['id_rep']."' title='Haga Clic aqui para ver el reporte' class='btn btn-info'
          style='
-            background-color: #e6e6e6;
-            color: #625f5f;
+            // background-color: #e6e6e6;
+            // color: #625f5f;
             width: 100%;
             font-size: 10pt;
             text-align:left;
+            margin-bottom:5px;
          '
-         >".$Fr['rep_name']."</a><br><br>";
+         >".$Fr['rep_name']."</a>";
          $repos = $repos + 1;
      }
+
+
+     $repolist.= "<a href='app_clientenuevo.php' title='Haga Clic aqui para ver el reporte' class='btn btn-success'
+     style='
+        // background-color: #e6e6e6;
+        // color: #625f5f;
+        width: 100%;
+        font-size: 10pt;
+        text-align:left;
+     '
+     >Crear Cliente</a><br><br>";
+
     
      unset($rf);unset($Fr);
      if ($repos > 0 ){
@@ -155,7 +169,11 @@ if (Preference("MostrarApps", "", "")=='TRUE'){
          opacity: 0.6;'>Recomendados</h6>";
          echo $repolist;
      }
+
+     
     ?>
+
+
     </div>
 
 
