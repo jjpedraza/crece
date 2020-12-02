@@ -16,7 +16,14 @@ if (isset($_GET['id'])){
             
             echo "<div class='row'>";
                 echo '
-                <div class="form-group col-sm btn btn-info">
+                <div class="form-group col-sm btn btn-info">';
+
+
+
+
+
+                
+                echo '
                     <label for="exampleFormControlInput1">CURP:</label>
                     <b>'.$Curp.'</b>
                 </div>';
@@ -27,6 +34,8 @@ if (isset($_GET['id'])){
                     <input style="
                         background-color: orange;
                         color: white;
+                        font-weight: bold;
+                        font-size: large;
                     " type="text" class="form-control" name="nombre" id="nombre" placeholder="" value="'.$f['nombre'].'">
                 </div>';
 
@@ -122,6 +131,16 @@ if (isset($_GET['id'])){
 
                 echo '                    
                 </div>';
+
+
+                
+                echo '
+                <div class="form-group col-sm">
+                    <label for="exampleFormControlInput1">Telefono:</label>
+                    <input type="text" class="form-control bg-warning" name="telefono" id="telefono" placeholder="" value="'.$f['telefono'].'">
+                </div>';
+
+
             echo "</div>";       
             
             
@@ -137,8 +156,35 @@ if (isset($_GET['id'])){
                     color:black;
                     ">
                     <h5 class="mb-0">
-                    <button class="btn " data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" style="display:block;width:100%;">
-                       Estudio Socio-economico
+                    <button class="btn " data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" 
+                        style=";width:100%;"
+                        onclick="checkTot();"
+                        
+                        >
+                       <table border=0 style="
+                            width:100%;
+                            margin-top: -12px;
+                            margin-bottom: -12px;
+                       "><tr><td align=left>
+                            <b>Informacion Socioeconomica </b></td>
+                        <td width=30%>
+                        <div id="InfoTot">
+                            <table class="tabla">
+                                    <th>Ingresos </th><th>Gastos</th><th>Ingresos Dispoinibles</th>
+                                    <tr>
+                                        <td ><div class="number" id="TotIngresos">0</div> </td>
+                                        <td ><div class="number" id="TotGastos">0</div> </td>
+                                        <td ><div class="number" id="TotIngresosDisponibles" style="font-weight: bold;">0</div> </td>
+                                        
+                                        
+                                    </tr>
+                            </table>
+                        </div>
+                        </td>
+                        <td width=50px>
+                            <a href="" class="btn btn-secondary"><img src="icons/pdf.png" style="width:32px;"></a>
+                        </td>
+                        </tr></table>
                     </button>
                     </h5>
                 </div>
@@ -150,38 +196,464 @@ if (isset($_GET['id'])){
                     <div class="card-body">
                    ';
 
-                   echo "<div class='row'>";
+
+
+                   echo "<div class='row'>"; // ---------------------------------------- r  o  w --- begin
                    echo '
                    <div class="form-group col-sm">
-                       <label for="exampleFormControlInput1">Domicilio:</label>
-                       <textarea class="form-control" name="domicilio" id="domicilio" placeholder="" style="font-size:8pt;">'.$f['domicilio'].'</textarea>
+                       <label for="exampleFormControlInput1">Empresa donde trabaja:</label>
+                       <input type="text" class="form-control" name="trabajo_nombre" id="trabajo_nombre" placeholder="" value="'.$f['trabajo_nombre'].'">
                    </div>';
    
    
                    echo '
                    <div class="form-group col-sm">
-                       <label for="exampleFormControlInput1">Municipio:</label>
-                       <input type="text" class="form-control" name="municipio" id="municipio" placeholder="" value="'.$f['municipio'].'">
+                       <label for="exampleFormControlInput1">Domicilio donde trabaja:</label>
+                       <textarea class="form-control" name="trabajo_domicilio" id="trabajo_domicilio">'.$f['trabajo_domicilio'].'</textarea>
                    </div>';
    
    
                    echo '
-                   <div class="form-group col-sm">
-                       <label for="exampleFormControlInput1">Estado:</label>
-                       <input type="text" class="form-control" name="estado" id="estado" placeholder="" value="'.$f['estado'].'">
-                   </div>';
-               echo "</div>";
+                        <div class="form-group col-sm">
+                            <label for="exampleFormControlInput1">Telefono del trabajo:</label>
+                            <input type="text" class="form-control" name="trabajo_telefono" id="trabajo_telefono" placeholder="" value="'.$f['trabajo_telefono'].'">
+                        </div>';
+                    echo "</div>"; // ---------------------------------------- r  o  w --- end
+
+
+                    echo "<div class='row'>"; // ---------------------------------------- r  o  w --- begin
+                    echo '
+                    <div class="form-group col-sm">
+                        <label for="exampleFormControlInput1">Giro de la Empresa:</label>
+                        <input type="text" class="form-control" name="trabajo_giro" id="trabajo_giro" placeholder="" value="'.$f['trabajo_giro'].'">
+                    </div>';
+    
+    
+                    echo '
+                    <div class="form-group col-sm">
+                        <label for="exampleFormControlInput1">Puesto:</label>
+                        <input type="text" class="form-control" name="trabajo_puesto" id="trabajo_puesto" value="'.$f['trabajo_puesto'].'">
+                    </div>';
+    
+    
+                    echo '
+                         <div class="form-group col-sm">
+                             <label for="exampleFormControlInput1">Salario:</label>
+                             <input onchange="checkTot();" type="number" class="form-control" name="trabajo_salario" id="trabajo_salario" placeholder="" value="'.$f['trabajo_salario'].'">
+                         </div>';
+                     echo "</div>"; // ---------------------------------------- r  o  w --- end
+
+
+
+
+                     echo "<div class='row'>"; // ---------------------------------------- r  o  w --- begin
+                     echo '
+                     <div class="form-group col-sm">
+                         <label for="exampleFormControlInput1">¿Cuantas Personas dependen de el?:</label>
+                         <input type="number" class="form-control" name="socio_dependen" id="socio_dependen" placeholder="" value="'.$f['socio_dependen'].'">
+                     </div>';
+     
+     
+                     echo '
+                     <div class="form-group col-sm">
+                         <label for="exampleFormControlInput1">Casa Propia?:</label>
+                         <select name="socio_casapropia" id="socio_casapropia"  class="form-control">
+                         ';
+
+                          if ($f['socio_casapropia'] =='SI'){
+                            echo '<option class="form-control" value="SI" selected>SI</option>';
+                            echo '<option class="form-control" value="NO" >NO</option>';
+                                
+                          } else {
+                            echo '<option class="form-control" value="SI" >SI</option>';
+                            echo '<option class="form-control" value="NO" selected >NO</option>';
+                            
+                          }
+
+                    echo '</select>                         
+                     </div>';
+     
+     
+                  
+
+                     echo '
+                     <div class="form-group col-sm" >
+                         <label for="exampleFormControlInput1">Negocio Propio?:</label>
+                         <select name="minegocio_propio" id="minegocio_propio"  class="form-control" style="background-color:#e8d1f0;"
+                         onchange="checkMiNegocio();";
+                         >
+                         ';
+
+                          if ($f['minegocio_propio'] =='SI'){
+                            echo '<option class="form-control" value="SI" selected>SI</option>';
+                            echo '<option class="form-control" value="NO" >NO</option>';
+                                
+                          } else {
+                            echo '<option class="form-control" value="SI" >SI</option>';
+                            echo '<option class="form-control" value="NO" selected >NO</option>';
+                            
+                          }
+
+                    echo '</select>                         
+                     </div>';     
+
+                    echo "</div>"; // ---------------------------------------- r  o  w --- end
+
+
+                    //Opciones si tiene negocio propio
+                    echo '<div id="DivMiNegocio" style="display:none;">';
+                        echo "<div class='row' style='
+                            background-color: #e8d1f0;
+                            border-radius: 5px;
+                        '>"; // ---------------------------------------- r  o  w --- begin
+                        echo '
+                        <div class="form-group col-sm">
+                            <label for="exampleFormControlInput1">Giro del negocio?</label>
+                            <input type="text" class="form-control" name="minegocio_giro" id="minegocio_giro" placeholder="" value="'.$f['minegocio_giro'].'">
+                        </div>';
+
+                        echo '
+                        <div class="form-group col-sm">
+                            <label for="exampleFormControlInput1">Ingresos por su negocio:</label>
+                            <input onchange="checkTot();" type="number" class="form-control" name="minegocio_ingresos" id="minegocio_ingresos" placeholder="" value="'.$f['minegocio_ingresos'].'">
+                        </div>';
+
+
+
+                        echo '
+                        <div class="form-group col-sm">
+                            <label for="exampleFormControlInput1">Telefono de mi negocio:</label>
+                            <input type="number" class="form-control" name="minegocio_telefono" id="minegocio_telefono" placeholder="" value="'.$f['minegocio_telefono'].'">
+                        </div>';
+                        
+                        echo "</div>"; // ---------------------------------------- r  o  w --- end
+
+
+                        echo "<div class='row' style='
+                        background-color: #e8d1f0;
+                        border-radius: 5px;
+                            '>"; // ---------------------------------------- r  o  w --- begin
+                            echo '
+                            <div class="form-group col-sm">
+                                <label for="exampleFormControlInput1">Numero de empleados?</label>
+                                <input type="number" class="form-control" name="minegocio_empleados" id="minegocio_empleados" placeholder="" value="'.$f['minegocio_empleados'].'">
+                            </div>';
+
+                            echo '
+                            <div class="form-group col-sm">
+                                <label for="exampleFormControlInput1">Domicilio del negocio:</label>
+                                <textarea class="form-control" name="minegocio_domicilio" id="minegocio_domicilio">'.$f['minegocio_domicilio'].'</textarea>
+                            </div>';
+
+
+                            echo '
+                            <div class="form-group col-sm">
+                                <label for="exampleFormControlInput1">Antiguedad del negocio:</label>
+                                <input type="text" class="form-control" name="minegocio_antiguedad" id="minegocio_antiguedad" placeholder="" value="'.$f['minegocio_antiguedad'].'">
+                            </div>';
+
+
+                            
+                            echo "</div>"; // ---------------------------------------- r  o  w --- end
+
+
+
+
+
+                                                
+                    echo '</div>';
+
+
+                    echo "
+                 
+                    <div class='row' style='
+           
+                        '>"; // ---------------------------------------- r  o  w --- begin
+                        echo '
+                      
+                        <div class="form-group col-sm">
+                            <label for="exampleFormControlInput1">Cuantos hijos?</label>
+                            <input type="number" class="form-control" name="socio_hijos" id="socio_hijos" placeholder="" value="'.$f['socio_hijos'].'">
+                        </div><br>';
+                    echo "</div>";
+
+
+                    echo "
+                    <hr><h5>Gastos mensuales: </h5><br>
+                    <div class='row' style='
+           
+                        '>"; // ---------------------------------------- r  o  w --- begin
+                        echo '
+                      
+                        <div class="form-group col-sm">
+                            <label for="exampleFormControlInput1">¿cuanto gasta en el hogar?</label>
+                            <input onchange="checkTot();" type="number" class="form-control" name="socio_hogar" id="socio_hogar" placeholder="" value="'.$f['socio_hogar'].'">
+                        </div><br>';
+
+                        echo '
+                        <div class="form-group col-sm">
+                            <label for="exampleFormControlInput1">Gasto Renta?:</label>
+                            <input onchange="checkTot();" type="number" class="form-control" name="socio_renta" id="socio_renta" value="'.$f['socio_renta'].'">
+                        </div>';
+
+
+                        echo '
+                        <div class="form-group col-sm">
+                            <label for="exampleFormControlInput1">Gasto de agua y luz?:</label>
+                            <input onchange="checkTot();" type="number" class="form-control" name="socio_agualuz" id="socio_agualuz" placeholder="" value="'.$f['socio_agualuz'].'">
+                        </div>';
+
+                        echo '
+                        <div class="form-group col-sm">
+                            <label for="exampleFormControlInput1">otros gastos?:</label>
+                            <input onchange="checkTot();" type="number" class="form-control" name="socio_drenaje" id="socio_drenaje" placeholder="" value="'.$f['socio_drenaje'].'">
+                        </div>';
+
+
+                        
+                        echo "</div>"; // ---------------------------------------- r  o  w --- end       
+
+
 
                    echo '
-                    </div>
-                </div>';
+                    </div>';
+
+                   
+
+
+                echo '</div>';
+
+                echo '
+                <div class="card">
+                <div class="card-header" id="headingTwo" style="
+                    background-color: #5cbfbf;
+                ">
+                  <h5 class="mb-0">
+                    <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo"
+                    style="
+                    display: block;
+                    color: #137d7d;
+                    width: 100%;
+                    font-weight: bold;
+                    "
+                    >
+                    
+
+                    <table border=0 style="
+                    width:100%;
+                    margin-top: -12px;
+                    margin-bottom: -12px;
+               "><tr><td align=left>
+                    <b>Referencias </b></td>
+                <td width=30%>
+                <div id="InfoReferencias">
+                   
+                </div>
+                </td>
+               
+                </tr></table>
+
+
+                    </button>
+                  </h5>
+                </div>
+                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion" style="
+                background-color: #97dddd;
+                ">
+                  <div class="card-body">';
+
+
+
+                    echo "
+                
+                    <div class='row' style='
+           
+                        '>"; // ---------------------------------------- r  o  w --- begin
+                        echo '
+                      
+                        <div class="form-group col-sm">
+                            <label for="exampleFormControlInput1">(1) Nombre </label>
+                            <input onchange="checkTot();" type="text" class="form-control" name="refc1_nombre" id="refc1_nombre" placeholder="" value="'.$f['refc1_nombre'].'">
+                        </div><br>';
+
+                        echo '
+                        <div class="form-group col-sm">
+                            <label for="exampleFormControlInput1">(1) Telefono:</label>
+                            <input onchange="checkTot();" type="tel" class="form-control" name="refc1_tel" id="refc1_tel" value="'.$f['refc1_tel'].'">
+                        </div>';
+
+
+                        echo '
+                        <div class="form-group col-sm">
+                            <label for="exampleFormControlInput1">(1) Domicilio</label>
+                            <input onchange="checkTot();" type="text" class="form-control" name="refc1_domicilio" id="refc1_domicilio" placeholder="" value="'.$f['refc1_domicilio'].'">
+                        </div>';
+
+                        echo '
+                        <div class="form-group col-sm">
+                            <label for="exampleFormControlInput1">(1) Años de conocerlo</label>
+                            <input onchange="checkTot();" type="number" class="form-control" name="refc1_antiguedad" id="refc1_antiguedad" placeholder="" value="'.$f['refc1_antiguedad'].'">
+                        </div>';
+
+
+                        
+                        echo "</div>"; // ---------------------------------------- r  o  w --- end     
+                        
+                        
+
+
+
+                        echo "
+                        <hr>
+                        <div class='row' style='
+               
+                            '>"; // ---------------------------------------- r  o  w --- begin
+                            echo '
+                          
+                            <div class="form-group col-sm">
+                                <label for="exampleFormControlInput1">(2) Nombre </label>
+                                <input type="text" class="form-control" name="refc2_nombre" id="refc2_nombre" placeholder="" value="'.$f['refc2_nombre'].'">
+                            </div><br>';
+    
+                            echo '
+                            <div class="form-group col-sm">
+                                <label for="exampleFormControlInput1">(2) Telefono:</label>
+                                <input  type="tel" class="form-control" name="refc2_tel" id="refc2_tel" value="'.$f['refc2_tel'].'">
+                            </div>';
+    
+    
+                            echo '
+                            <div class="form-group col-sm">
+                                <label for="exampleFormControlInput1">(2) Domicilio</label>
+                                <input type="text" class="form-control" name="refc2_domicilio" id="refc2_domicilio" placeholder="" value="'.$f['refc2_domicilio'].'">
+                            </div>';
+    
+                            echo '
+                            <div class="form-group col-sm">
+                                <label for="exampleFormControlInput1">(2) Años de conocerlo</label>
+                                <input type="number" class="form-control" name="refc2_antiguedad" id="refc2_antiguedad" placeholder="" value="'.$f['refc2_antiguedad'].'">
+                            </div>';
+    
+    
+                            
+                            echo "</div>"; // ---------------------------------------- r  o  w --- end   
+
+
+
+                            echo "
+                            <hr>
+                            <div class='row' style='
+                   
+                                '>"; // ---------------------------------------- r  o  w --- begin
+                                echo '
+                              
+                                <div class="form-group col-sm">
+                                    <label for="exampleFormControlInput1">(3) Nombre </label>
+                                    <input  type="text" class="form-control" name="refc3_nombre" id="refc3_nombre" placeholder="" value="'.$f['refc3_nombre'].'">
+                                </div><br>';
+        
+                                echo '
+                                <div class="form-group col-sm">
+                                    <label for="exampleFormControlInput1">(3) Telefono:</label>
+                                    <input  type="tel" class="form-control" name="refc3_tel" id="refc3_tel" value="'.$f['refc3_tel'].'">
+                                </div>';
+        
+        
+                                echo '
+                                <div class="form-group col-sm">
+                                    <label for="exampleFormControlInput1">(3) Domicilio</label>
+                                    <input  type="text" class="form-control" name="refc3_domicilio" id="refc3_domicilio" placeholder="" value="'.$f['refc3_domicilio'].'">
+                                </div>';
+        
+                                echo '
+                                <div class="form-group col-sm">
+                                    <label for="exampleFormControlInput1">(3) Años de conocerlo</label>
+                                    <input  type="number" class="form-control" name="refc3_antiguedad" id="refc3_antiguedad" placeholder="" value="'.$f['refc3_antiguedad'].'">
+                                </div>';
+        
+        
+                                
+                                echo "</div>"; // ---------------------------------------- r  o  w --- end   
+
+
+                  echo '
+                
+                  </div>
+                </div>
+              </div>';
+
+            
+
         echo '</div>
+
+        
         
         </div>';
 
 
+        echo "
+        <hr>
+        <div class='row' style='
+
+            '>"; // ---------------------------------------- r  o  w --- begin
+            echo '
+          
+            <div class="form-group col-sm">
+                <label for="exampleFormControlInput1">Grupo</label>
+                <select name="grupo" id="grupo" class="form-control bg-warning">
+                ';
+                
+                echo '<option  class="form-control" value="'.$f['grupo'].'" selected>'.$f['grupo'].'</option>';
+
+            $r2= $db1 -> query("select * from grupos");
+            while($f2 = $r2 -> fetch_array()) {               
+                echo '<option  class="form-control" value="'.$f2['nombre'].'" >'.$f2['nombre'].'</option>';
+            }
+
+
+            echo '</select>
+            </div><br>';
+
+            echo '
+            <div class="form-group col-sm">
+                <label for="exampleFormControlInput1">Cargo en el grupo</label>
+                <input onchange="checkTot();" type="tel" class="form-control" name="grupo_cargo" id="grupo_cargo" value="'.$f['grupo_cargo'].'">
+            </div>';
+
+
+       
+            
+            echo "</div>"; // ---------------------------------------- r  o  w --- end   
 
          
+
+
+            
+        echo "
+        <br><br>
+        <div class='row' style='
+
+            '>"; // ---------------------------------------- r  o  w --- begin
+     
+
+            echo '
+            <div class="form-group col-sm">               
+               <button class="btn btn-success">Guardar </button>
+            </div>';
+
+
+            echo '
+            <div class="form-group col-sm">               
+               <button class="btn btn-primary">Imprimir </button>
+            </div>';
+
+
+
+
+       
+            
+            echo "</div>"; // ---------------------------------------- r  o  w --- end   
+
 
             echo '                    
             </div>';
@@ -205,9 +677,46 @@ if (isset($_GET['id'])){
     Error("Parametros incorrectos");
 }
 
+?>
+
+<script>
+function checkMiNegocio(){
+    NegocioQuest = $('#minegocio_propio').val();
+    if (NegocioQuest=='SI'){
+        $('#DivMiNegocio').show();
+    } else {
+        $('#DivMiNegocio').hide();
+    }
+}
+checkMiNegocio();
+
+function checkTot(){
+    Ingresos = parseInt($('#trabajo_salario').val()) +   parseInt($('#minegocio_ingresos').val());
+    $('#TotIngresos').html('$' + Ingresos);
+    $('#TotIngresos').formatCurrency();
+    
+    Gastos = parseInt($('#socio_hogar').val()) +   parseInt($('#socio_renta').val()) +  parseInt($('#socio_agualuz').val()) +  parseInt($('#socio_drenaje').val());    
+    $('#TotGastos').html('$' +Gastos);
+    $('#TotGastos').formatCurrency();
+    
+    IngresoDisponible = Ingresos - Gastos;
+    $('#TotIngresosDisponibles').html('$' +IngresoDisponible);    
+    $('#TotIngresosDisponibles').formatCurrency();
+    if (IngresoDisponible<=0) {
+        $("#TotIngresosDisponibles").css("color","red");
+    } else {
+        $("#TotIngresosDisponibles").css("color","green");
+    }
+    
+
+}
+
+checkTot();
 
 
+</script>
 
 
+<?php
 include("footer.php");
 ?>

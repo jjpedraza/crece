@@ -3684,3 +3684,7 @@ function PixaBay($busqueda){
     // var_dump($Imagenes);
     return $Imagenes[array_rand($Imagenes, 1)];
 }
+
+function Pesos($valor){
+	return "$ ".number_format($valor,2,'.',',');
+}

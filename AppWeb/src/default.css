@@ -37,6 +37,12 @@ body * {
     font-family: "Light";
 }
 
+
+/* 
+#DivMiNegocio {
+    display: none;
+} */
+
 #ClienteForm {
     background-color: white;
     height: 100%;

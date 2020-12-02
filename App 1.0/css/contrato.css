@@ -1,0 +1,48 @@
+@charset "utf-8";
+/* CSS Document */
+.contrato_titulo{
+	font-family:Georgia, "Times New Roman", Times, serif;
+	font-size:16px;
+	color:#000;
+}
+
+.contrato_titulo2{
+	font-family:Georgia, "Times New Roman", Times, serif;
+	font-size:40px;
+	color:#000;
+}
+.contrato_subtitulo{
+	font-family:Georgia, "Times New Roman", Times, serif;
+	font-size:14px;
+	color:#0;
+}
+.contrato_resaltado{
+	font-family:Georgia, "Times New Roman", Times, serif;
+	font-size:14px;
+	color:#57020F;
+    
+}
+.contrato_texto{
+	font-family:"Courier New", Courier, monospace;
+	font-size:12px;
+}
+.contrato_texto_subrayado{
+	font-family:"Courier New", Courier, monospace;
+	font-size:12px;
+	text-decoration:underline;
+	color:#57020F;
+}
+.contrato_leyedas{
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:9px;
+}
+.tabla{
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:11px;}
+.tabla_tit{
+	color:#FFF;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:12px;
+	}
+
+

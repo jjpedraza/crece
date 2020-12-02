@@ -1,0 +1,50 @@
+h1, h2, h3, h4 {
+    padding: 0;
+    margin:  0;
+    color:  #FF8000;
+}
+
+h1 { font-size: 1.5em; }
+h2 { font-size: 1.3em; }
+h3 { font-size: 1.0em; }
+h4 { font-size: 0.8em; }
+
+/* Encabezado */
+
+#encabezado {
+    padding:          0;
+    margin:           4px;
+    height:           100px;
+    background:       url(itlogo.jpg) no-repeat bottom right;
+    background-color: black;
+    border:           1px solid white;
+}
+
+#encabezado .sitio_nombre {
+    position: relative;
+    top:      20px;
+    left:     15px;
+    color:    #C88629;
+    width:    75%;
+}
+
+#encabezado .slogan {
+    position: relative;
+    top:      20px;
+    left:     15px;
+    color:    gray;
+    width:    75%;
+}
+
+
+#publicacion {
+    background-color: white;
+}
+
+#publicacion .titulo {
+    margin:           2px 0 2px 0;
+    padding:          3px;
+    background-color: black;
+    width:            15em;
+    border-bottom:    solid 2px;
+}

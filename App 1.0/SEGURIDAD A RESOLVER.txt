@@ -1,0 +1,2 @@
+- al abrir el croquis y la imagen, que solo sea logeado
+

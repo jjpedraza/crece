@@ -1,0 +1,84 @@
+@charset "utf-8";
+/* CSS Document */
+body
+{
+	background-color="#d7d7d7";
+	margin-top:0;
+	margin-bottom:0;
+	margin-left:0;
+	margin-right:0;
+	alignment-adjust:central;
+	font-family:Verdana, Geneva, sans-serif;
+	color:#000;
+	font-size:10px;
+	
+	
+	
+	}
+	
+a:link{ /* Todos los vinculos */
+border-bottom: 1px dotted #FFF;
+text-decoration: none;
+color:#FFF;
+font-family:Verdana, Geneva, sans-serif;
+font-size:14px;
+}
+a:visited { /* Vinculo visitado */
+border-bottom: 1px dotted #FFF;
+color:#FFF;
+text-decoration: none;
+}
+
+A:hover {  /* cuando pasa el raton encima */
+text-decoration: none;
+coloR:#F00;
+} 
+
+p{
+	margin:5px;
+	margin-bottom:0px;
+	margin-left:5px;
+	margin-right:5px;
+	margin-top:0px;
+	}
+.titulo{
+	font-family:Verdana, Geneva, sans-serif;	
+	color:#000;
+	font-size:14px}
+	
+.tpago{
+	font-family:"Arial Black", Gadget, sans-serif;	
+	color:#FFF;
+	font-size:18px}
+	
+	
+
+input
+  {
+  border: 1px solid #DBE1EB;
+  font-size: 12px;
+  font-family:"Arial Black", Gadget, sans-serif;
+  padding-left: 7px;
+  padding-right: 7px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-radius: 4px;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -o-border-radius: 4px;
+  background: #FFFFFF;
+  background: linear-gradient(left, #FFFFFF, #F7F9FA);
+  background: -moz-linear-gradient(left, #FFFFFF, #F7F9FA);
+  background: -webkit-linear-gradient(left, #FFFFFF, #F7F9FA);
+  background: -o-linear-gradient(left, #FFFFFF, #F7F9FA);
+  color: #2E3133;
+  
+
+  }
+  
+  .textbox:hover
+  {
+  /*color:#FFF;*/
+  background-color:#F90;  
+  border-color:#CCC;
+  }	

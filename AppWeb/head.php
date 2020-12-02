@@ -82,7 +82,8 @@ require ("components.php");
     <script src="lib/jquery.modalpdz.js"></script> 
     <link rel="stylesheet" href="lib/jquery.modalcsspdz.css" /> -->
 
-
+    <script src="lib/jquery.formatCurrency.js"></script> 
+   
  
 
 <link rel="icon" href="data:;base64,iVBORw0KGgo=">
