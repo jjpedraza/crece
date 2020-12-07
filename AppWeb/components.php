@@ -1,6 +1,7 @@
 <?php
 require("var_clean.php");
 require("tokens.php");
+require("app_funciones.php");
 require_once("preference.php");
 
 define("Version","1.0"); 
@@ -216,6 +217,7 @@ function Toast($Texto,$Tipo,$img){
                 heading: 'Error',
                 text: '".$Texto."',
                 showHideTransition: 'slide',
+                hideAfter: false,
                 icon: 'error'
             })
             ";
@@ -244,6 +246,7 @@ function Toast($Texto,$Tipo,$img){
                 heading: 'Success',
                 text: '".$Texto."',
                 showHideTransition: 'slide',
+                hideAfter: false,
                 icon: 'success'
             })
             ";
@@ -744,17 +747,22 @@ function PermisoReporte_Share($IdUser,$IdRep){
 function DynamicTable_MySQL($QueryD, $IdDiv, $IdTabla, $Clase, $Tipo, $db){
 	//Tipo == 0 = Basica, 1 = ScrollVertical, 2 = Scroll Horizontal
 	//$sql = "select * from Colorines limit 20";
-	//DynamicTable_MySQL($sql, "Colorines", "Colorines_Tabla", "Colorines_ClaseCSS", 0, 0);
-
+    //DynamicTable_MySQL($sql, "Colorines", "Colorines_Tabla", "Colorines_ClaseCSS", 0, 0);
+    if ($db<> 0 ) {$db=1;}
     require("rintera-config.php");	
         $sql = $QueryD;
         // echo $sql;
-        $r= $db0 -> query($sql);
+        if ($db == 0){ $r= $db0 -> query($sql);  } 
+        if ($db == 1){ $r= $db1 -> query($sql);  } 
+        
         $tbCont = '<div id="'.$IdDiv.'" class="'.$Clase.'">
         <table id="'.$IdTabla.'" class="display" style="width:100%" class="tabla" style="font-size:8pt;">';
 
         $tabla_titulos = ""; $cuantas_columnas = 0;
-        $r2 = $db0 -> query($sql); while($finfo = $r2->fetch_field())
+        if ($db == 0){ $r2= $db0 -> query($sql);  } 
+        if ($db == 1){ $r2= $db1 -> query($sql);  } 
+        // $r2 = $db0 -> query($sql); 
+        while($finfo = $r2->fetch_field())
         {//OBTENER LAS COLUMNAS
 
                 /* obtener posición del puntero de campo */
@@ -771,7 +779,10 @@ function DynamicTable_MySQL($QueryD, $IdDiv, $IdTabla, $Clase, $Tipo, $db){
         </thead>"; //Encabezados
         $tbCont = $tbCont."<tbody class='tabla'>";
         $cuantas_filas=0;
-        $r = $db0 -> query($sql); while($f = $r-> fetch_row())
+        if ($db == 0){ $r= $db0 -> query($sql);  } 
+        if ($db == 1){ $r= $db1 -> query($sql);  } 
+        // $r = $db0 -> query($sql); 
+        while($f = $r-> fetch_row())
         {//LISTAR COLUMNAS
 
             $tbCont = $tbCont."<tr>";        
@@ -830,16 +841,40 @@ function DynamicTable_MySQL($QueryD, $IdDiv, $IdTabla, $Clase, $Tipo, $db){
 				break;
 			
 			default:
-				echo '<script>
+				echo "<script>
 				$(document).ready(function() {
-					$("#'.$IdTabla.'").DataTable( {
-						"language": {
-							"decimal": ",",
-							"thousands": "."
+					$('#".$IdTabla."').DataTable( {
+                        dom: 'Bfrtip',
+                        buttons: [
+                            {
+                                extend:    'copyHtml5',
+                                text:      '<i class=\"fa fa-files-o\"></i>',
+                                titleAttr: 'Copy'
+                            },
+                            {
+                                extend:    'excelHtml5',
+                                text:      '<i class=\"fa fa-file-excel-o\"></i>',
+                                titleAttr: 'Excel'
+                            },
+                            {
+                                extend:    'csvHtml5',
+                                text:      '<i class=\"fa fa-file-text-o\"></i>',
+                                titleAttr: 'CSV'
+                            },
+                            {
+                                extend:    'pdfHtml5',
+                                text:      '<i class=\"fa fa-file-pdf-o\"></i>',
+                                titleAttr: 'PDF'
+                            }
+                        ]
+                        ,
+						'language': {
+							'decimal': ',',
+							'thousands': '.'
 						}
 					} );
 				} );
-				</script>';
+				</script>";
 		}
     
 
@@ -3366,6 +3401,90 @@ function GraficaBarLine($Labels, $Datas, $Titulo,$Fill){
     } else {
         $FillString = "false";
     }
+    echo "
+
+    <script>
+    var ctx = document.getElementById('".$IdDiv."');
+    var myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+
+            labels: [".$Labels."],
+
+            datasets: [
+                {
+                    label: '".$Titulo."',
+                    data: [".$Datas."],
+                    ".GraficaInserColores()."
+                    borderWidth: 1,
+                    fill: ".$FillString."                
+                }
+            ]
+        },
+        options: {
+          
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+
+
+
+    var ctx = document.getElementById('".$IdDiv."_modal');
+    var myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: [".$Labels."],
+            datasets: [{
+                label: '".$Titulo."',
+                data: [".$Datas."],
+                ".GraficaInserColores()."
+                borderWidth: 1,
+                fill: ".$FillString."   
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+    
+    </script>
+    ";
+    
+}
+
+
+
+
+function GraficaProyeccion($Labels, $Datas, $Titulo,$Fill){
+
+    $len = 16;    $cadena_base =  'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';   $cadena_base .= '0123456789' ;  $limite = strlen($cadena_base) - 1;      
+    $STR = '';  for ($i=0; $i < $len; $i++){ $STR .= $cadena_base[rand(0, $limite)]; }  $IdDiv = $STR;
+    
+    echo '<div style="width:92%; text-align:right;">
+            <a href="#'.$IdDiv.'_modal" rel=MyModal:open><img src="icons/max.png" style="" class="btnMaximizar"></a>
+        </div>
+    <canvas id="'.$IdDiv.'" width="100%" height="100%"></canvas>';
+
+    echo '<canvas id="'.$IdDiv.'_modal" class="modal" style="display:none;" width="100%" height="100%"></canvas>';
+
+    $FillString = "";
+    // if ($Fill == 1) {
+        $FillString = "true";
+    // } else {
+    //     $FillString = "false";
+    // }
     echo "
 
     <script>

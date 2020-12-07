@@ -18,14 +18,28 @@ if (isset($_GET['id'])){
                 echo '
                 <div class="form-group col-sm btn btn-info">';
 
+                echo '<table>
+                <tr><td width=70%>
+                ';
+                $fotoFile = 'fotos/'.$f['curp'].'.jpg';
+                if (is_file($fotoFile)){
+                    echo "<img src='".$fotoFile."' class='FotoUser'>";
+
+                } else {
+                    echo "<img src='icons/user.png' class='FotoUser'>";
+                }
+
+                echo "</td><td valing=top>";
 
 
 
-
-                
                 echo '
-                    <label for="exampleFormControlInput1">CURP:</label>
-                    <b>'.$Curp.'</b>
+                    
+                    <span>CURP:<b>'.$Curp.'</b></span>';
+
+                echo '</td></tr></table>';
+
+                echo '
                 </div>';
 
                 echo '

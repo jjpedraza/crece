@@ -49,6 +49,8 @@ if (function_exists('mysqli_connect')) {
 
 
 
+
+
 $UsuariosForaneaos = Preference("UsuariosForaneos", "", ""); 
 $QueryUsuariosForaneos = Preference("UsuariosForaneosQuery", "", "");  //"select * from UsuariosRintera where RinteraLevel>0"; 
 $UsuariosForaneosIdCon = Preference("UsuariosForaneosIdCon", "", ""); 

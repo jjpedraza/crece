@@ -35,6 +35,16 @@
 
 body * {
     font-family: "Light";
+    /* color: white; */
+}
+
+.FotoUser {
+    display: inline-block;
+    width: 150px;
+    height: 150px;
+    background-color: white;
+    padding: 10px;
+    border-radius: 50%;
 }
 
 
@@ -149,13 +159,6 @@ body * {
     margin: 5px;
     display: inline-block;
     vertical-align: top;
-}
-
-.FotoUser {
-    width: 50px;
-    /* height: 30px; */
-    border-radius: 2px;
-    border: 4px solid white;
 }
 
 .card-r {
@@ -1068,6 +1071,14 @@ hr {
     }
     .Elemento {
         width: 40%;
+    }
+    .FotoUser {
+        display: inline-block;
+        width: 50%;
+        height: 50%;
+        background-color: white;
+        padding: 10px;
+        border-radius: 5%;
     }
 }
 

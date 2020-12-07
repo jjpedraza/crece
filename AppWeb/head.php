@@ -106,7 +106,7 @@ text-align:center;
         left: 30%;
         top: 26%;
         '>
-        <img src='img/Logo.png' style='width:42px;'><br>
-        <b style='color:white;'>Cargando</b> <img src='img/loader_bar.gif' style='width:13px;'><br>
+        <img src='img/Logo.png' style='width:100px;'><br>
+        <b style='color:white; font-size:10pt;'>Cargando</b> <img src='img/loader_bar.gif' style='width:13px;'><br>
     </div>
 </div>
