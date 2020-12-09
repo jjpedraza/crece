@@ -162,6 +162,16 @@ if (Preference("MostrarApps", "", "")=='TRUE'){
      '
      >Crear Cliente</a><br><br>";
 
+     $repolist.= "<a href='proyeccion.php' title='Haga Clic aqui para ver el reporte' class='btn btn-secondary'
+     style='
+        // background-color: #e6e6e6;
+        // color: #625f5f;
+        width: 100%;
+        font-size: 10pt;
+        text-align:left;
+     '
+     >Proyeccion</a><br>";
+
     
      unset($rf);unset($Fr);
      if ($repos > 0 ){

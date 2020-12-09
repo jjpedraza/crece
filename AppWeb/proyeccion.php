@@ -9,10 +9,12 @@ $AnioActual = date("Y");
     color:white;
 
 
-" >Proyeccion desde <b style="cursor:pointer; color:cyan;" onclick="LoadProyeccion();"><?php echo $AnioActual;?></b> <br>
+" >Proyeccion <br>
+
 <cite>
+    <b class="btn btn-info" style="cursor:pointer; color:cyan;" onclick="LoadProyeccion();"><?php echo $AnioActual;?></b>
     <button onclick="LoadProyeccionOld();" class="btn btn-secondary" style="font-size:10pt; cursor:pointer;">Calcular los años posibles</button>
-    <button class="btn btn-primary" style="font-size:10pt; cursor:pointer;">Proyeccion vs Ingresos</button>
+    <a href="proyeccionvs.php" class="btn btn-primary" style="font-size:10pt; cursor:pointer;">Proyeccion vs Ingresos</a>
     
 </cite>
  </h2>

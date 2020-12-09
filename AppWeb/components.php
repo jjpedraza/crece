@@ -3550,6 +3550,255 @@ function GraficaProyeccion($Labels, $Datas, $Titulo,$Fill){
 
 
 
+function GraficaProyeccion2($Labels, $Datas, $Data2, $Titulo,$Fill){
+
+    $len = 16;    $cadena_base =  'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';   $cadena_base .= '0123456789' ;  $limite = strlen($cadena_base) - 1;      
+    $STR = '';  for ($i=0; $i < $len; $i++){ $STR .= $cadena_base[rand(0, $limite)]; }  $IdDiv = $STR;
+    
+    echo '<div style="width:92%; text-align:right;">
+            <a href="#'.$IdDiv.'_modal" rel=MyModal:open><img src="icons/max.png" style="" class="btnMaximizar"></a>
+        </div>
+    <canvas id="'.$IdDiv.'" width="100%" height="100%"></canvas>';
+
+    echo '<canvas id="'.$IdDiv.'_modal" class="modal" style="display:none;" width="100%" height="100%"></canvas>';
+
+    $FillString = "";
+    // if ($Fill == 1) {
+        $FillString = "false";
+    // } else {
+    //     $FillString = "false";
+    // }
+    echo "
+
+    <script>
+    var ctx = document.getElementById('".$IdDiv."');
+    var myChart = new Chart(ctx, {
+        title: 'Proyeccion vs Ingresos',
+        type: 'line',
+        data: {
+            labels: [".$Labels."],
+            datasets: [
+                
+                {
+                label: 'Proyeccion',
+                data: [".$Datas."],
+                backgroundColor: 'rgba(255, 92, 38, 0.2)',
+                fill: false,
+					borderDash: [0, 0],
+					pointRadius: 1,
+					pointHoverRadius: 1,
+                borderColor: 'rgba(255, 92, 38, 1)',                
+                borderWidth: 2
+                
+            },
+
+            {
+                label: 'Recuperacion',
+                data: [".$Data2."],
+                fill: false,
+                borderDash: [0, 0],
+                pointRadius: 1,
+                pointHoverRadius: 1,
+                backgroundColor: 'rgba(0, 78, 0, 0.2)',
+                borderColor:    'rgba(0, 78, 0, 1)',
+                borderWidth: 2,
+                fill: false
+            }
+            
+            
+            ]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+
+
+
+    var ctx = document.getElementById('".$IdDiv."_modal');
+    var myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: [".$Labels."],
+            datasets: [
+                
+                {
+                label: 'Proyeccion Esperada',
+                data: [".$Datas."],
+                backgroundColor: 'rgba(255, 92, 38, 0.2)',
+                fill: false,
+					borderDash: [0, 0],
+					pointRadius: 3,
+					pointHoverRadius: 3,
+                borderColor: 'rgba(255, 92, 38, 1)',                
+                borderWidth: 2
+                
+            },
+
+            {
+                label: 'Recuperacion Ingreso',
+                data: [".$Data2."],
+                fill: false,
+                borderDash: [0, 0],
+                pointRadius: 3,
+                pointHoverRadius: 3,
+                backgroundColor: 'rgba(0, 78, 0, 0.2)',
+                borderColor:    'rgba(0, 78, 0, 1)',
+                borderWidth: 2,
+                fill: false
+            }
+            
+            
+            ]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+
+    </script>
+    ";
+    
+}
+
+
+
+function GraficaProyeccion3($Labels, $Datas, $Data2, $Titulo,$Fill){
+
+    $len = 16;    $cadena_base =  'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';   $cadena_base .= '0123456789' ;  $limite = strlen($cadena_base) - 1;      
+    $STR = '';  for ($i=0; $i < $len; $i++){ $STR .= $cadena_base[rand(0, $limite)]; }  $IdDiv = $STR;
+    
+    echo '<div style="width:92%; text-align:right;">
+            <a href="#'.$IdDiv.'_modal" rel=MyModal:open><img src="icons/max.png" style="" class="btnMaximizar"></a>
+        </div>
+    <canvas id="'.$IdDiv.'" width="100%" height="100%"></canvas>';
+
+    echo '<canvas id="'.$IdDiv.'_modal" class="modal" style="display:none;" width="100%" height="100%"></canvas>';
+
+    $FillString = "";
+    // if ($Fill == 1) {
+        $FillString = "false";
+    // } else {
+    //     $FillString = "false";
+    // }
+    echo "
+
+    <script>
+    var ctx = document.getElementById('".$IdDiv."');
+    var myChart = new Chart(ctx, {
+        title: 'Proyeccion vs Ingresos',
+        type: 'bar',
+        data: {
+            labels: [".$Labels."],
+            datasets: [
+                
+                {
+                label: 'Proyeccion',
+                data: [".$Datas."],
+                backgroundColor: 'rgba(255, 92, 38, 0.2)',
+                fill: false,
+					borderDash: [0, 0],
+					pointRadius: 1,
+					pointHoverRadius: 1,
+                borderColor: 'rgba(255, 92, 38, 1)',                
+                borderWidth: 2
+                
+            },
+
+            {
+                label: 'Recuperacion',
+                data: [".$Data2."],
+                fill: false,
+                borderDash: [0, 0],
+                pointRadius: 1,
+                pointHoverRadius: 1,
+                backgroundColor: 'rgba(0, 78, 0, 0.2)',
+                borderColor:    'rgba(0, 78, 0, 1)',
+                borderWidth: 2,
+                fill: false
+            }
+            
+            
+            ]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+
+
+
+    var ctx = document.getElementById('".$IdDiv."_modal');
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: [".$Labels."],
+            datasets: [
+                
+                {
+                label: 'Proyeccion Esperada',
+                data: [".$Datas."],
+                backgroundColor: 'rgba(255, 92, 38, 0.2)',
+                fill: false,
+					borderDash: [0, 0],
+					pointRadius: 3,
+					pointHoverRadius: 3,
+                borderColor: 'rgba(255, 92, 38, 1)',                
+                borderWidth: 2
+                
+            },
+
+            {
+                label: 'Recuperacion Ingreso',
+                data: [".$Data2."],
+                fill: false,
+                borderDash: [0, 0],
+                pointRadius: 3,
+                pointHoverRadius: 3,
+                backgroundColor: 'rgba(0, 78, 0, 0.2)',
+                borderColor:    'rgba(0, 78, 0, 1)',
+                borderWidth: 2,
+                fill: false
+            }
+            
+            
+            ]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+
+    </script>
+    ";
+    
+}
+
+
 function GraficaBar($Labels, $Datas, $Titulo){
 
     $len = 16;    $cadena_base =  'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';   $cadena_base .= '0123456789' ;  $limite = strlen($cadena_base) - 1;      

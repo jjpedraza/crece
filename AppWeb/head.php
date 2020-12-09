@@ -105,8 +105,9 @@ text-align:center;
     <div id='Loader' style='
         left: 30%;
         top: 26%;
+        
         '>
-        <img src='img/Logo.png' style='width:100px;'><br>
-        <b style='color:white; font-size:10pt;'>Cargando</b> <img src='img/loader_bar.gif' style='width:13px;'><br>
+        <img src='img/loader5.gif' style='width:100px;'><br>
+        <b style='color:orange; font-size:10pt;'>Cargando</b> <img src='img/loader_bar.gif' style='width:13px;'><br>
     </div>
 </div>

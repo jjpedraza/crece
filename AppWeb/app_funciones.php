@@ -75,19 +75,34 @@ if (Proyeccion_CrearTabla($ALL)==TRUE){
     sleep(3);
     // echo "- Tabla creada de proyeccion: <br>";
     $r= $db1 -> query("select * from proyeccion");
-    while($f = $r -> fetch_array()) {               
-        $QueryCalculo = "        
-            SELECT	
-                
-            sum(abono) + sum(interes) + sum(iva)  as PagoCorriente
+    while($f = $r -> fetch_array()) {      
+        if ($ALL == TRUE)  { //<-- se necesita el calculo completo de lo esperado incluso incluir lo pagado
+            $QueryCalculo = "        
+                SELECT	
+                    
+                sum(abono) + sum(interes) + sum(iva)  as PagoCorriente
 
-            FROM
-            tabladepagos
-            WHERE 	
-            estado<>'X' 
-            and YEAR(fin) = ".$f['Anio']." and MONTH(fin) = ".$f['M']."
-        ";
-        $PagoCorriente = 0; $OK = ""; $c = 0;
+                FROM
+                tabladepagos
+                WHERE 	
+                    YEAR(fin) = ".$f['Anio']." and MONTH(fin) = ".$f['M']."
+            ";
+        } else{
+
+        
+            $QueryCalculo = "        
+                SELECT	
+                    
+                sum(abono) + sum(interes) + sum(iva)  as PagoCorriente
+
+                FROM
+                tabladepagos
+                WHERE 	
+                estado<>'X' 
+                and YEAR(fin) = ".$f['Anio']." and MONTH(fin) = ".$f['M']."
+            ";
+        }
+        $PagoCorriente = 0; $OK = ""; $c = 0; $Ingresos = 0;
         $RCalc= $db1 -> query($QueryCalculo);
         if($Calculo = $RCalc -> fetch_array())
         {
@@ -100,6 +115,33 @@ if (Proyeccion_CrearTabla($ALL)==TRUE){
             unset($QueryCalculo);
         } 
       
+        unset($RCalc, $Calculo, $QueryCalculo);
+
+
+        //Calclo de ingresos
+        $QueryCalculo = "        
+            SELECT	
+                
+            sum(abono) + sum(interes) + sum(iva)  as Ingresos
+
+            FROM
+            tabladepagos
+            WHERE 	
+            estado='X' 
+            and YEAR(fin) = ".$f['Anio']." and MONTH(fin) = ".$f['M']."
+        ";
+        $PagoCorriente = 0; $OK = ""; $c2 = 0; $Ingresos;
+        $RCalc= $db1 -> query($QueryCalculo);
+        if($Calculo = $RCalc -> fetch_array())
+        {
+            $Ingresos = $Calculo['Ingresos'];
+
+            $QueryUpdate="UPDATE proyeccion  SET Ingresos='".$Ingresos."'  WHERE Anio='".$f['Anio']."' and M = '".$f['M']."'";            
+            if ($db1->query($QueryUpdate) == TRUE)
+            {$OK = "OK"; $c2 = $c2+1; }
+            else {$OK = "X";}
+            unset($QueryCalculo);
+        } 
 
         ///TEST
         // echo "<br>".$f['FechaCalculo']."->".$PagoCorriente."->".$OK;
