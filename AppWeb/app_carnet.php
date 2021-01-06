@@ -21,15 +21,15 @@ if (isset($_GET['id'])){
                 echo '<table>
                 <tr><td width=70%>
                 ';
-                $fotoFile = 'fotos/'.$f['curp'].'.jpg';
-                if (is_file($fotoFile)){
-                    echo "<img src='".$fotoFile."' class='FotoUser'>";
+                // // $fotoFile = 'fotos/'.$f['curp'].'.jpg';
+                // // if (is_file($fotoFile)){
+                // //     echo "<img src='".$fotoFile."' class='FotoUser'>";
 
-                } else {
-                    echo "<img src='icons/user.png' class='FotoUser'>";
-                }
+                // // } else {
+                // //     echo "<img src='icons/user.png' class='FotoUser'>";
+                // // }
 
-                echo "</td><td valing=top>";
+                // echo "</td><td valing=top>";
 
 
 
@@ -128,9 +128,9 @@ if (isset($_GET['id'])){
 
                 echo '
                 <div class="form-group col-sm">
-                    <label for="exampleFormControlInput1">Sexo: '.$f['sexo'].'</label>';
+                    <label for="sexo">Sexo: '.$f['sexo'].'</label>';
                     echo '
-                    <select class="form-control" id="exampleFormControlSelect1">';
+                    <select class="form-control" id="sexo">';
 
                     if ($f['sexo']=='mujer'){
                         echo '<option value="mujer" selected>mujer</option>';
@@ -652,13 +652,13 @@ if (isset($_GET['id'])){
 
             echo '
             <div class="form-group col-sm">               
-               <button class="btn btn-success">Guardar </button>
+               <button class="btn btn-success" onclick="Guardar();">Guardar </button>
             </div>';
 
 
             echo '
             <div class="form-group col-sm">               
-               <button class="btn btn-primary">Imprimir </button>
+               <button class="btn btn-primary" onclick="ImprimirCarnet();">Imprimir </button>
             </div>';
 
 
@@ -728,6 +728,90 @@ function checkTot(){
 checkTot();
 
 
+
+function Guardar(){
+   //Variables
+   IdCliente = '<?php echo $Curp; ?>';
+   Nombre = $('#nombre').val();
+   Domicilio = $('#domicilio').val();
+   Municipio = $('#municipio').val();
+   Estado = $('#estado').val();
+   IFE = $('#ife').val();
+   Correo = $('#correo').val();
+   EstadoCivil = $('#estadocivil').val();
+   FechaDeNacimiento = $('#fechadenacimiento').val();
+   Profesion = $('#profesion').val();
+   Sexo = $('#sexo').val();    
+   Telefono = $('#telefono').val();
+
+   trabajo_nombre = $('#trabajo_nombre').val();
+   trabajo_domicilio = $('#trabajo_domicilio').val();
+   trabajo_telefono = $('#trabajo_telefono').val();
+   trabajo_giro = $('#trabajo_giro').val();
+   trabajo_puesto = $('#trabajo_puesto').val();
+   trabajo_salario = $('#trabajo_salario').val();
+   socio_dependen = $('#socio_dependen').val();
+   socio_casapropia = $('#socio_casapropia').val();
+   minegocio_propio = $('#minegocio_propio').val();
+   minegocio_giro = $('#minegocio_giro').val();
+   minegocio_ingresos = $('#minegocio_ingresos').val();
+   minegocio_telefono = $('#minegocio_telefono').val();
+   minegocio_empleados = $('#minegocio_empleados').val();
+   minegocio_domicilio = $('#minegocio_domicilio').val();
+   minegocio_antiguedad = $('#minegocio_antiguedad').val();
+
+   socio_hijos = $('#socio_hijos').val();
+   socio_hogar = $('#socio_hogar').val();
+   socio_renta = $('#socio_renta').val();
+   socio_agualuz = $('#socio_agualuz').val();
+   socio_drenaje = $('#socio_drenaje').val();
+
+   refc1_nombre = $('#refc1_nombre').val();
+   refc1_tel = $('#refc1_tel').val();
+   refc1_domicilio = $('#refc1_domicilio').val();
+   refc1_antiguedad = $('#refc1_antiguedad').val();
+  
+
+   refc2_nombre = $('#refc2_nombre').val();
+   refc2_tel = $('#refc2_tel').val();
+   refc2_domicilio = $('#refc2_domicilio').val();
+   refc2_antiguedad = $('#refc2_antiguedad').val();
+  
+
+   refc3_nombre = $('#refc3_nombre').val();
+   refc3_tel = $('#refc3_tel').val();
+   refc3_domicilio = $('#refc3_domicilio').val();
+   refc3_antiguedad = $('#refc3_antiguedad').val();
+
+   grupo = $('#grupo').val();
+   grupo_cargo = $('#grupo_cargo').val();
+
+
+
+   
+
+
+
+
+
+   
+
+
+    $('#PreLoader').show();
+            $.ajax({
+                url: 'app_carnet_save.php',
+                type: 'post',
+                data: {
+                    IdUser: '<?php echo $RinteraUser; ?>',              
+                    
+
+                },
+                success: function(data) {
+                    $('#R').html(data);
+                    $('#PreLoader').hide();
+                }
+            });
+}
 </script>
 
 
