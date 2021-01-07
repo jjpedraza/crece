@@ -18,9 +18,7 @@ if (isset($_GET['id'])){
                 echo '
                 <div class="form-group col-sm btn btn-info">';
 
-                echo '<table>
-                <tr><td width=70%>
-                ';
+              
                 // // $fotoFile = 'fotos/'.$f['curp'].'.jpg';
                 // // if (is_file($fotoFile)){
                 // //     echo "<img src='".$fotoFile."' class='FotoUser'>";
@@ -37,7 +35,7 @@ if (isset($_GET['id'])){
                     
                     <span>CURP:<b>'.$Curp.'</b></span>';
 
-                echo '</td></tr></table>';
+               
 
                 echo '
                 </div>';
@@ -786,23 +784,66 @@ function Guardar(){
    grupo = $('#grupo').val();
    grupo_cargo = $('#grupo_cargo').val();
 
-
-
-   
-
-
-
-
-
-   
-
-
-    $('#PreLoader').show();
+   $('#PreLoader').show();
             $.ajax({
                 url: 'app_carnet_save.php',
                 type: 'post',
                 data: {
-                    IdUser: '<?php echo $RinteraUser; ?>',              
+                    IdUser: '<?php echo $RinteraUser; ?>',         
+                    IdCliente: IdCliente,
+                    Nombre : Nombre,0  
+                    Domicilio = $('#domicilio').val();
+                    Municipio = $('#municipio').val();
+                    Estado = $('#estado').val();
+                    IFE = $('#ife').val();
+                    Correo = $('#correo').val();
+                    EstadoCivil = $('#estadocivil').val();
+                    FechaDeNacimiento = $('#fechadenacimiento').val();
+                    Profesion = $('#profesion').val();
+                    Sexo = $('#sexo').val();    
+                    Telefono = $('#telefono').val();
+
+                    trabajo_nombre = $('#trabajo_nombre').val();
+                    trabajo_domicilio = $('#trabajo_domicilio').val();
+                    trabajo_telefono = $('#trabajo_telefono').val();
+                    trabajo_giro = $('#trabajo_giro').val();
+                    trabajo_puesto = $('#trabajo_puesto').val();
+                    trabajo_salario = $('#trabajo_salario').val();
+                    socio_dependen = $('#socio_dependen').val();
+                    socio_casapropia = $('#socio_casapropia').val();
+                    minegocio_propio = $('#minegocio_propio').val();
+                    minegocio_giro = $('#minegocio_giro').val();
+                    minegocio_ingresos = $('#minegocio_ingresos').val();
+                    minegocio_telefono = $('#minegocio_telefono').val();
+                    minegocio_empleados = $('#minegocio_empleados').val();
+                    minegocio_domicilio = $('#minegocio_domicilio').val();
+                    minegocio_antiguedad = $('#minegocio_antiguedad').val();
+
+                    socio_hijos = $('#socio_hijos').val();
+                    socio_hogar = $('#socio_hogar').val();
+                    socio_renta = $('#socio_renta').val();
+                    socio_agualuz = $('#socio_agualuz').val();
+                    socio_drenaje = $('#socio_drenaje').val();
+
+                    refc1_nombre = $('#refc1_nombre').val();
+                    refc1_tel = $('#refc1_tel').val();
+                    refc1_domicilio = $('#refc1_domicilio').val();
+                    refc1_antiguedad = $('#refc1_antiguedad').val();
+                    
+
+                    refc2_nombre = $('#refc2_nombre').val();
+                    refc2_tel = $('#refc2_tel').val();
+                    refc2_domicilio = $('#refc2_domicilio').val();
+                    refc2_antiguedad = $('#refc2_antiguedad').val();
+                    
+
+                    refc3_nombre = $('#refc3_nombre').val();
+                    refc3_tel = $('#refc3_tel').val();
+                    refc3_domicilio = $('#refc3_domicilio').val();
+                    refc3_antiguedad = $('#refc3_antiguedad').val();
+
+                    grupo = $('#grupo').val();
+                    grupo_cargo = $('#grupo_cargo').val();
                     
 
                 },
