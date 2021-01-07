@@ -42,6 +42,9 @@ require ("components.php");
     <script src="lib/buttons.html5.min.js"></script>    
     <!-- <script src="lib/datetime.js"></script>     -->
     
+        <!-- Instanciar MsgBox php -->
+        <link rel="stylesheet" href="lib/php-MsgBox.min.css">   
+        <?php require("lib/php-MsgBox.min.php"); ?>
     
    
     

@@ -152,7 +152,9 @@ if (Preference("MostrarApps", "", "")=='TRUE'){
      }
 
 
-     $repolist.= "<a href='app_clientenuevo.php' title='Haga Clic aqui para ver el reporte' class='btn btn-success'
+     $repolist.= "
+     
+     <button onclick='ClienteNuevo();' title='Haga Clic aqui para ver el reporte' class='btn btn-success'
      style='
         // background-color: #e6e6e6;
         // color: #625f5f;
@@ -160,7 +162,13 @@ if (Preference("MostrarApps", "", "")=='TRUE'){
         font-size: 10pt;
         text-align:left;
      '
-     >Crear Cliente</a><br><br>";
+     >
+    
+     <input type='text' id='txtCurp' placeholder='CURP' size='16' class='form-control'>
+     Registrar Cliente</button>
+     
+     <br><br>";
+
 
      $repolist.= "<a href='proyeccion.php' title='Haga Clic aqui para ver el reporte' class='btn btn-secondary'
      style='
@@ -186,6 +194,18 @@ if (Preference("MostrarApps", "", "")=='TRUE'){
 
     </div>
 
+     <script>
+     function ClienteNuevo(){
+        Curp = $('#txtCurp').val();
+        console.log(Curp);
+        if (Curp == ''){
+            $.toast('Escriba el Curp del cliente nuevo');
+        } else {
+            window.location.assign("app_carnet.php?id="+Curp);
+        }
+        
+     }
+     </script>
 
 
     

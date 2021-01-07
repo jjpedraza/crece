@@ -673,7 +673,9 @@ if (isset($_GET['id'])){
             echo "</div>";
 
         } else {
-            Error("No existe ningun usuario con esta curp ".$Curp);
+            // Error("No existe ningun usuario con esta curp ".$Curp);
+            MsgBox("No hay registro con el CURP=".$Curp."<br><b>¿Desea darlo de alta?","app_carnet.php?new=".$Curp."","SI" ,"NO" , 1); 
+
         }
         
 
@@ -686,7 +688,27 @@ if (isset($_GET['id'])){
 
 
 } else {
-    Error("Parametros incorrectos");
+    if (isset($_GET['new'])){
+        if ($_GET['cuestion']== 'FALSE'){
+            echo '<script>
+            window.location.assign("r.php?id=2")
+            </script>';
+        } else {
+            //Agregar nuevo registro
+
+            $txtCurp  = VarClean($_GET['new']);
+            $sqlIn= "INSERT INTO clientes (curp) VALUES('".$txtCurp."')";
+            if ($db1->query($sqlIn) == TRUE){                
+                MsgBox("Guardado correctamente ".$txtCurp."","app_carnet.php?id=".$txtCurp, "Continuar Captura");
+            } else {
+                Toast("Error al guardar ".$txtCurp." ",2,"");
+        
+            }
+        }
+
+    } else {
+        Error("Parametros incorrectos");
+    }
 }
 
 ?>
@@ -791,61 +813,51 @@ function Guardar(){
                 data: {
                     IdUser: '<?php echo $RinteraUser; ?>',         
                     IdCliente: IdCliente,
-                    Nombre : Nombre,0  
-                    Domicilio = $('#domicilio').val();
-                    Municipio = $('#municipio').val();
-                    Estado = $('#estado').val();
-                    IFE = $('#ife').val();
-                    Correo = $('#correo').val();
-                    EstadoCivil = $('#estadocivil').val();
-                    FechaDeNacimiento = $('#fechadenacimiento').val();
-                    Profesion = $('#profesion').val();
-                    Sexo = $('#sexo').val();    
-                    Telefono = $('#telefono').val();
-
-                    trabajo_nombre = $('#trabajo_nombre').val();
-                    trabajo_domicilio = $('#trabajo_domicilio').val();
-                    trabajo_telefono = $('#trabajo_telefono').val();
-                    trabajo_giro = $('#trabajo_giro').val();
-                    trabajo_puesto = $('#trabajo_puesto').val();
-                    trabajo_salario = $('#trabajo_salario').val();
-                    socio_dependen = $('#socio_dependen').val();
-                    socio_casapropia = $('#socio_casapropia').val();
-                    minegocio_propio = $('#minegocio_propio').val();
-                    minegocio_giro = $('#minegocio_giro').val();
-                    minegocio_ingresos = $('#minegocio_ingresos').val();
-                    minegocio_telefono = $('#minegocio_telefono').val();
-                    minegocio_empleados = $('#minegocio_empleados').val();
-                    minegocio_domicilio = $('#minegocio_domicilio').val();
-                    minegocio_antiguedad = $('#minegocio_antiguedad').val();
-
-                    socio_hijos = $('#socio_hijos').val();
-                    socio_hogar = $('#socio_hogar').val();
-                    socio_renta = $('#socio_renta').val();
-                    socio_agualuz = $('#socio_agualuz').val();
-                    socio_drenaje = $('#socio_drenaje').val();
-
-                    refc1_nombre = $('#refc1_nombre').val();
-                    refc1_tel = $('#refc1_tel').val();
-                    refc1_domicilio = $('#refc1_domicilio').val();
-                    refc1_antiguedad = $('#refc1_antiguedad').val();
-                    
-
-                    refc2_nombre = $('#refc2_nombre').val();
-                    refc2_tel = $('#refc2_tel').val();
-                    refc2_domicilio = $('#refc2_domicilio').val();
-                    refc2_antiguedad = $('#refc2_antiguedad').val();
-                    
-
-                    refc3_nombre = $('#refc3_nombre').val();
-                    refc3_tel = $('#refc3_tel').val();
-                    refc3_domicilio = $('#refc3_domicilio').val();
-                    refc3_antiguedad = $('#refc3_antiguedad').val();
-
-                    grupo = $('#grupo').val();
-                    grupo_cargo = $('#grupo_cargo').val();
-                    
-
+                    Nombre : Nombre,  
+                    Domicilio : Domicilio,
+                    Municipio : Municipio,
+                    Estado:  Estado,
+                    IFE : IFE, 
+                    Correo : Correo, 
+                    EstadoCivil : EstadoCivil,
+                    FechaDeNacimiento : FechaDeNacimiento,
+                    Profesion : Profesion,
+                    Sexo : Sexo,
+                    Telefono : Telefono, 
+                    trabajo_nombre : trabajo_nombre,
+                    trabajo_domicilio: trabajo_domicilio,
+                    trabajo_telefono : trabajo_telefono,
+                    trabajo_giro: trabajo_giro,
+                    trabajo_puesto: trabajo_puesto,
+                    trabajo_salario: trabajo_salario,
+                    socio_dependen: socio_dependen,
+                    socio_casapropia:socio_casapropia,
+                    minegocio_propio:minegocio_propio,
+                    minegocio_giro:minegocio_giro,
+                    minegocio_ingresos:minegocio_ingresos,
+                    minegocio_telefono:minegocio_telefono,
+                    minegocio_empleados:minegocio_empleados,
+                    minegocio_domicilio:minegocio_domicilio,
+                    minegocio_antiguedad:minegocio_antiguedad,
+                    socio_hijos: socio_hijos, 
+                    socio_hogar: socio_hogar,
+                    socio_renta: socio_renta,
+                    socio_agualuz: socio_agualuz,
+                    socio_drenaje: socio_drenaje,
+                    refc1_nombre:refc1_nombre,
+                    refc1_tel:refc1_tel,
+                    refc1_domicilio:refc1_domicilio,
+                    refc1_antiguedad: refc1_antiguedad,       
+                    refc2_nombre: refc2_nombre,
+                    refc2_tel: refc2_tel,
+                    refc2_domicilio : refc2_domicilio,
+                    refc2_antiguedad : refc2_antiguedad,
+                    refc3_nombre: refc3_nombre,
+                    refc3_tel:refc3_tel,
+                    refc3_domicilio:refc3_domicilio,
+                    refc3_antiguedad:refc3_antiguedad,
+                    grupo : grupo,
+                    grupo_cargo:grupo_cargo
                 },
                 success: function(data) {
                     $('#R').html(data);
