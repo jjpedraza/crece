@@ -17,7 +17,8 @@ $db0_name = 'rintera_crece';
 
 if (function_exists('mysqli_connect')) {		
     $db0 = new mysqli($db0_host,$db0_user,$db0_pass,$db0_name);
-	$acentos = $db0->query("SET NAMES 'utf8'"); // para los acentos
+    $acentos = $db0->query("SET NAMES 'utf8'"); // para los acentos
+    $acentos = $db0->query("SET lc_time_names = 'es_MX'"); // para los acentos
 	// var_dump($db0);
         // global $db0;
         
@@ -38,7 +39,9 @@ $db1_name = 'crece';
 
 if (function_exists('mysqli_connect')) {		
     $db1 = new mysqli($db1_host,$db1_user,$db1_pass,$db1_name);
-	$acentos2 = $db1->query("SET NAMES 'utf8'"); // para los acentos
+    $acentos2 = $db1->query("SET NAMES 'utf8'"); // para los acentos
+    $acentos2 = $db1->query("SET lc_time_names = 'es_MX'"); // para los acentos
+    
 	// var_dump($db0);
         // global $db0;
         

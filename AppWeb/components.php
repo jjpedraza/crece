@@ -3238,7 +3238,7 @@ function GraficaPie($Labels, $Datas, $Titulo){
     
     echo '<div style="width:92%; text-align:right;"><a href="#'.$IdDiv.'_modal" rel=MyModal:open><img src="icons/max.png" style="" class="btnMaximizar"></a></div>
     <canvas id="'.$IdDiv.'" width="100%" height="100%"></canvas>';
-    echo '<canvas id="'.$IdDiv.'_modal" class="modal" style="display:none;" width="100%" height="100%"></canvas>';
+    echo '<canvas id="'.$IdDiv.'_modal" class="modal" style="display:none;" width="100%" height="80%"></canvas>';
 
     echo "
 
@@ -3393,7 +3393,7 @@ function GraficaBarLine($Labels, $Datas, $Titulo,$Fill){
     
     echo '<div style="width:92%; text-align:right;"><a href="#'.$IdDiv.'_modal" rel=MyModal:open><img src="icons/max.png" style="" class="btnMaximizar"></a></div>
     <canvas id="'.$IdDiv.'" width="100%" height="100%"></canvas>';
-    echo '<canvas id="'.$IdDiv.'_modal" class="modal" style="display:none;" width="100%" height="100%"></canvas>';
+    echo '<canvas id="'.$IdDiv.'_modal" class="modal" style="display:none;" width="100%" height="80%"></canvas>';
 
     $FillString = "";
     if ($Fill == 1) {
@@ -3806,7 +3806,7 @@ function GraficaBar($Labels, $Datas, $Titulo){
     
     echo '<div style="width:92%; text-align:right;"><a href="#'.$IdDiv.'_modal" rel=MyModal:open><img src="icons/max.png" style="" class="btnMaximizar"></a></div>
     <canvas id="'.$IdDiv.'" width="100%" height="100%"></canvas>';
-    echo '<canvas id="'.$IdDiv.'_modal" class="modal" style="display:none;" width="100%" height="100%"></canvas>';
+    echo '<canvas id="'.$IdDiv.'_modal" class="modal" style="display:none;" width="100%" height="80%"></canvas>';
 
     echo "
 

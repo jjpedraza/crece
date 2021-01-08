@@ -107,24 +107,82 @@ if (Preference("MostrarApps", "", "")=='TRUE'){
 ?>
 
 <div id='Dashboard'>
-    <div id="DashboardCol1"  >
+    <div id="DashboardCol1"  style="vertical-align: top;" >
         <?php
-        // $QueryG = "select DISTINCT a.fecha as Fecha,
-        // (select count(*) from historia where fecha = a.fecha) as Actividad
-        // from historia a";
-        // $rF= $db0 -> query($QueryG);    
-        // $Datas = 0; $Labels="";
-        // while($Fr = $rF -> fetch_array()) {   
-        //     $Datas.= $Fr['Actividad'].", ";
-        //     $Labels.="'".$Fr['Fecha']."',";
-        // }
-        // unset($rf);unset($Fr);
-        // $Datas = substr($Datas, 0, -1); //quita la ultima coma.
-        // $Labels = substr($Labels, 0, -1); //quita la ultima coma.
+        $QueryG = "
+             
+            select CONCAT('Aprobadas') as Label,count(*) as Data from cuentas WHERE valoracion='APROBADO' UNION
+            select CONCAT('No Aprobadas') as Label,count(*) as Data from cuentas WHERE valoracion<>'APROBADO'
+ 
+   
+        ";
+        $rF= $db1 -> query($QueryG);    
+        $Datas = ""; $Labels="";
+        while($Fr = $rF -> fetch_array()) {   
+            $Datas.= $Fr['Data'].", ";
+            $Labels.="'".$Fr['Label']."',";
+        }
+        unset($rf);unset($Fr);
+        $Datas = substr($Datas, 0, -1); //quita la ultima coma.
+        $Labels = substr($Labels, 0, -1); //quita la ultima coma.
 
-        //     echo '<div style="" class="Graficas">';
-        //     GraficaBar($Labels,$Datas,"Uso de Esta App");
-        //     echo '</div>';
+            echo '<div style="" class="Graficas">';
+            GraficaBar($Labels,$Datas,"Solicitudes");
+            echo '</div>';
+        unset($rF, $Datas, $Labels);
+        ?>
+
+
+    <?php
+        $QueryG = "
+             
+        select CONCAT('Grupales') as Label,count(*) as Data from cuentas WHERE  grupo<>'' UNION
+        select CONCAT('Individuales') as Label,count(*) as Data from cuentas WHERE grupo=''
+   
+        ";
+        $rF= $db1 -> query($QueryG);    
+        $Datas = ""; $Labels="";
+        while($Fr = $rF -> fetch_array()) {   
+            $Datas.= $Fr['Data'].", ";
+            $Labels.="'".$Fr['Label']."',";
+        }
+        unset($rf);unset($Fr);
+        $Datas = substr($Datas, 0, -1); //quita la ultima coma.
+        $Labels = substr($Labels, 0, -1); //quita la ultima coma.
+            echo '<div style="" class="Graficas">';
+            GraficaPie($Labels,$Datas,"Tipo de Cuentas");
+            echo '</div>';
+        ?>
+
+
+
+
+        
+    <?php
+        $QueryG = "
+             
+      
+	
+        -- SET lc_time_names = 'es_MX'
+        select DISTINCT CONCAT(MONTHNAME(a.fechacontrato), YEAR(a.fechacontrato)) as MES,	 
+        (select count(*) from cuentas where MONTHNAME(fechacontrato) = MONTHNAME(a.fechacontrato) and YEAR(fechacontrato) = YEAR(a.fechacontrato) )as contratos
+        
+        
+        from cuentas a WHERE fechacontrato<>'0000-00-00' order by fechacontrato
+   
+        ";
+        $rF= $db1 -> query($QueryG);    
+        $Datas = ""; $Labels="";
+        while($Fr = $rF -> fetch_array()) {   
+            $Datas.= $Fr['contratos'].", ";
+            $Labels.="'".$Fr['MES']."',";
+        }
+        unset($rf);unset($Fr);
+        $Datas = substr($Datas, 0, -1); //quita la ultima coma.
+        $Labels = substr($Labels, 0, -1); //quita la ultima coma.
+            echo '<div style="" class="Graficas">';
+            GraficaBarLine($Labels,$Datas,"Contrataciones",1);
+            echo '</div>';
         ?>
 
     
