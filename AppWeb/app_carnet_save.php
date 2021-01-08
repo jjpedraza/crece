@@ -77,7 +77,7 @@ if ($db1->query($sql) == TRUE){
 unset($rc, $f);
 
 if ($Existe == 0){ //INSERT
-    $sqlUp =  "INSERT INTO clientes          
+    $sqlIn =  "INSERT INTO clientes          
         (
         curp,
         nombre,
@@ -174,8 +174,8 @@ if ($Existe == 0){ //INSERT
      '".$grupo."',
      '".$grupo_cargo."')";
     
-    
-    if ($db1->query($sql) == TRUE){
+    echo $sqlIn;
+    if ($db1->query($sqlIn) == TRUE){
         Toast("Guardado ".$Nombre." correctamente",4,"");
         Historia($RinteraUser,"CLIENTES","Dio de Alta al cliente con IdCliente = ".$Curp);
     } else {
@@ -231,11 +231,12 @@ if ($Existe == 0){ //INSERT
         refc3_domicilio = '".$refc3_domicilio."',
         refc3_antiguedad = '".$refc3_antiguedad."',
         grupo = '".$grupo."',
-        grupo_cargo = '".$grupo_cargo."',
+        grupo_cargo = '".$grupo_cargo."'
         
     WHERE curp='".$Curp."'";
-    if ($db1->query($sql) == TRUE){
-        Toast("Guardado ".$Nombre." correctamente",4,"");
+    echo $sqlUp;
+    if ($db1->query($sqlUp) == TRUE){
+        Toast("Actulizado ".$Nombre." correctamente",4,"");
         Historia($RinteraUser,"CLIENTES","Actualizo al cliente con IdCliente = ".$Curp);
     } else {
         Toast("Error al guardar ".$Nombre." correctamente",2,"");
