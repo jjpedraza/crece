@@ -178,7 +178,20 @@ if (Preference("MostrarApps", "", "")=='TRUE'){
         font-size: 10pt;
         text-align:left;
      '
-     >Proyeccion</a><br>";
+     >Proyeccion</a>
+     
+     
+     <a href='app_grupos.php' title='Haga Clic aqui para ver' class='btn btn-secondary'
+     style='
+        // background-color: #e6e6e6;
+        // color: #625f5f;
+        width: 100%;
+        font-size: 10pt;
+        text-align:left;
+        margin-top:10px;
+     '
+     >Grupos</a>
+     ";
 
     
      unset($rf);unset($Fr);
