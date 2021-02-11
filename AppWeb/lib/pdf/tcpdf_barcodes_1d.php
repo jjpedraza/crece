@@ -1867,7 +1867,7 @@ class TCPDFBarcode {
 
 	/**
 	 * CODE11 barcodes.
-	 * Used primarily for labeling telecommunications equipment
+	 * Used primarily for labeling telecommlibtions equipment
 	 * @param $code (string) code to represent.
 	 * @return array barcode representation.
 	 * @protected

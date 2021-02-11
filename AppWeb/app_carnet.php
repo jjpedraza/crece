@@ -7,8 +7,7 @@ if (isset($_GET['id'])){
 
     $sql = "select * from clientes where curp='".$Curp."'";
     // echo $sql;
-    $rc = $db1->query($sql);    
-    
+    $rc = $db1->query($sql);        
     if ($db1->query($sql) == TRUE){
         if($f = $rc -> fetch_array())
         {
@@ -193,9 +192,7 @@ if (isset($_GET['id'])){
                             </table>
                         </div>
                         </td>
-                        <td width=50px>
-                            <a href="" class="btn btn-secondary"><img src="icons/pdf.png" style="width:32px;"></a>
-                        </td>
+                      
                         </tr></table>
                     </button>
                     </h5>
@@ -630,6 +627,8 @@ if (isset($_GET['id'])){
             <div class="form-group col-sm">
                 <label for="exampleFormControlInput1">Cargo en el grupo</label>
                 <input onchange="checkTot();" type="tel" class="form-control" name="grupo_cargo" id="grupo_cargo" value="'.$f['grupo_cargo'].'">
+             
+
             </div>';
 
 
@@ -656,7 +655,7 @@ if (isset($_GET['id'])){
 
             echo '
             <div class="form-group col-sm">               
-               <button class="btn btn-primary" onclick="ImprimirCarnet();">Imprimir </button>
+               <a class="btn btn-primary" href="print_carnet.php?id='.$_GET['id'].'">Imprimir Registro </a>
             </div>';
 
 
@@ -671,6 +670,11 @@ if (isset($_GET['id'])){
             </div>';
         echo "</div>";          
             echo "</div>";
+
+
+
+
+      
 
         } else {
             // Error("No existe ningun usuario con esta curp ".$Curp);

@@ -245,7 +245,7 @@ for non-profit use only."
 Jeroen Hellingman created a set of Malayalam metafonts in 1994, and a
 set of Oriya metafonts in 1996. Malayalam fonts were created as
 uniform stroke only, while Oriya metafonts exist in both uniform and
-modulated stroke. From private communication: "It is my intention to
+modulated stroke. From private commlibtion: "It is my intention to
 release the fonts under GPL, but not all copies around have this
 notice on them." Metafonts can be found on CTAN,
 <ftp://ftp.dante.de/tex-archive/language/oriya/> and
@@ -357,7 +357,8 @@ please contact mssridhar AT vsnl.com.
 
 Noah Levitt found out that the Sinhalese fonts available on the site
 <http://www.metta.lk/fonts/> are released under GNU GPL, or,
-precisely, "Public Domain under GNU Licence Produced by DMS
+precisely, "Public Domain under GNU Licence
+ Produced by DMS
 Electronics for The Sri Lanka Tipitaka Project" (taken from the font
 comment), and took the effort of recoding the font to Unicode.
 
