@@ -207,7 +207,7 @@ if ($IdCliente <> ''){
                     
             $html.='<tr>';
             $html.='<td  style="text-align:center; background-color:#DFDFD0; color:#000000;">';
-            $html.='<span style="font-size:9pt; font-weight:normal;">REFERENCIAS PERSONALES</span><br>';
+            $html.='<span style="font-size:9pt; font-weight:normal;">REFERENCIAS PERSONALES</span><br><br>';
             $ref = 0;
             if (strlen($f['ref1_nombre'])>1 ){
                 
@@ -238,8 +238,49 @@ if ($IdCliente <> ''){
             
             $html.='</td>';
             $html.='<td bgcolor="#FFEFBF"  style="text-align:center;color:#333333">';            
-            $html.='<span style="font-size:9pt; font-weight:normal;">REFERENCIAS COMERCIALES</span><br>';
+            $html.='<span style="font-size:9pt; font-weight:normal;">REFERENCIAS COMERCIALES</span><br><br>';
+
+            $refc = 0;
+            if (strlen($f['refc1_nombre'])>1 ){
+                
+                $html.='<span style="font-size:7pt; font-weight:normal;"><b>'.$f['refc1_nombre'].'</b></span><br>';
+
+                $html.='<span style="font-size:7pt; font-weight:normal;">Tel.:'.$f['refc1_tel'].'</span><br>';
+                $html.='<span style="font-size:7pt; font-weight:normal;">Domicilio.:'.$f['refc1_domicilio'].':</span><br>';
+                $html.='<span style="font-size:7pt; font-weight:normal;">Años de conocerle:'.$f['refc1_antiguedad'].'</span><br><br>';
+                $refc = $refc+1;
+                
+
+            }
+
+            if (strlen($f['refc2_nombre'])>1 ){
+                
+                $html.='<span style="font-size:7pt; font-weight:normal;"><b>'.$f['refc2_nombre'].'</b></span><br>';
+
+                $html.='<span style="font-size:7pt; font-weight:normal;">Tel.:'.$f['refc2_tel'].'</span><br>';
+                $html.='<span style="font-size:7pt; font-weight:normal;">Domicilio.:'.$f['refc2_domicilio'].':</span><br>';
+                $html.='<span style="font-size:7pt; font-weight:normal;">Años de conocerle:'.$f['refc2_antiguedad'].'</span><br><br>';
+                $refc = $refc+1;
+                
+
+            }
+
+
+            if (strlen($f['refc3_nombre'])>1 ){
+                
+                $html.='<span style="font-size:7pt; font-weight:normal;"><b>'.$f['refc3_nombre'].'</b></span><br>';
+
+                $html.='<span style="font-size:7pt; font-weight:normal;">Tel.:'.$f['refc3_tel'].'</span><br>';
+                $html.='<span style="font-size:7pt; font-weight:normal;">Domicilio.:'.$f['refc3_domicilio'].':</span><br>';
+                $html.='<span style="font-size:7pt; font-weight:normal;">Años de conocerle:'.$f['refc3_antiguedad'].'</span><br><br>';
+                $refc = $refc+1;
+                
+
+            }
         
+            if ($refc == 0 ){
+                $html.='<span style="font-size:7pt; color:#D90000; font-weight:normal;">- Sin registro - </span><br>';
+            }
             $html.='</td>';
             $html.="</tr>";
 
