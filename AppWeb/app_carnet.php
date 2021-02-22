@@ -332,7 +332,7 @@ if (isset($_GET['id'])){
                         echo '
                         <div class="form-group col-sm">
                             <label for="exampleFormControlInput1">Telefono de mi negocio:</label>
-                            <input type="number" class="form-control" name="minegocio_telefono" id="minegocio_telefono" placeholder="" value="'.$f['minegocio_telefono'].'">
+                            <input type="text" class="form-control" name="minegocio_telefono" id="minegocio_telefono" placeholder="" value="'.$f['minegocio_telefono'].'">
                         </div>';
                         
                         echo "</div>"; // ---------------------------------------- r  o  w --- end

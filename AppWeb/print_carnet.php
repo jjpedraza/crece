@@ -284,6 +284,53 @@ if ($IdCliente <> ''){
             $html.='</td>';
             $html.="</tr>";
 
+
+            $html.='<tr  ><td></td><td></td></tr>';        //linea en blanco 
+
+            //PERFIL SOCIOECONOMICO
+            $html.='<tr>';
+            $html.='<td colspan="2" bgcolor="#FFEFBF"  style="text-align:center;color:#333333">';                    
+            $html.='<span style="font-size:9pt; font-weight:normal;">PERFIL SOCIOECONOMICO</span>';
+            $html.='</td><td></td>
+            </tr>';
+            
+            $html.='<tr>
+                    <td bgcolor="#BFFFBF"  style="text-align:center;color:#333333" align="left">';                    
+            $html.='<span style="font-size:9pt; width:100%; text-align:center; font-weight:normal;">INGRESOS</span><br><br>';
+
+            if (strlen($f['trabajo_nombre'])>1 ){
+                if (strlen($f['trabajo_giro'])>1 ){                   
+                    $html.='<span style="font-size:7pt; font-weight:normal;">Trabaja: <b>'.$f['trabajo_nombre'].'</b>('.$f['trabajo_giro'].')</span><br>';
+                } else {
+                    $html.='<span style="font-size:7pt; font-weight:normal;">Trabaja: <b>'.$f['trabajo_nombre'].'</b></span><br>';
+                }
+            }
+
+            if (strlen($f['trabajo_domicilio'])>1 ){
+                $html.='<span style="font-size:7pt; font-weight:normal;">'.$f['trabajo_domicilio'].'</span><br>';
+            }
+
+            if (strlen($f['trabajo_telefono'])>1 ){
+                $html.='<span style="font-size:7pt; font-weight:normal;">Tel. <b>'.$f['trabajo_telefono'].'</b></span><br>';
+            }
+
+            if (strlen($f['trabajo_salario'])>1 ){
+                if (strlen($f['trabajo_puesto'])>1 ){                   
+                    $html.='<span style="font-size:7pt; font-weight:normal;">Salario: <b>'.Pesos($f['trabajo_salario']).'</b> (Puesto en '.$f['trabajo_puesto'].')</span><br>';
+                } else {
+                    $html.='<span style="font-size:7pt; font-weight:normal;">Salario: <b>'.Pesos($f['trabajo_salario']).'</b></span><br>';
+                }
+            }
+
+
+            $html.='</td>';            
+
+            $html.='<td bgcolor="#FFC4C4"  style="text-align:center;color:#333333">';                    
+            $html.='<span style="font-size:9pt; font-weight:normal;">GASTOS</span>';
+            $html.='</td>';
+            
+            $html.='</tr>';        //linea en blanco 
+
             $html.='</table>';
 
 
