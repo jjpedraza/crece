@@ -1,55 +1,49 @@
 <?php
 include ("head.php");
+require_once('lib/pdf/tcpdf.php');   
 
-// $sql = "SELECT * FROM reportes WHERE id_rep='".$id_rep."' ";
-// $rc= $db0 -> query($sql);if($f = $rc -> fetch_array()){ 
-//     $orientacion = $f['orientacion'];
-//     $autor = $f['IdUser'];
-//     $titulo = $f['rep_name'];
-//     $descripcion = $f['rep_description'];
-//     $IdCon = $f['IdCon'];                    
-//     $PageSize = $f['PageSize'];
-//     $out_type = $f['out_type'];
-//     echo "OK PDF";
-// } else {
-//     return "Parametros insuficientes, por favor complete correctamente el reporte.";
-// }
+$pdf = new PDFEDOCUENTA(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+$pdf->SetCreator(PDF_CREATOR);
+$pdf->SetKeywords('Reporte ITAVU');
+//$pdf->SetHeaderData('pdf_logo.jpg', '40','');
+$pdf->SetHeaderData('', '10', '', 'ITAVU  '.'Mi Nomina');
+//$pdf->setFooterData(array(0, 64, 0), array(0, 64, 128));
+$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+$pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
 
+// set margins
+$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+#Establecemos los márgenes izquierda, arriba y derecha:
+$pdf->SetMargins(15, 25 , 15);
 
-$TablaHTML = '
-<table id="2nDDyGO6l85MqAii"  style="width:100%" class="tabla" border=1 style="font-size:8pt;">  
-            <thead>
-            <tr>
-                <th >nitavu</th><th >nombre</th>  
-            </tr>
-            </thead><tbody class=""><tr><td >1002</td><td >Victor Hugo Salas Arias</td></tr><tr><td >1047</td><td >Marina Nereyda Castillo Padilla</td></tr><tr><td >1114</td><td >Patricia Guadalupe Alvizo Arciniega</td></tr><tr><td >1116</td><td >Maria Del Rosario Bautista Hernandez</td></tr><tr><td >1119</td><td >Silvia Esthela Navarro Sanchez</td></tr><tr><td >1143</td><td >Isidro Barron Castañon</td></tr><tr><td >1144</td><td >Jorge Torres Rodriguez</td></tr><tr><td >1145</td><td >Jose Refugio Quintero Martinez</td></tr><tr><td >1199</td><td >Imelda Lopez Herrera</td></tr><tr><td >1201</td><td >Gladyz Elizabeth Garcia Marquez</td></tr></tbody></table>
-';
+// set auto page breaks
+$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
 
-// $TablaHTML ="<table><tr><td>Hola</td><td>Mundo</td></tr></table>";
-$IdUser = $RinteraUser;
-$titulo = "Titulo del Reporte";
-$descripcion = "La Descripcion";
-$PageSize = "0"; // 0= carta y 1 == oficio
-$orientacion = "L";
-$id_rep = 0;
-$info_leyenda = "x";
-$ArchivoDelReporte = TableToPDF($TablaHTML, $IdUser, $titulo, $descripcion, $PageSize, $orientacion,$id_rep,$info_leyenda);
+// set image scale factor
+$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
 
+// set some language-dependent strings (optional)
+if (@file_exists(dirname(__FILE__).'pdf/lang/eng.php')) {
+    require(dirname(__FILE__).'pdf/lang/eng.php');
+    $pdf->setLanguageArray($l);
+}
+// set font
+$pdf->SetFont('helvetica', '', 9);
+// add a page
+$pages = $pdf->getNumPages();
 
-
-echo "<iframe src='".$ArchivoDelReporte."'
-style='
-    width:100%;
-    height:500px;
-'
-></iframe>";
-// echo $TablaHTML;
+$pdf->AddPage('P', 'LETTER'); //en la tabla de reporte L o P
 
 
-
-// TabletoPDF($TablaHTML, $IdUser,$titulo,$descripcion,$PageSize,$orientacion);
-
-
-
+    $html="<b>Hola Mundo</b>";
+    $pdf->SetXY(15,35);
+    $pdf->writeHTML($html, true, false, true, false, '');// Print text using writeHTMLCell()
+            
+        // echo $html;
+        //  ob_end_clean();
+        $pdf->Output($IdCliente.'_carnet', 'I');
 include ("footer.php");
 ?>

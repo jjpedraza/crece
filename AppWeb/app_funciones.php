@@ -1,4 +1,6 @@
 <?php
+set_time_limit(1200);	
+
 //FUNCIONES DE LAS APLICACIONES
 function Proyeccion_CrearTabla($ALL = TRUE){
     require("rintera-config.php");
@@ -185,6 +187,132 @@ function ProyeccionCheck($modo){
     } else {
         return FALSE;
     }
+
+}
+
+
+function TableData($QueryM, $IdDiv="TableData_Div", $IdTabla="TableData_table", $Clase="", $Tipo=2){
+require("rintera-config.php");
+	
+        $r= $db1 -> query($QueryM);
+        // echo $sql;
+        // var_dump($r);
+        
+        $tbCont = '<div id="'.$IdDiv.'" class="'.$Clase.'" style="background-color:white; padding:10px">
+        <table id="'.$IdTabla.'" class="display" style="width:100%" class="tabla" style="font-size:8pt;">';
+    $tabla_titulos = ""; $cuantas_columnas = 0;
+        $r2 = $db1 -> query($QueryM); 
+        // echo $sql;
+        // var_dump($r2);
+        
+        while($finfo = $r2->fetch_field())
+        {//OBTENER LAS COLUMNAS
+
+                /* obtener posición del puntero de campo */
+                $currentfield = $r2->current_field;       
+                $tabla_titulos=$tabla_titulos."<th style='text-transform:uppercase; font-size:9pt;'>".$finfo->name."</th>";
+                $cuantas_columnas = $cuantas_columnas + 1;        
+        }
+
+        $tbCont = $tbCont."  
+        <thead>
+        <tr>
+            ".$tabla_titulos."  
+        </tr>
+        </thead>"; //Encabezados
+        $tbCont = $tbCont."<tbody class='tabla'>";
+        $cuantas_filas=0;
+        $r = $db1 -> query($QueryM); while($f = $r-> fetch_row())
+        {//LISTAR COLUMNAS
+
+            $tbCont = $tbCont."<tr>";        
+            for ($i = 1; $i <= $cuantas_columnas; $i++) {      
+                $tbCont = $tbCont."<td style='font-size:10pt;'>".$f[$i-1]."</td>";       
+                }
+
+            $tbCont = $tbCont."</tr>";
+            $cuantas_filas = $cuantas_filas + 1;        
+        }
+
+        $tbCont = $tbCont."</tbody>";
+        $tbCont = $tbCont."</table></div>";
+	
+	echo  $tbCont;
+
+	$Botones = "
+	dom: 'Bfrtip',
+	buttons: [
+		{
+			extend:    'copyHtml5',
+			text:      '<i class=\"fa fa-files-o\"></i>',
+			titleAttr: 'Copy'
+		},
+		{
+			extend:    'excelHtml5',
+			text:      '<i class=\"fa fa-file-excel-o\"></i>',
+			titleAttr: 'Excel'
+		},
+		{
+		    extend:    'csvHtml5',
+		    text:      '<i class=\"fa fa-file-text-o\"></i>',
+		    titleAttr: 'CSV'
+		},
+		{
+		    extend:    'pdfHtml5',
+		    text:      '<i class=\"fa fa-file-pdf-o\"></i>',
+		    titleAttr: 'PDF'
+		}
+	]
+	";
+		switch ($Tipo) {
+			case 1: //Scroll Vertical
+					echo '<script>
+					$(document).ready(function() {
+						$("#'.$IdTabla.'").DataTable( {
+							"scrollY":        "200px",
+							"scrollCollapse": true,
+							"paging":         false,
+							"language": {
+								"decimal": ",",
+								"thousands": "."
+							}
+						} );
+					} );
+					</script>';
+				break;
+
+			case 2: //Scroll Horizontal
+					echo '<script>
+					$(document).ready(function() {
+						$("#'.$IdTabla.'").DataTable( {
+							"scrollX": true,
+							"scrollCollapse": true,
+							"paging":         true,
+							"language": {
+								"decimal": ",",
+								"thousands": "."
+								
+							}
+							,responsive: true
+							,'.$Botones.'
+						} );
+					} );
+					</script>';
+				break;
+			
+			default:
+				echo '<script>
+				$(document).ready(function() {
+					$("#'.$IdTabla.'").DataTable( {
+						"language": {
+							"decimal": ",",
+							"thousands": "."
+						}
+					} );
+				} );
+				</script>';
+		}
+       
 
 }
 

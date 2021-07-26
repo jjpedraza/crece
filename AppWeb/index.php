@@ -227,18 +227,29 @@ if (Preference("MostrarApps", "", "")=='TRUE'){
      
      <br><br>";
 
-
-     $repolist.= "<a href='proyeccion.php' title='Haga Clic aqui para ver el reporte' class='btn btn-secondary'
+    //  $repolist.= "<a href='proyeccion.php' title='Haga Clic aqui para ver el reporte' class='btn btn-secondary'
+    //  style='
+    //     // background-color: #e6e6e6;
+    //     // color: #625f5f;
+    //     width: 100%;
+    //     font-size: 10pt;
+    //     text-align:left;
+    //  '
+    //  >Proyeccion</a>
+    //  ";
+     $repolist.= "
+     <a href='app_solicitud.php' title='Haga Clic aqui para ver' class='btn '
      style='
-        // background-color: #e6e6e6;
-        // color: #625f5f;
+        background-color: #ff8007;
+        color: white;
         width: 100%;
         font-size: 10pt;
         text-align:left;
+        margin-top:10px;
      '
-     >Proyeccion</a>
-     
-     
+     >Solicitud</a>
+
+
      <a href='app_grupos.php' title='Haga Clic aqui para ver' class='btn btn-secondary'
      style='
         // background-color: #e6e6e6;
