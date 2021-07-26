@@ -78,7 +78,7 @@ VALUES(
 '$plazo',
 '$garantia',
 '$destino',
-'$fechasol',
+ '$fechasol',
 '$tipo',
 '$grupo'
 )";
