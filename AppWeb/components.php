@@ -216,8 +216,7 @@ function Toast($Texto,$Tipo,$img){
             $.toast({
                 heading: 'Error',
                 text: '".$Texto."',
-                showHideTransition: 'slide',
-                hideAfter: false,
+                showHideTransition: 'slide',                
                 icon: 'error'
             })
             ";
@@ -245,8 +244,7 @@ function Toast($Texto,$Tipo,$img){
             $.toast({
                 heading: 'Success',
                 text: '".$Texto."',
-                showHideTransition: 'slide',
-                hideAfter: false,
+                showHideTransition: 'slide',                
                 icon: 'success'
             })
             ";
@@ -273,7 +271,7 @@ function Toast($Texto,$Tipo,$img){
                 $.toast({
                     heading: '',
                     text: '".$Texto."<img style=width:100% src=".$img.">"."',                
-                    hideAfter: false
+                    
                     
                 })
                 ";
@@ -4055,4 +4053,21 @@ function PixaBay($busqueda){
 
 function Pesos($valor){
 	return "$ ".number_format($valor,2,'.',',');
+}
+
+function dia($fecha)
+{
+    setlocale(LC_TIME, 'Spanish');
+    date_default_timezone_set("America/Mexico_City");
+    $dias = array(
+        'Domingo',
+        'Lunes',
+        'Martes',
+        'Miercoles',
+        'Jueves',
+        'Viernes',
+        'Sabado');
+
+    $f = $dias[date('w', strtotime($fecha))];
+    return $f;
 }

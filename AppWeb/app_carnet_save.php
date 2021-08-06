@@ -231,13 +231,17 @@ if ($Existe == 0){ //INSERT
         refc3_domicilio = '".$refc3_domicilio."',
         refc3_antiguedad = '".$refc3_antiguedad."',
         grupo = '".$grupo."',
-        grupo_cargo = '".$grupo_cargo."'
+        grupo_cargo = '".$grupo_cargo."',
+        act_fecha='".$fecha."',
+        act_hora='".$hora."',
+        act_user='".$RinteraUser."'
         
     WHERE curp='".$Curp."'";
     echo $sqlUp;
     if ($db1->query($sqlUp) == TRUE){
         Toast("Actulizado ".$Nombre." correctamente",4,"");
         Historia($RinteraUser,"CLIENTES","Actualizo al cliente con IdCliente = ".$Curp);
+        echo "<script>GuardarFoto();</script>";
     } else {
         Toast("Error al guardar ".$Nombre." correctamente",2,"");
 

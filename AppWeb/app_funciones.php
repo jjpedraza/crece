@@ -1,5 +1,6 @@
 <?php
 set_time_limit(1200);	
+require("FormElement.php");
 
 //FUNCIONES DE LAS APLICACIONES
 function Proyeccion_CrearTabla($ALL = TRUE){
@@ -191,14 +192,18 @@ function ProyeccionCheck($modo){
 }
 
 
-function TableData($QueryM, $IdDiv="TableData_Div", $IdTabla="TableData_table", $Clase="", $Tipo=2){
+function TableData($QueryM, $Tit="", $IdDiv="TableData_Div", $IdTabla="TableData_table", $Clase="", $Tipo=2){
 require("rintera-config.php");
 	
         $r= $db1 -> query($QueryM);
         // echo $sql;
         // var_dump($r);
         
-        $tbCont = '<div id="'.$IdDiv.'" class="'.$Clase.'" style="background-color:white; padding:10px">
+        $tbCont = '<div id="'.$IdDiv.'" class="container '.$Clase.'" style="    background-color: #ffffffc9;
+        padding: 10px;
+        border-radius: 5px;
+        margin-top: 20px;">
+        <h3>'.$Tit.': </h3>
         <table id="'.$IdTabla.'" class="display" style="width:100%" class="tabla" style="font-size:8pt;">';
     $tabla_titulos = ""; $cuantas_columnas = 0;
         $r2 = $db1 -> query($QueryM); 
@@ -316,4 +321,69 @@ require("rintera-config.php");
 
 }
 
+
+
+function NoSol_existe($nosol){
+require("rintera-config.php");   
+    $sql = "select count(*) as n from cuentas where nosol='".$nosol."'";
+    $rc= $db1 -> query($sql);    
+    if($f = $rc -> fetch_array())
+    {
+        if ($f['n'] > 0 ) {
+            return TRUE;
+        } else {
+            return FALSE;
+        }
+    } else {
+        return FALSE;
+    }
+}
+
+function NoSol_generar(){
+require("rintera-config.php");   
+
+    $no_sol = date('Ymj').EasyName($LoPrimero="");
+    while (NoSol_existe($no_sol) == TRUE) {
+        $no_sol = date('Ymj').EasyName($LoPrimero="");
+    } 
+    return $no_sol;
+}
+
+
+function Cliente_Nombre($IdCliente){
+require("rintera-config.php");   
+    $sql = "select nombre as valor from clientes where curp='".$IdCliente."'";
+    $rc= $db1 -> query($sql);    
+    if($f = $rc -> fetch_array())
+    { 
+        return $f['valor'];
+    } else { return '';}
+
+    
+}
+
+
+function Cliente_Telefono($IdCliente){
+require("rintera-config.php");   
+    $sql = "select telefono as valor from clientes where curp='".$IdCliente."'";
+    $rc= $db1 -> query($sql);    
+    if($f = $rc -> fetch_array())
+    { 
+        return $f['valor'];
+    } else { return '';}
+
+    
+}
+
+function Cliente_Domicilio($IdCliente){
+require("rintera-config.php");   
+    $sql = "select CONCAT(domicilio, ', ',municipio,'. ',estado) as valor from clientes where curp='".$IdCliente."'";
+    $rc= $db1 -> query($sql);    
+    if($f = $rc -> fetch_array())
+    { 
+        return $f['valor'];
+    } else { return '';}
+
+    
+}
 ?>

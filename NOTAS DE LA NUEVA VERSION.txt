@@ -1,0 +1,26 @@
+NOTAS:
+
+FLUJO CAJA:
+
+Tabla corte: almacena el total y abono
+($sql = "INSERT INTO corte (comentario,usuario, valor,fecha, nosol,no,ahorro) 
+
+VALUES(
+'$comentario',
+'$usuario',
+'$valor',
+'$hoy',
+'$nosol',
+'$no',
+'$ahorro'
+)";
+)
+	(total = abono + moratorio + descuento + extraordinario)
+
+Tabla extraordinarios = marca estado con ($sql = "UPDATE extraordinario SET
+estado='X'
+WHERE nosol='$nosol' and no='$no'";)
+
+Tabla Descuentos: $sql = "UPDATE descuetos SET
+vantidad='0'
+WHERE nosol='$nosol' and no='$no'";

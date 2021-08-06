@@ -18,21 +18,27 @@ if (isset($_GET['id'])){
                 <div class="form-group col-sm btn btn-info">';
 
               
-                // // $fotoFile = 'fotos/'.$f['curp'].'.jpg';
-                // // if (is_file($fotoFile)){
-                // //     echo "<img src='".$fotoFile."' class='FotoUser'>";
+                $fotoFile = 'fotos/'.$f['curp'].'.jpg';
+                if (is_file($fotoFile)){
+                    echo "<img name='foto' id='foto'  src='".$fotoFile."' style='width:50%; border-radius:5px;'>";
 
-                // // } else {
-                // //     echo "<img src='icons/user.png' class='FotoUser'>";
-                // // }
+                } else {
+                    echo "<img name='foto' id='foto' src='icons/user.png' style='width:50%;'>";
+                }
 
-                // echo "</td><td valing=top>";
 
+                 echo "<form method='POST' enctype='multipart/form-data' id='VForm'>";
 
 
                 echo '
-                    
-                    <span>CURP:<b>'.$Curp.'</b></span>';
+                    <label for="VFile" style="font-size:8pt;">Fotografia:</label>
+                    ';    
+                        echo "<input type='file' id='VFile' name='VFile' class='form-control' style='font-size:9pt; margin-top:-7px;' accept='.jpg'>";
+                 echo "</form>";
+
+
+
+                
 
                
 
@@ -48,6 +54,20 @@ if (isset($_GET['id'])){
                         font-weight: bold;
                         font-size: large;
                     " type="text" class="form-control" name="nombre" id="nombre" placeholder="" value="'.$f['nombre'].'">
+                ';
+
+
+                        echo '<span
+                        style="
+                        margin: 10px;
+                        background-color: #17a2b8;
+                        padding: 7px;
+                        border-radius: 6px;
+                        color: white;
+                        "
+                        ><label>CURP:</label>'.$Curp.'</span>';
+
+                echo '
                 </div>';
 
 
@@ -658,12 +678,63 @@ if (isset($_GET['id'])){
                <a class="btn btn-primary" href="print_carnet.php?id='.$_GET['id'].'">Imprimir Registro </a>
             </div>';
 
+            echo '
+            <div class="form-group col-sm">               
+               <button class="btn btn-secondary" onclick="CrearSolicitud();">Crear Solicitud </button>
+            </div>';
+
+           
+       echo "</div>"; // ---------------------------------------- r  o  w --- end   
 
 
+         echo "
+        <br><br>
+        <div class='row' style='
 
-       
-            
-            echo "</div>"; // ---------------------------------------- r  o  w --- end   
+            '>"; // ---------------------------------------- r  o  w --- begin
+     
+            echo '<div class="form-group col-sm" style="background-color: #e8e8e8;
+                margin: 10px;
+                border-top-style: dashed;
+                border-top-color: gray;
+                border-top-width: 1px;"> ';
+            echo "<h5>Creditos obtenidos:</h5>";
+
+            $sqlX = "select 
+c.curp, c.nosol, c.valoracion,c.cantidad,c.fechacontrato,
+ifnull((select sum(TOTAL) from cartera where nosol= c.nosol and EstadoPago<>'PAGADO'),0) as Debe
+from cuentas c where curp='".$Curp."'";    
+            $rx = $db1->query($sqlX);    
+            if ($db1->query($sqlX) == TRUE){        
+            echo "<table class='tabla'>";
+            echo "
+                <th>NoSol</th>
+                <th>Estado</th>
+                <th>Cantidad</th>
+                <th>Fecha del Contrato</th>
+                <th>Adeudo</th>
+            ";
+            while($fx= $rx -> fetch_array()) {  
+            if ($fx['Debe']>0){
+                echo "<tr style='background-color:orange;'>";    
+            } else {
+                echo "<tr>";
+            }
+                
+                echo "<td><a href='app_solicitud.php?n=".$fx['nosol']."' title='Haga clic aqui para ver la solicitud'>".$fx['nosol']."<a></td>";
+                echo "<td>".$fx['valoracion']."</td>";
+                echo "<td>".Pesos($fx['cantidad'])."</td>";
+                echo "<td>".$fx['fechacontrato']."</td>";
+                echo "<td>".Pesos($fx['Debe'])."</td>";
+                echo "</tr>";
+            }
+            unset($fx, $rx, $sqlX);
+
+            echo "</table>";
+            }
+            echo '</div>';
+           
+       echo "</div>"; // ---------------------------------------- r  o  w --- end   
 
 
             echo '                    
@@ -868,6 +939,57 @@ function Guardar(){
                     $('#PreLoader').hide();
                 }
             });
+}
+
+
+
+function GuardarFoto(){    
+    Curp = '<?php echo $Curp; ?>';
+    $('#VFile').html($('#VFile').val());        
+    var formData = new FormData(document.getElementById('VForm'));        
+        formData.append('Curp',  Curp);
+    $('#progressbar').show();
+    $.ajax({
+    url: 'app_carnet_save_foto.php',
+    type: 'post',
+    dataType: 'html',
+    data: formData,             
+    cache: false,
+    contentType: false,
+    processData: false,
+    beforeSend:function(){
+        // console.log('Cargando..');
+    },
+    success:function(data){
+        // console.log(data);
+        $('#R').html(data);
+        $('#progressbar').hide();
+    }
+});
+}
+
+
+function CrearSolicitud(){
+   IdCliente = '<?php echo VarClean($_GET['id']); ?>';   
+   $('#PreLoader').show();
+            $.ajax({
+                url: 'app_dat_crearsol.php',
+                type: 'post',
+                data: {IdCliente:IdCliente},
+                success: function(data) {
+                    $('#R').html(data);
+                    $('#PreLoader').hide();
+                }
+            });
+}
+
+
+
+function ActualizaFoto(){
+    d = new Date();    
+    Curp = "<?php if (isset($_GET['id'])) {echo $_GET['id'].'.jpg';} else { echo "icons/user.png";}?>";    
+    src='fotos/'+Curp+'?';
+    $("#foto").attr("src",src+d.getTime());
 }
 </script>
 

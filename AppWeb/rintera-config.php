@@ -1,6 +1,7 @@
 <?php
 // require_once("components.php");
 
+date_default_timezone_set('America/Mexico_City');
 $fecha = date('Y-m-d');
 $hora =  date ("H:i:s");
 $SesionName="R1nT3r4";
@@ -41,7 +42,7 @@ if (function_exists('mysqli_connect')) {
     $db1 = new mysqli($db1_host,$db1_user,$db1_pass,$db1_name);
     $acentos2 = $db1->query("SET NAMES 'utf8'"); // para los acentos
     $acentos2 = $db1->query("SET lc_time_names = 'es_MX'"); // para los acentos
-    
+    setlocale(LC_MONETARY, 'en_MX');
 	// var_dump($db0);
         // global $db0;
         
@@ -206,4 +207,6 @@ if ($Error ==''){
 
 
 $session_auto_start = 1;
+
+$PorcentajeIVA = 0.16;
 ?>

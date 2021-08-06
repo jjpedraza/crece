@@ -247,7 +247,7 @@ if (Preference("MostrarApps", "", "")=='TRUE'){
         text-align:left;
         margin-top:10px;
      '
-     >Solicitud</a>
+     >Solicitudes</a>
 
 
      <a href='app_grupos.php' title='Haga Clic aqui para ver' class='btn btn-secondary'
