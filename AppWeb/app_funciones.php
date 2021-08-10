@@ -386,4 +386,17 @@ require("rintera-config.php");
 
     
 }
+
+
+function Solicitud_FechaUltimoPago($NoSol){
+require("rintera-config.php");   
+    $sql = "select fin as valor from tabladepagos where nosol='".$NoSol."' order by no DESC limit 1";
+    $rc= $db1 -> query($sql);    
+    if($f = $rc -> fetch_array())
+    { 
+        return $f['valor'];
+    } else { return '';}
+
+    
+}
 ?>

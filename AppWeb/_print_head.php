@@ -85,5 +85,6 @@ require_once('lib/pdf/tcpdf.php');
             'module_height' => 1 // height of a single module in points
         );
 
-
+// $pdf->SetFont('dejavusans', '', 10);
+// $pdf->SetFont('helvetica', '', 10);             
 ?>

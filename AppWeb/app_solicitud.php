@@ -289,13 +289,15 @@ if ($Sol['valoracion']==''){
         echo "
 <button style='margin:5px;' class='btn btn-success' onclick='GuardarSolicitud();'>Guardar </button>
 <button style='margin:5px;' class='btn btn-warning' onclick='CorridaF();'>Simular Corrida Financiera</button>
-<a target=_blank href='print_solicitud.php?id=".$NoSol."' style='margin:5px;' class='btn btn-primary'> 
+<a target=_blank href='print_solicitud.php?id=".$NoSol."' style='margin:5px;' class='btn btn-primary' download='Solicitud-".$NoSol.".pdf'> 
     <img src='icons/pdf.png' style='width:23px; margin-top:-5px; margin-right:5px;'> Imprimir Solicitud</a>
 
-<button style='margin:5px;' class='btn btn-primary' onclick='PrintContrato();'> 
-    <img src='icons/pdf.png' style='width:23px; margin-top:-5px; margin-right:5px;'> Imprimir Contrato</button>
 
-<button style='margin:5px;' class='btn btn-danger' onclick='CancelarContrato();'>Cancelar Contrato</button>
+<a target=_blank href='print_contrato.php?id=".$NoSol."' style='margin:5px;' class='btn btn-primary'  download='Pagare-".$NoSol.".pdf'> 
+    <img src='icons/pdf.png' style='width:23px; margin-top:-5px; margin-right:5px;'> Imprimir Contrato</button>
+</a>
+
+
 
             ";
             
