@@ -3,7 +3,8 @@ require("colorin.php");
 
 function EasyName($LoPrimero=""){
     $permitted_chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    return $LoPrimero.'-'.substr(str_shuffle($permitted_chars), 0, 16).'';
+    // return $LoPrimero.'-'.substr(str_shuffle($permitted_chars), 0, 16).'';
+       return $LoPrimero.'-'.substr(str_shuffle($permitted_chars), 0, 4).'';
 }
 
 

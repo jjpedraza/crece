@@ -310,92 +310,104 @@ if ($Sol['valoracion']==''){
         </div>";}
         else {
             echo "<div id='CorridaFOK'>";
-            $sqlX = "
-            select 
-            nosol,
-            NPago as n,
-            fecha,
-            abono,
-            interes,
-            iva,
-            mora_dias,
-            mora_dia,
-            mora_debe,
-            Semanas,
-            CargoSemana,
-            CargoSemanal,
-            IF(CargoExtraOrdinario_concepto='',0,CONCAT(CargoExtraOrdinario_concepto,' ',CargoExtraOrdinario_cantidad)) as CargoExtra,
-            CONCAT(Descuento_concepto,' ',Descuento_cantidad) as Descuento,
-            TOTAL,
-            EstadoPago,
-            comentario
+            // $sqlX = "
+            // select 
+            // nosol,
+            // NPago as n,
+            // fecha,
+            // abono,
+            // interes,
+            // iva,
+            // mora_dias,
+            // mora_dia,
+            // mora_debe,
+            // Semanas,
+            // CargoSemana,
+            // CargoSemanal,
+            // IF(CargoExtraOrdinario_concepto='',0,CONCAT(CargoExtraOrdinario_concepto,' ',CargoExtraOrdinario_cantidad)) as CargoExtra,
+            // CONCAT(Descuento_concepto,' ',Descuento_cantidad) as Descuento,
+            // TOTAL,
+            // EstadoPago,
+            // comentario
 
 
 
-            from cartera where nosol='".$Sol['nosol']."'
-            ";
-            // echo $sqlX;
-            $rx = $db1->query($sqlX);    
-            if ($db1->query($sqlX) == TRUE){        
+            // from cartera where nosol='".$Sol['nosol']."'
+            // ";
+            // // echo $sqlX;
+            // $rx = $db1->query($sqlX);    
+            // if ($db1->query($sqlX) == TRUE){        
             
-            echo "<h4>Estado de Cuenta:</h4>";
+            // echo "<h4>Estado de Cuenta:</h4>";
 
-            echo "<div style='width:100%; text-align:right;margin:10px; margin-right:40px;'><a href='app_print_edo.php?nosol=".$Sol['nosol']."' class='btn btn-secondary'>Imprimir Estado de Cuenta</a></div>";
-            echo "<table class='tabla'>";
-            echo "
-                <th>No</th>
-                <th>Fecha</th>
-                <th>Abono</th>
-                <th>Interes</th>
-                <th>IVA</th>
-                <th>Moratorios</th>
-                <th>Cargos</th>
-                <th>Descuentos</th>
-                <th>Total</th>
-                <th>Estado</th>
-                <th></th>
+            echo "<div style='width:100%; text-align:right;margin:10px; margin-right:40px;'><a href='print_edocuenta.php?id=".$Sol['nosol']."' class='btn btn-secondary'>Imprimir Estado de Cuenta</a></div>";
+            // echo "<table class='tabla'>";
+            // echo "
+            //     <th>No</th>
+            //     <th>Fecha</th>
+            //     <th>Abono</th>
+            //     <th>Interes</th>
+            //     <th>IVA</th>
+            //     <th>Moratorios</th>
+            //     <th>Cargos</th>
+            //     <th>Descuentos</th>
+            //     <th>Total</th>
+            //     <th>Estado</th>
+            //     <th></th>
 
-            ";
-            while($fx= $rx -> fetch_array()) {  
-            if ($fx['EstadoPago']=='SIN PAGAR'){
-                echo "<tr style='background-color:orange;'>";    
-            } else {
-                echo "<tr>";
-            }
-                echo "<td>".$fx['n']."</td>";
-                echo "<td>".$fx['fecha']."</td>";
-                echo "<td>".Pesos($fx['abono'])."</td>";
-                echo "<td>".Pesos($fx['interes'])."</td>";
-                echo "<td>".Pesos($fx['iva'])."</td>";
-                echo "<td>".Pesos($fx['mora_debe'])." <label class='pc' style='font-size:7pt;color:black;'> (<b style='cursor:help;' title='Dias de Atraso'>".$fx['mora_dias']."</b> dias * <b  style='cursor:help;' title='Valor calculado del dia moratorio basado en el % de moratorio de cuenta'>".Pesos($fx['mora_dia'])."</b>)</label>"."</td>";
-                echo "<td>".$fx['CargoSemanal']."(Cargo Semanal) <label style='font-size:7pt;color:black;'> (<b  style='cursor:help;' title='Semanas de Atraso'>".$fx['Semanas']."</b> * <b   style='cursor:help;' title='Cargo por Semana'>".$fx['CargoSemana']."</b>)";
+            // ";
+            // while($fx= $rx -> fetch_array()) {  
+            // if ($fx['EstadoPago']=='SIN PAGAR'){
+            //     echo "<tr style='background-color:orange;'>";    
+            // } else {
+            //     echo "<tr>";
+            // }
+            //     echo "<td>".$fx['n']."</td>";
+            //     echo "<td>".$fx['fecha']."</td>";
+            //     echo "<td>".Pesos($fx['abono'])."</td>";
+            //     echo "<td>".Pesos($fx['interes'])."</td>";
+            //     echo "<td>".Pesos($fx['iva'])."</td>";
+            //     echo "<td>".Pesos($fx['mora_debe'])." <label class='pc' style='font-size:7pt;color:black;'> (<b style='cursor:help;' title='Dias de Atraso'>".$fx['mora_dias']."</b> dias * <b  style='cursor:help;' title='Valor calculado del dia moratorio basado en el % de moratorio de cuenta'>".Pesos($fx['mora_dia'])."</b>)</label>"."</td>";
+            //     echo "<td>".$fx['CargoSemanal']."(Cargo Semanal) <label style='font-size:7pt;color:black;'> (<b  style='cursor:help;' title='Semanas de Atraso'>".$fx['Semanas']."</b> * <b   style='cursor:help;' title='Cargo por Semana'>".$fx['CargoSemana']."</b>)";
                 
-                // if ($fx['CargoExtra'] == 0 ){
+            //     // if ($fx['CargoExtra'] == 0 ){
                     
-                // } else {
-                    echo " + <b style='cursor:help;' title='Cargos Extraordinarios'>".$fx['CargoExtra']."</b>";    
-                // }
+            //     // } else {
+            //         echo " + <b style='cursor:help;' title='Cargos Extraordinarios'>".$fx['CargoExtra']."</b>";    
+            //     // }
                 
                 
-                echo "</td>";
-                echo "<td>".$fx['Descuento']."</td>";
-                echo "<td><b>".Pesos($fx['TOTAL'])."</b></td>";
-                if ($fx['EstadoPago']=='PAGADO'){
-                    echo "<td>".$fx['EstadoPago']."</td>";
-                } else {
-                    echo "<td><a title='Ir a PAGAR' href='app_caja.php?nosol=".$fx['nosol']."&n=".$fx['n']."'>".$fx['EstadoPago']."</a></td>";
+            //     echo "</td>";
+            //     echo "<td>".$fx['Descuento']."</td>";
+            //     echo "<td><b>".Pesos($fx['TOTAL'])."</b></td>";
+            //     if ($fx['EstadoPago']=='PAGADO'){
+            //         echo "<td>".$fx['EstadoPago']."</td>";
+            //     } else {
+            //         echo "<td><a title='Ir a PAGAR' href='app_caja.php?nosol=".$fx['nosol']."&n=".$fx['n']."'>".$fx['EstadoPago']."</a></td>";
 
-                }
-                echo "<td>".$fx['comentario']."</td>";
+            //     }
+            //     echo "<td>".$fx['comentario']."</td>";
 
               
-                echo "</tr>";
-            }
-            unset($fx, $rx, $sqlX);
+            //     echo "</tr>";
+            // }
+            // unset($fx, $rx, $sqlX);
 
-            echo "</table>";
-            }
+            // echo "</table>";
+            // }
 
+
+            $QueryM = "select 
+            no,
+            fecha,
+            Cantidad,
+            Descripcion,
+            EstadoPago,
+            Caja as CajaPago,
+            CajaDescripcion
+
+            from edocuenta where nosol='20140515195' order by no + 0";
+            TableData($QueryM, $Tit="Estado de Cuenta:", $IdDiv="TableData_Div", $IdTabla="TableData_table", $Clase="", $Tipo=2);
 
             echo "</div>";
 

@@ -203,7 +203,7 @@ require("rintera-config.php");
         padding: 10px;
         border-radius: 5px;
         margin-top: 20px;">
-        <h3>'.$Tit.': </h3>
+        <h3>'.$Tit.' </h3>
         <table id="'.$IdTabla.'" class="display" style="width:100%" class="tabla" style="font-size:8pt;">';
     $tabla_titulos = ""; $cuantas_columnas = 0;
         $r2 = $db1 -> query($QueryM); 
@@ -339,6 +339,18 @@ require("rintera-config.php");
     }
 }
 
+function NoSol_to_Curp($nosol){
+require("rintera-config.php");   
+    $sql = "select * from cuentas where nosol='".$nosol."'";
+    $rc= $db1 -> query($sql);    
+    if($f = $rc -> fetch_array())
+    {
+        return $f['curp'];
+    } else {
+        return "";
+    }
+}
+
 function NoSol_generar(){
 require("rintera-config.php");   
 
@@ -398,5 +410,13 @@ require("rintera-config.php");
     } else { return '';}
 
     
+}
+
+function DiasAmigables($sum) {
+    $years = floor($sum / 365);
+    $months = floor(($sum - ($years * 365))/30.5);
+    $days = ($sum - ($years * 365) - ($months * 30.5));
+    // echo “Days received: ” . $sum . “ days <br />”;
+    return $years . " años, " . $months . " meses, ". round($days) . " dias";
 }
 ?>

@@ -17,7 +17,7 @@ require ("components.php");
 <head>
 	<meta charset="UTF-8">	
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title><?php echo Preference("RinteraName","","")." ".Preference("RinteraDescription","","")." by Rintera" ?></title>
+	<title>CRECE</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes">
     <meta http-equiv="x-ua-compatible" content="ie-edge">
     <link rel="stylesheet" href="src/default.css">

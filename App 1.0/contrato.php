@@ -64,7 +64,7 @@ echo number_format($total,2,".",",")
 		}
 
 
-echo round($npago)
+echo round($npago);
 .' pagos </b></span>de forma <span class="contrato_texto_subrayado"><b>'.$como.'  en '.$plazo.' meses</b></span> y todos están sujetos a la condición de que, al no pagarse cualquiera de ellos y se tenga saldo vigente, serán exigibles de manera anticipada todos los que le sigan en fecha de vencimiento, además de los pagos ya vencidos. <br />
   <br />
   La cantidad importe de este pagare causara interes ordinario, que resulte de multiplicar la Tasa del CINCO POR CIENTO MENSUAL, durante el tiempo que tenga vigencia en este crédito. <br />
