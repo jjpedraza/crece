@@ -419,4 +419,40 @@ function DiasAmigables($sum) {
     // echo “Days received: ” . $sum . “ days <br />”;
     return $years . " años, " . $months . " meses, ". round($days) . " dias";
 }
+
+function NDebe($NoSol){
+    require("rintera-config.php");   
+    $sql = "select count(*) as n from cartera WHERE nosol='".$NoSol."' and EstadoPago='SIN PAGAR' order by NPago + 0";        
+    $rc= $db1 -> query($sql);    
+    if($f = $rc -> fetch_array())
+    { 
+        return $f['n'];
+    } else { return 0;}
+    
+        
+}
+
+function DebeTotal($NoSol){
+    require("rintera-config.php");   
+    $sql = "select sum(TOTAL) as total from cartera WHERE nosol='".$NoSol."' and EstadoPago='SIN PAGAR' order by NPago + 0";        
+    $rc= $db1 -> query($sql);    
+    if($f = $rc -> fetch_array())
+    { 
+        return $f['total'];
+    } else { return 0;}
+    
+        
+}
+
+function DebePago($NoSol,$NPago){
+    require("rintera-config.php");   
+    $sql = "select sum(TOTAL) as total from cartera WHERE nosol='".$NoSol."' and EstadoPago='SIN PAGAR' and NPago='".$NPago."'";        
+    $rc= $db1 -> query($sql);    
+    if($f = $rc -> fetch_array())
+    { 
+        return $f['total'];
+    } else { return 0;}
+    
+        
+}
 ?>

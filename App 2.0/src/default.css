@@ -38,6 +38,25 @@ body * {
     /* color: white; */
 }
 
+#CajaInfo,
+#CajaPago {
+    display: inline-block;
+    border-radius: 5px;
+    margin: 5px;
+    padding: 5px;
+    vertical-align: top;
+}
+
+#CajaInfo {
+    width: 30%;
+    background-color: white;
+}
+
+#CajaPago {
+    width: 60%;
+    background-color: white;
+}
+
 .FotoUser {
     display: inline-block;
     width: 150px;

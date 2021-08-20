@@ -1,6 +1,5 @@
 <div id='R' style='display:none;'></div>
 
-<p style='font-size:7pt; color:gray;'>Actualmente trabaja esta aplicación en con una base de datos de prueba, en modo beta.</p>
 
 
 

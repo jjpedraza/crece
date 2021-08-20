@@ -4055,6 +4055,10 @@ function Pesos($valor){
 	return "$ ".number_format($valor,2,'.',',');
 }
 
+
+function Moneda($valor){
+	return "".number_format($valor,2,'.','');
+}
 function dia($fecha)
 {
     setlocale(LC_TIME, 'Spanish');
