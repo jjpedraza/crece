@@ -24,3 +24,9 @@ WHERE nosol='$nosol' and no='$no'";)
 Tabla Descuentos: $sql = "UPDATE descuetos SET
 vantidad='0'
 WHERE nosol='$nosol' and no='$no'";
+
+
+
+CONSIDERAR PARA LA IMPORTACION
+en la tabla corte, actualizar capital = valor
+update corte set capital = valor

@@ -38,6 +38,11 @@ background-color: #79284a;
 </div>
 
 <div id='CajaPago'>
+    <div id='CajaPago_recibe'></div>
+    <div id='CajaPago_distribucion'></div>
+    <div id='CajaBotones'>    
+       
+    </div>
 
 </div>
 
@@ -91,6 +96,27 @@ function CargaContrato(n){
 }  
 
 
+function CargaContrato_full(n){
+    NoSol = $('#NoSol').val();
+    mode = 'full';
+    $('#PreLoader').show();           
+    $.ajax({
+        url: 'app_caja_dat_contrato.php',
+        type: 'post',        
+        data: {
+            NoSol:NoSol, n:n, mode:mode
+            
+        },
+    success: function(data){
+        $('#CajaInfo').html(data);                
+        $('#PreLoader').hide();
+        
+    }
+    });
+
+
+}  
+
 function CajaComponents(n){
     NoSol = $('#NoSol').val();
     $('#PreLoader').show();           
@@ -102,7 +128,7 @@ function CajaComponents(n){
             
         },
     success: function(data){
-        $('#CajaPago').html(data);                
+        $('#CajaPago_recibe').html(data);                
         $('#PreLoader').hide();
         
     }
@@ -110,6 +136,54 @@ function CajaComponents(n){
 
 
 }  
+
+
+
+function RepartirPago(){
+    NoSol = $('#NoSol').val();
+    recibe = $('#CantidadRecibida').val();
+
+    $('#PreLoader').show();           
+    $.ajax({
+        url: 'app_caja_dat_repartir.php',
+        type: 'post',        
+        data: {
+            NoSol:NoSol, recibe:recibe
+            
+        },
+    success: function(data){
+        $('#CajaPago_distribucion').html(data);                
+        $('#PreLoader').hide();
+        
+    }
+    });
+
+
+}  
+
+
+function Pagar(){
+    NoSol = $('#NoSol').val();
+    recibe = $('#CantidadRecibida').val();
+
+    $('#PreLoader').show();           
+    $.ajax({
+        url: 'app_caja_dat_pagar.php',
+        type: 'post',        
+        data: {
+            NoSol:NoSol, recibe:recibe
+            
+        },
+    success: function(data){
+        $('#CajaPago_distribucion').html(data);                
+        $('#PreLoader').hide();
+        
+    }
+    });
+
+
+}  
+
 </script>
 <?php
 ?>

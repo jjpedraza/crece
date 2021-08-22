@@ -89,11 +89,22 @@ if (isset($_GET['id'])){
 
                 $htmlPDF.='<tr>';
                 if ($c%2==0){ 
-                    $htmlPDF.='<td colspan="3" style="font-style: italic; font-size:6pt; text-align:center; border: 1px solid #e0e0e0; background-color: #ffccdd;">'.$Pagos['Descripcion'];
-                    $htmlPDF.='<br></td>';
+                    if (isset($_GET['full'])){
+                        $htmlPDF.='<td colspan="3" style="font-style: italic; font-size:6pt; text-align:center; border: 1px solid #e0e0e0; background-color: #ffccdd;">'.$Pagos['Descripcion_larga'];
+                        $htmlPDF.='<br></td>';
+                    } else {
+                        $htmlPDF.='<td colspan="3" style="font-style: italic; font-size:6pt; text-align:center; border: 1px solid #e0e0e0; background-color: #ffccdd;">'.$Pagos['Descripcion'];
+                        $htmlPDF.='<br></td>';
+                    }
                 } else {
-                    $htmlPDF.='<td colspan="3" style="font-style: italic; font-size:6pt; text-align:center; border: 1px solid #e0e0e0; background-color: #ff99bb;">'.$Pagos['Descripcion'];
-                    $htmlPDF.='<br></td>';
+                    if (isset($_GET['full'])){
+                        $htmlPDF.='<td colspan="3" style="font-style: italic; font-size:6pt; text-align:center; border: 1px solid #e0e0e0; background-color: #ff99bb;">'.$Pagos['Descripcion_larga'];
+                        $htmlPDF.='<br></td>';
+                    } else {
+                        $htmlPDF.='<td colspan="3" style="font-style: italic; font-size:6pt; text-align:center; border: 1px solid #e0e0e0; background-color: #ff99bb;">'.$Pagos['Descripcion'];
+                        $htmlPDF.='<br></td>';
+
+                    }
 
                 }
 

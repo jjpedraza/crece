@@ -17,6 +17,7 @@ if ($PagosQueDebe<= 0){
 
     } else {//Selecciono un pago
         $DebeTotal=DebePago($NoSol,$NSelect);
+        echo "<script>$('#CajaPago_distribucion').html('');</script>";
     }
     // $DebeTotal=DebeTotal($NoSol);
     //--------\/ Cantidad a Recibir
@@ -25,16 +26,31 @@ if ($PagosQueDebe<= 0){
         $Label="Recibida:";
         $SmallText="Cantidad que recibe en caja";
         $Value = Moneda($DebeTotal);
+        echo '<table width=100%><tr><td>';
         echo '
             <label for="'.$IdElement.'" style="font-size:8pt;">'.$Label.'</label>
             <input title="'.$Value.'" style="cursor:pointer; font-size:12pt; height:50px; margin-top:-7px;" type="number" class="form-control" id="'.$IdElement.'" placeholder="" value="'.$Value.'" >
             <small id="'.$IdElement.'_smalltext'.'" class="form-text text-muted" style="font-size: 7pt;
-            margin-top: -2px;">'.$SmallText.'</small>
-        </div>';
+            margin-top: -2px;">'.$SmallText.'</small>';
+        echo '</td><td width=50px valign=midle><button style="margin-top:10px;" class="btn btn-primary" onclick="RepartirPago();"><img src="icons/btn_derecha.png" style="width:32px;"></button></td></tr></table>';
+        echo '</div>';
+
     //------ /\ Cantidad a Recibir
+
+
 }
 ?>
 
+<script>
+    var btn2 = document.getElementById("CantidadRecibida");
+btn2.addEventListener("keydown", function (e) {
+    if (e.keyCode === 13) {  //checks whether the pressed key is "Enter"
+        RepartirPago();
+    }
+});  
+
+
+</script>
 <?php
 // include("footer.php");
 ?>

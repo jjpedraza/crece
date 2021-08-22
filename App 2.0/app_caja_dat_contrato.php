@@ -12,8 +12,21 @@ if ($PagosQueDebe<= 0){
 } else {
     $NSelect = VarClean($_POST['n']);
     if ($NSelect == 0) {
-        $sql = "select * from cartera WHERE nosol='".$NoSol."' and EstadoPago='SIN PAGAR' order by NPago + 0";
+
+        if (isset($_POST['mode'])){
+            $sql = "select * from cartera WHERE nosol='".$NoSol."'  order by NPago + 0";
+        } else {
+            $sql = "select * from cartera WHERE nosol='".$NoSol."' and EstadoPago='SIN PAGAR' order by NPago + 0";
+        }
+
         $r= $db1 -> query($sql);
+        if (isset($_POST['mode'])){
+            echo "<img title='PAGOS QUE DEBE' onclick='CargaContrato(0);' src='icons/arriba.png' style='width:12px; cursor:pointer;'>";
+        } else {
+            echo "<img title='TODOS LOS PAGOS' onclick='CargaContrato_full(0);' src='icons/abajo.png' style='width:12px; cursor:pointer;'>";
+            
+
+        }
         echo "<table class='tabla'>";
         echo "<th>No</th>";
         echo "<th>Debe</th>";
@@ -21,23 +34,77 @@ if ($PagosQueDebe<= 0){
         
         $Curp = "";
         $GranTotal = 0;
+
         while($Sol = $r -> fetch_array()) {          
+
             if ($Sol['CarteraEstatus']=='VENCIDO'){
                 echo "<tr style='background-color:red;'>";
             } else {
-                echo "<tr>";
+                if ($Sol['CarteraEstatus']=='PAGADO'){
+                    echo "<tr style='background-color:green;'>";
+                } else {
+                    echo "<tr>";
+                }
+                
             }
             
-            echo "<td><a rel=MyModal:open style='font-size:9pt;cursor:pointer;' href='#Info_".$Sol['NPago']."'>".$Sol['NPago']."</a></td>";
-            echo "<div id='Info_".$Sol['NPago']."' class='MyModal'>";
-            echo "<h5>Detalles del Pago No.".$Sol['NPago']."</h5>";
-            echo "<table>";
-            echo "<tr><td>Capital: </td><td>".Pesos($Sol['abono'])."</td></tr>";
-            echo "</table>";
+            echo "<td><a title='Haz clic aqui para Ver Detalles de Este Pago' rel=MyModal:open style='font-size:9pt;cursor:pointer;' href='#Info_".$Sol['NPago']."'>".$Sol['NPago']."</a></td>";
+            
+            echo "<div id='Info_".$Sol['NPago']."' class='MyModal' style='font-size:10pt; font-family:auto;'>";
+            echo "<h5 style='
+                background-color: #680632;
+                color: white;
+                text-align: center;
+                border-top-left-radius: 6px;
+                border-top-right-radius: 6px;
+                margin-top: -9px;
+                margin-right: -22px;
+                margin-left: -24px;
+                padding: 6px;
+            '>Detalles del Pago No.".$Sol['NPago']."</h5>";
+                // echo "<b>Numero de Pago </b>: ".$Sol['NPago']."<br>";
+                echo "<b>Abono </b>: ".Pesos($Sol['abono'])."<br>";
+                echo "<b>Interes </b>: ".Pesos($Sol['interes'])."<br>";
+                echo "<b>Impuesto (IVA) </b>: ".Pesos($Sol['iva'])."<br>";
+                echo "<b>Dias Moratorios </b>: ".$Sol['mora_dias']."<br>";
+                echo "<b>Forma de Pago </b>: (".$Sol['formadepago'].") ".$Sol['formadepago_tipo']."<br>";
+                echo "<b>Tasa Int. Moratorio</b>: ".$Sol['mora_tasa']."%<br>";
+                echo "<b>Interes Moratorio por Dia </b>: ".Pesos($Sol['mora_dia'])."<br>";
+                echo "<b>Interes Moratorio </b>: ".Pesos($Sol['mora_debe'])."<br>";
+                echo "<b>Semanas de Retraso </b>: ".$Sol['Semanas']."<br>";
+                echo "<b>Cargo por cada Semana </b>: ".Pesos($Sol['CargoSemana'])."<br>";
+                echo "<b>Cargo Semanal </b>: ".Pesos($Sol['CargoSemanal'])."<br>";
+                echo "<b>Cargo Extraordinario ".$Sol['CargoExtraOrdinario_concepto']." </b>: ".Pesos($Sol['CargoExtraOrdinario_cantidad'])."<br>";
+                echo "<hr><b style='font-size:12pt;'>Subtotal: ".Pesos($Sol['subTOTAL'])."</b><br>";                
+                echo "<b>Descuento ".$Sol['Descuento_concepto']." </b>: ".$Sol['Descuento_cantidad']."<br><hr>";
+
+                echo "<div style='
+                    background-color: #680632;
+                    color: white;
+                    text-align: center;
+                    margin-right: -22px;
+                    margin-left: -22px;
+                '><b style='font-size:14pt;'>TOTAL: ".Pesos($Sol['TOTAL'])."</b><br>";
+                echo "<cite style='font-size:8pt;'>".NumToLetras_Moneda($Sol['TOTAL'])."</cite></div><br>";
+                echo "";
+                echo "<b>Ahorro en este pago </b>: ".$Sol['CajaAhorro']."<br>";
+                echo "<b>Fecha en que Pago: </b>: ".$Sol['CajaFecha']." | ";
+                echo "<b>Estatus: </b>: ".$Sol['CarteraEstatus']."<br>";
+
+                
+                    
+                    echo "<a target=_blank class='btn btn-primary' href='print_ticket.php?nosol=".$NoSol."&n=".$Sol['NPago']."'>Ticket</a> ";
+                    echo "<a target=_blank class='btn btn-primary' href='print_recibo.php?nosol=".$NoSol."&n=".$Sol['NPago']."'>Recibo</a>";
+                
+            
+                // echo "<a href='app_descuento.php?nosol=".$NoSol."&n=".$Sol['NPago']."' class='btn btn-primary'>Hacer Descuento</a>";
+
+
+                // var_dump($Sol);
 
             echo "</div>";
 
-            echo "<td><a style='font-size:9pt;cursor:pointer;' class='btn-Link' onclick='CajaComponents(".$Sol['NPago'].");'>".Pesos($Sol['TOTAL'])."</a></td>";
+            echo "<td><a title='Haz clic aqui para escribir esta cantidad en RECIBIR' style='font-size:9pt;cursor:pointer;' class='btn-Link' onclick='CajaComponents(".$Sol['NPago'].");'>".Pesos($Sol['TOTAL'])."</a></td>";
             if ($Sol['CarteraEstatus']=='VENCIDO'){            
                 echo "<td>".DiasAmigables($Sol['mora_dias'])."</td>";
             } else {
@@ -55,8 +122,10 @@ if ($PagosQueDebe<= 0){
         </td>";
         echo "</table>";
 
-        echo "<hr><a target=_blank class='btn btn-secondary' href='print_edocuenta.php?id=".$NoSol."'>Edo.Cuenta</a> ";
-        echo "<a target=_blank class='btn btn-secondary' href='/app_carnet.php?id=".$Curp."'>Cliente</a>";
+        echo "<hr><a target=_blank class='btn btn-warning' href='print_edocuenta.php?id=".$NoSol."'>Edo.Cuenta</a> ";
+        echo "<a target=_blank class='btn btn-warning' href='print_edocuenta.php?id=".$NoSol."&full='><img src='icons/correcto1.png' style='width:25px;'></a><br> ";
+        echo "<a target=_blank class='btn btn-secondary' href='app_solicitud.php?n=".$NoSol."'>Cuenta</a> ";
+        echo "<a target=_blank class='btn btn-secondary' href='app_carnet.php?id=".$Curp."'>Cliente</a>";
         unset($r,$sql, $Sol);
 
         echo "<script>CajaComponents(0);</script>";

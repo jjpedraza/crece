@@ -363,17 +363,42 @@ require("rintera-config.php");
 
 
 function Cliente_Nombre($IdCliente){
-require("rintera-config.php");   
-    $sql = "select nombre as valor from clientes where curp='".$IdCliente."'";
-    $rc= $db1 -> query($sql);    
-    if($f = $rc -> fetch_array())
-    { 
-        return $f['valor'];
-    } else { return '';}
-
+    require("rintera-config.php");   
+        $sql = "select nombre as valor from clientes where curp='".$IdCliente."'";
+        $rc= $db1 -> query($sql);    
+        if($f = $rc -> fetch_array())
+        { 
+            return $f['valor'];
+        } else { return '';}
     
+        
 }
 
+    
+function Cliente_Grupo($IdCliente){
+    require("rintera-config.php");   
+        $sql = "select * from clientes where curp='".$IdCliente."'";
+        $rc= $db1 -> query($sql);    
+        if($f = $rc -> fetch_array())
+        { 
+            return $f['grupo']." ".$f['grupo_cargo'];
+        } else { return '';}
+    
+        
+}
+     
+
+function Cuenta_NPagos($nosol){
+    require("rintera-config.php");   
+        $sql = "select count(*) as n from cartera where nosol='".$nosol."'";
+        $rc= $db1 -> query($sql);    
+        if($f = $rc -> fetch_array())
+        { 
+            return $f['n'];
+        } else { return '';}
+    
+        
+}
 
 function Cliente_Telefono($IdCliente){
 require("rintera-config.php");   
@@ -451,6 +476,19 @@ function DebePago($NoSol,$NPago){
     if($f = $rc -> fetch_array())
     { 
         return $f['total'];
+    } else { return 0;}
+    
+        
+}
+
+
+function IdCorte(){
+    require("rintera-config.php");   
+    $sql = "select max(id)+1 as id from corte";        
+    $rc= $db1 -> query($sql);    
+    if($f = $rc -> fetch_array())
+    { 
+        return $f['id'];
     } else { return 0;}
     
         
