@@ -341,72 +341,19 @@ if ($Sol['valoracion']==''){
             // echo "<h4>Estado de Cuenta:</h4>";
 
             echo "<div style='width:100%; text-align:right;margin:10px; margin-right:40px;'><a href='print_edocuenta.php?id=".$Sol['nosol']."' class='btn btn-secondary'>Imprimir Estado de Cuenta</a></div>";
-            // echo "<table class='tabla'>";
-            // echo "
-            //     <th>No</th>
-            //     <th>Fecha</th>
-            //     <th>Abono</th>
-            //     <th>Interes</th>
-            //     <th>IVA</th>
-            //     <th>Moratorios</th>
-            //     <th>Cargos</th>
-            //     <th>Descuentos</th>
-            //     <th>Total</th>
-            //     <th>Estado</th>
-            //     <th></th>
-
-            // ";
-            // while($fx= $rx -> fetch_array()) {  
-            // if ($fx['EstadoPago']=='SIN PAGAR'){
-            //     echo "<tr style='background-color:orange;'>";    
-            // } else {
-            //     echo "<tr>";
-            // }
-            //     echo "<td>".$fx['n']."</td>";
-            //     echo "<td>".$fx['fecha']."</td>";
-            //     echo "<td>".Pesos($fx['abono'])."</td>";
-            //     echo "<td>".Pesos($fx['interes'])."</td>";
-            //     echo "<td>".Pesos($fx['iva'])."</td>";
-            //     echo "<td>".Pesos($fx['mora_debe'])." <label class='pc' style='font-size:7pt;color:black;'> (<b style='cursor:help;' title='Dias de Atraso'>".$fx['mora_dias']."</b> dias * <b  style='cursor:help;' title='Valor calculado del dia moratorio basado en el % de moratorio de cuenta'>".Pesos($fx['mora_dia'])."</b>)</label>"."</td>";
-            //     echo "<td>".$fx['CargoSemanal']."(Cargo Semanal) <label style='font-size:7pt;color:black;'> (<b  style='cursor:help;' title='Semanas de Atraso'>".$fx['Semanas']."</b> * <b   style='cursor:help;' title='Cargo por Semana'>".$fx['CargoSemana']."</b>)";
-                
-            //     // if ($fx['CargoExtra'] == 0 ){
-                    
-            //     // } else {
-            //         echo " + <b style='cursor:help;' title='Cargos Extraordinarios'>".$fx['CargoExtra']."</b>";    
-            //     // }
-                
-                
-            //     echo "</td>";
-            //     echo "<td>".$fx['Descuento']."</td>";
-            //     echo "<td><b>".Pesos($fx['TOTAL'])."</b></td>";
-            //     if ($fx['EstadoPago']=='PAGADO'){
-            //         echo "<td>".$fx['EstadoPago']."</td>";
-            //     } else {
-            //         echo "<td><a title='Ir a PAGAR' href='app_caja.php?nosol=".$fx['nosol']."&n=".$fx['n']."'>".$fx['EstadoPago']."</a></td>";
-
-            //     }
-            //     echo "<td>".$fx['comentario']."</td>";
-
-              
-            //     echo "</tr>";
-            // }
-            // unset($fx, $rx, $sqlX);
-
-            // echo "</table>";
-            // }
+           
 
 
             $QueryM = "select 
-            no,
+            NPago,
             fecha,
-            Cantidad,
-            Descripcion,
+            TOTAL,
             EstadoPago,
-            Caja as CajaPago,
-            CajaDescripcion
+            CajaCantidad
 
-            from edocuenta where nosol='20140515195' order by no + 0";
+            from cartera where nosol='".$NoSol."'";
+            //  order by no + 0";
+
             TableData($QueryM, $Tit="Estado de Cuenta:", $IdDiv="TableData_Div", $IdTabla="TableData_table", $Clase="", $Tipo=2);
 
             echo "</div>";
@@ -469,15 +416,77 @@ if ($Sol['valoracion']==''){
 
     $sql="select * from sol_ where valoracion = ''";
     TableData($sql,"Solicitudes sin aprobar"); //0 = Basica, 1 = ScrollVertical, 2 = Scroll Horizontal
+
+   
     }
+
 }
 
 
 
 
-// echo "<div id='mas' class='container' style='background-color:#77bddf; border-radius:5px;padding:5px; margin-top:20px;'>";
+echo "<div id='mas' class='container' style='background-color:#fde1ab; border-radius:5px;padding:5px; margin-top:20px; margin-bottom:20px;'>";
+echo "<h4>CAPTURAR DESCEUNTO</h4>";
+$IdDiv = "DivCaptura1";
 
-// echo "</div>";
+echo '
+        <div class="form-group disable" id="'.$IdDiv.'" style="margin: 4px;
+        padding: 4px;
+        border-radius: 5px;
+        vertical-align: top;">';
+        $IdElement = "DescuentoCantidad";
+        $Value = 0;
+        $Label = "Cantidad a descontar";
+        $SmallText = "Solo se puede agregar un descuento si tiene pagos pendientes";
+
+        echo '
+            <label for="'.$IdElement.'" style="font-size:8pt;">'.$Label.'</label>
+            <input title="'.$Value.'" style="cursor:pointer; font-size:9pt; margin-top:-7px;" type="number" class="form-control" id="'.$IdElement.'" placeholder="" value="'.$Value.'" >
+            <small id="'.$IdElement.'_smalltext'.'" class="form-text text-muted" style="font-size: 7pt;
+            margin-top: -2px;">'.$SmallText.'</small>
+        </div>';
+
+        $sql = "select nosol, NPago, TOTAL, EstadoPago from cartera where nosol='20140530151' and EstadoPago='SIN PAGAR'";
+        $r= $db1 -> query($sql);
+
+        echo '<div class="form-group disable" id="'.$IdDiv.'2" style="margin: 4px;
+        padding: 4px;
+        border-radius: 5px;
+        vertical-align: top;">
+        <label>NPago:<label><br>
+        <select id="NPago" class="form-control">
+        ';
+        
+        while($f = $r -> fetch_array()) {      
+            echo '<option value="'.$f['NPago'].'">'.$f['NPago'].' = '.$f['TOTAL'].'</div>';
+        }
+        echo '</select>';
+        unset($f,$sql);
+        echo '</div>';
+    
+        echo '<div class="form-group disable" id="'.$IdDiv.'2" style="margin: 4px;
+        padding: 4px;
+        border-radius: 5px;
+        vertical-align: top;">
+        
+        
+        ';
+        $IdElement = "DescuentoConcepto";
+        $Value = 0;
+        $Label = "Concepto";
+        $SmallText = "";
+
+        echo '
+            <label for="'.$IdElement.'" style="font-size:8pt;">'.$Label.'</label>
+            <input title="'.$Value.'" style="cursor:pointer; font-size:9pt; margin-top:-7px;" type="text" class="form-control" id="'.$IdElement.'" placeholder="" value="'.$Value.'" >
+            <small id="'.$IdElement.'_smalltext'.'" class="form-text text-muted" style="font-size: 7pt;
+            margin-top: -2px;">'.$SmallText.'</small>
+        </div>';
+        echo "<br>";
+
+        echo "<button class='btn btn-success' onclick='Descontar();'>Crear Descuento</button>";
+
+echo "</div>";
 
 ?>
 <script>
@@ -553,6 +562,30 @@ function CorridaF(){
                 },
                 success: function(data) {
                     $('#CorridaF').html(data);
+                    $('#PreLoader').hide();
+                }
+            });
+}
+
+
+
+function Descontar(){
+   //Variables
+   NoSol = '<?php echo $_GET['n']; ?>';
+   DescuentoCantidad = $('#DescuentoCantidad').val();
+   NPago = $('#NPago').val();
+   DescuentoConcepto = $('#DescuentoConcepto').val();
+
+   $('#PreLoader').show();
+            $.ajax({
+                url: 'app_solicitud_descontar.php',
+                type: 'post',
+                data: {
+                    NoSol:NoSol, DescuentoCantidad:DescuentoCantidad,NPago:NPago, DescuentoConcepto:DescuentoConcepto
+       
+                },
+                success: function(data) {
+                    $('#R').html(data);
                     $('#PreLoader').hide();
                 }
             });

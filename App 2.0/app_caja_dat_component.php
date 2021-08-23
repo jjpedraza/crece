@@ -9,6 +9,7 @@ $PagosQueDebe = NDebe($NoSol);
 
 if ($PagosQueDebe<= 0){
     Toast("El Contrato ".$NoSol." no debe ningun pago",2,"");
+    echo "<script>AhorroDiv();</script>";
 } else {
     $NSelect = VarClean($_POST['n']);
     if ($NSelect == 0) {

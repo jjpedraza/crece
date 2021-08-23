@@ -472,6 +472,7 @@ function DebeTotal($NoSol){
 function DebePago($NoSol,$NPago){
     require("rintera-config.php");   
     $sql = "select sum(TOTAL) as total from cartera WHERE nosol='".$NoSol."' and EstadoPago='SIN PAGAR' and NPago='".$NPago."'";        
+    echo $sql;
     $rc= $db1 -> query($sql);    
     if($f = $rc -> fetch_array())
     { 
@@ -493,4 +494,84 @@ function IdCorte(){
     
         
 }
+
+function NPago_Moratorio($NoSol, $NPago){
+    require("rintera-config.php");   
+    $sql = "select sum(mora_debe) as resultado from cartera WHERE nosol='".$NoSol."' and NPago='".$NPago."'";        
+    $rc= $db1 -> query($sql);    
+    if($f = $rc -> fetch_array())
+    { 
+        return $f['resultado'];
+    } else { return 0;}
+    
+        
+}
+
+
+function NPago_ExtraOrdinario($NoSol, $NPago){
+    require("rintera-config.php");   
+    $sql = "select sum(CargoExtraOrdinario_cantidad) as resultado from cartera WHERE nosol='".$NoSol."' and NPago='".$NPago."'";        
+    $rc= $db1 -> query($sql);    
+    if($f = $rc -> fetch_array())
+    { 
+        return $f['resultado'];
+    } else { return 0;}
+    
+        
+}
+function NoSol_Ahorro($NoSol){
+    require("rintera-config.php");   
+    $sql = "select 
+    (sum(ahorro) - sum(ahorro_retiro)) as AhorroTotal    
+    from corte where 
+    nosol='".$NoSol."'";
+    $rc= $db1 -> query($sql);    
+    if($f = $rc -> fetch_array())
+    { 
+        return $f['AhorroTotal'];
+    } else { return 0;}
+    
+        
+}
+
+
+function NPago_CargoSemanal($NoSol, $NPago){
+    require("rintera-config.php");   
+    $sql = "select sum(CargoSemanal) as resultado from cartera WHERE nosol='".$NoSol."' and NPago='".$NPago."'";        
+    $rc= $db1 -> query($sql);    
+    if($f = $rc -> fetch_array())
+    { 
+        return $f['resultado'];
+    } else { return 0;}
+    
+        
+}
+
+function Tickets($NoSol, $NPago){
+    require("rintera-config.php");   
+    $sql="select * from corte where nosol='".$NoSol."' and no='".$NPago."' order by fecha";
+    $r= $db1 -> query($sql);
+        echo "<div style='
+        font-family: Regular; font-size:10pt; background-color:#e3e3e3; border-radius:5px; padding:10px; width:100%; margin:5px;
+        '>Tickets correspondientes al contrato ".$NoSol." y pago No. ".$NPago.": <br>";
+        while($f = $r -> fetch_array()) {      
+            echo " <a title='Haz clic aqui para imprimir el Ticket' target=_blank class='btn btn-primary' href='print_ticket.php?id=".$f['id']."'><img src='icons/embarques_print2.png' style='width:18px;'> ".$f['id']."</a> ";
+        }
+        echo "</div>";
+}
+
+function TicketsHoy($NoSol){
+    require("rintera-config.php");   
+    $sql="select * from corte where nosol='".$NoSol."' and fecha='".$fecha."' order by id DESC";
+    $r= $db1 -> query($sql);
+        echo "<div style='
+        font-family: Regular; font-size:10pt; background-color:#e3e3e3; border-radius:5px; padding:10px; width:100%; margin:5px;
+        '>Tickets de Hoy de este contrato ".$NoSol.": <br>";
+        while($f = $r -> fetch_array()) {      
+            echo " <a title='Haz clic aqui para imprimir el Ticket' target=_blank class='btn btn-primary' href='print_ticket.php?id=".$f['id']."'><img src='icons/embarques_print2.png' style='width:18px;'> ".$f['id']."</a> ";
+        }
+        echo "</div>";
+}
+
+
 ?>

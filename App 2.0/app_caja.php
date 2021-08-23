@@ -40,7 +40,8 @@ background-color: #79284a;
 <div id='CajaPago'>
     <div id='CajaPago_recibe'></div>
     <div id='CajaPago_distribucion'></div>
-    <div id='CajaBotones'>    
+    <div id='CajaAhorro'>    
+        
        
     </div>
 
@@ -133,7 +134,7 @@ function CajaComponents(n){
         
     }
     });
-
+    AhorroDiv();
 
 }  
 
@@ -184,7 +185,102 @@ function Pagar(){
 
 }  
 
-</script>
+
+function AhorroDiv(){
+    NoSol = $('#NoSol').val();
+    
+
+    $('#PreLoader').show();           
+    $.ajax({
+        url: 'app_caja_dat_ahorro.php',
+        type: 'post',        
+        data: {
+            NoSol:NoSol
+            
+        },
+    success: function(data){
+        $('#CajaAhorro').html(data);                
+        $('#PreLoader').hide();
+        
+    }
+    });
+
+
+}  
+
+function AhorroDiv(){
+    NoSol = $('#NoSol').val();
+    
+
+    $('#PreLoader').show();           
+    $.ajax({
+        url: 'app_caja_dat_ahorro.php',
+        type: 'post',        
+        data: {
+            NoSol:NoSol
+            
+        },
+    success: function(data){
+        $('#CajaAhorro').html(data);                
+        $('#PreLoader').hide();
+        
+    }
+    });
+
+
+}  
+
+    
+function Ahorrar(){
+    NoSol = $('#NoSol').val();
+    CantidadAhorro = $('#CantidadAhorro').val();
+
+    // console.log('Ahorrar');
+
+    $('#PreLoader').show();           
+    $.ajax({
+        url: 'app_caja_dat_ahorrar.php',
+        type: 'post',        
+        data: {
+            NoSol:NoSol, CantidadAhorro:CantidadAhorro
+            
+        },
+    success: function(data){
+        $('#R').html(data);                
+        $('#PreLoader').hide();
+        
+    }
+    });
+
+
+}  
+
+
+function Ahorrar_retiro(){
+    NoSol = $('#NoSol').val();
+    CantidadAhorro_retirar = $('#CantidadAhorro_retirar').val();
+    
+
+    $('#PreLoader').show();           
+    $.ajax({
+        url: 'app_caja_dat_ahorrar_retiro.php',
+        type: 'post',        
+        data: {
+            NoSol:NoSol, CantidadAhorro_retirar:CantidadAhorro_retirar
+            
+        },
+    success: function(data){
+        $('#R').html(data);                
+        $('#PreLoader').hide();
+        
+    }
+    });
+
+
+} 
+</script> 
+
+
 <?php
 ?>
 <?php

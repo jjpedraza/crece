@@ -22,10 +22,49 @@ if (isset($_GET['id'])){ //Ticket
         echo '<b style="font-size:10pt; font-family:courier new;">'.$Curp.'</b><br>';
         echo '<b style="font-size:10pt; font-family:courier new;">'.$Grupo.'</b><br>';
         echo '<b style="font-size:10pt; font-family:courier new;">Contrato: '.$f['nosol'].'</b><br>';
+        echo '<b style="font-size:10pt; font-family:courier new;">IdTicket: '.$f['id'].'</b><br>';
+        echo '<b style="font-size:10pt; font-family:courier new;">No: '.$f['no'].'/'.Cuenta_NPagos($f['nosol']).'</b>';
+
+        echo '<p style="font-size:8pt;  font-family:courier new;">';
+
+        if ($f['ahorro']>0) {
+            echo 'Ahorro: '.Pesos($f['ahorro']).'<br>';            
+            echo'------------------------------------<br>';
+            echo "TOTAL AHORRADO: ".Pesos(NoSol_Ahorro($f['nosol']))."<br>";
+        } else {
+
+            if ($f['ahorro_retiro']>0) {
+                echo 'Retiro Ahorro: '.Pesos($f['ahorro_retiro']).'<br>';            
+                echo'------------------------------------<br>';
+                echo "TOTAL AHORRADO: ".Pesos(NoSol_Ahorro($f['nosol']))."<br>";
+
+            } else {
+                echo 'Morat: '.Pesos($f['moratorio']).'<br>';
+                echo 'C.Sem: '.Pesos($f['cargosemanal']).'<br>';
+                echo 'Extra: '.Pesos($f['extras']).' <br>';        
+                echo 'Int.Fi: '.Pesos($f['interes']).'<br>';
+                echo 'IVA: '.Pesos($f['impuesto']).'<br>';        
+                echo 'Cap: '.Pesos($f['capital']).'<br>';
+                echo'------------------------------------<br>';
+                echo 'Pago: '.Pesos($f['valor']).'<br>';
+            }
+        }
+        
+        echo '<br><br>Recibido: '.$f['fecha'].'<br>';
+        // echo 'Pago: '.Pesos($f['valor']).'<br>';
+        // echo 'Pago: '.Pesos($f['valor']).'<br>';
 
         
+        echo '</p>';
 
-        echo '<b style="font-size:10pt; font-family:courier new;">No: '.$f['no'].'/'.Cuenta_NPagos($f['nosol']).'</b>';
+        echo '<br><p style="font-size:7.5pt; text-transform:uppercase; font-family:courier new;">Contratar prestamos <br>por arriba de tu capacidad de pago,<br>puede afectar tu patrimonio<br>y tu historial crediticio.<br></p>';
+        
+        echo '<p style="font-size:8pt; text-transform:uppercase; font-family:courier new;">';
+
+        echo 'Imp. '.$fecha.':'.$hora.'<br>';
+        echo 'usuario: '.$RinteraUser;
+        echo '</p>';
+
         
 
     } else {
@@ -44,5 +83,6 @@ if (isset($_GET['id'])){ //Ticket
 }
 
 
-    
+
 ?>
+<script>window.print();</script>    

@@ -9,7 +9,9 @@ $PagosQueDebe = NDebe($NoSol);
 
 if ($PagosQueDebe<= 0){
     Toast("El Contrato ".$NoSol." no debe ningun pago",2,"");
-} else {
+    echo "<script>AhorroDiv();</script>";
+} 
+
     $NSelect = VarClean($_POST['n']);
     if ($NSelect == 0) {
 
@@ -93,8 +95,8 @@ if ($PagosQueDebe<= 0){
 
                 
                     
-                    echo "<a target=_blank class='btn btn-primary' href='print_ticket.php?nosol=".$NoSol."&n=".$Sol['NPago']."'>Ticket</a> ";
-                    echo "<a target=_blank class='btn btn-primary' href='print_recibo.php?nosol=".$NoSol."&n=".$Sol['NPago']."'>Recibo</a>";
+                Tickets($NoSol, $Sol['NPago']);
+                    
                 
             
                 // echo "<a href='app_descuento.php?nosol=".$NoSol."&n=".$Sol['NPago']."' class='btn btn-primary'>Hacer Descuento</a>";
@@ -123,7 +125,7 @@ if ($PagosQueDebe<= 0){
         echo "</table>";
 
         echo "<hr><a target=_blank class='btn btn-warning' href='print_edocuenta.php?id=".$NoSol."'>Edo.Cuenta</a> ";
-        echo "<a target=_blank class='btn btn-warning' href='print_edocuenta.php?id=".$NoSol."&full='><img src='icons/correcto1.png' style='width:25px;'></a><br> ";
+        echo "<a title='Estado de cuenta con descripcion muy detallada' target=_blank class='btn btn-warning' href='print_edocuenta.php?id=".$NoSol."&full='><img src='icons/correcto1.png' style='width:25px;'></a><br> ";
         echo "<a target=_blank class='btn btn-secondary' href='app_solicitud.php?n=".$NoSol."'>Cuenta</a> ";
         echo "<a target=_blank class='btn btn-secondary' href='app_carnet.php?id=".$Curp."'>Cliente</a>";
         unset($r,$sql, $Sol);
@@ -135,7 +137,7 @@ if ($PagosQueDebe<= 0){
     } else {//Selecciono un pago
 
     }
-}
+
 ?>
 
 <?php

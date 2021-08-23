@@ -14,6 +14,7 @@ if (isset($_GET['id'])){
         *
 
         from edocuenta where nosol='".$NoSol."' order by no + 0";
+        // echo $sqlX;
         $rx = $db1->query($sqlX);    
         if ($db1->query($sqlX) == TRUE){   
             $PDFTitulo="ESTADO DE CUENTA";
