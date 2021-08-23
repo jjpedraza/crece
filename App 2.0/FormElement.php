@@ -21,18 +21,7 @@ function FormElement_input($Label, $Value="", $PlaceHolder = "", $SmallText = ""
     }
 
     if ($disable == TRUE){
-        echo '
-        <div class="form-group disable" id="'.$IdDiv.'" style="margin: 4px;
-        padding: 4px;
-        border-radius: 5px;
-        vertical-align: top;">';
-
-        echo '
-            <label for="'.$IdElement.'" style="font-size:8pt;">'.$Label.'</label>
-            <input title="'.$Value.'" style="cursor:pointer; font-size:9pt; margin-top:-7px;" type="'.$type.'" class="form-control" id="'.$IdElement.'" placeholder="'.$PlaceHolder.'" value="'.$Value.'" readonly>
-            <small id="'.$IdElement.'_smalltext'.'" class="form-text text-muted" style="font-size: 7pt;
-            margin-top: -2px;">'.$SmallText.'</small>
-        </div>';
+          
 
     } else {
         if ($Colorin == FALSE){
