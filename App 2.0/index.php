@@ -71,7 +71,8 @@ box-shadow: 1px 5px 5px -3px rgba(0,0,0,0.75);
 margin-top:  -21px;
 '>
     <div id='PreloaderBuscando' style='display:none;'>
-        Buscando <img src='img/loader_bar.gif'>
+        Cargando <img src='img/loader_bar.gif'><br>
+        ...Este proceso tardara unos momentos...
     </div>
 </div>
 
@@ -259,6 +260,19 @@ if (Preference("MostrarApps", "", "")=='TRUE'){
         margin-top:10px;
      '
      >Grupos</a>
+
+
+        <button onclick='Saldos()' title='Haga Clic aqui actualizar los saldos' class='btn btn-secondary'
+     style='
+        // background-color: #e6e6e6;
+        // color: #625f5f;
+        width: 100%;
+        font-size: 10pt;
+        text-align:left;
+        margin-top:10px;
+     '
+     >Actualizar Saldos </button>
+     <label style='font-size:7pt;'>aut. cada 3hr <br>Ultima Act. ".UltimaActSaldos()."</label>
      ";
 
     
@@ -320,7 +334,7 @@ echo "
     <script>
     function Search(){
         var busqueda = $('#InputBusqueda').val();
-         $('#PreloaderBuscando').show();                
+         $('#PreLoaderBuscando').show();                
             $.ajax({
                 url: 'search.php',
                 type: 'post',        
@@ -331,7 +345,7 @@ echo "
             success: function(data){
                 $('#Resultados').html(data);
                 
-                $('#PreloaderBuscando').hide();
+                $('#PreLoaderBuscando').hide();
                 $('#Dashboard').hide();
             }
             });
@@ -361,7 +375,30 @@ if (isset($_GET['q'])){
 <!-- <a href='#DivModal' rel=MyModal:open onclick='URLModal(1)' class='icon'><img src='icons/check3.png'></a> -->
 
 <!-- <a href="app_detalles.php?id=1&amp;tipo=AROMA&amp;var1=1" rel="MyModal:open" class="icon"><img src="icons/info.png"></a> -->
+<script>
+    function Saldos(){
+        console.log(':)')        ;
+         $('#PreLoader').show();                
+            $.ajax({
+                url: 'saldos.php',
+                type: 'post',        
+                data: {
 
+                },
+            success: function(data){
+                $('#R').html(data);
+                
+                $('#PreLoader').hide();
+       
+            }
+            });
+        
+       
+            
+    }
+    
+    
+</script>
 <?php
 Historia($RinteraUser, "HOME", "Acceso a la pagina principal");
 

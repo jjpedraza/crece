@@ -547,6 +547,20 @@ function NPago_CargoSemanal($NoSol, $NPago){
         
 }
 
+
+function UltimaActSaldos(){
+    require("rintera-config.php");   
+    $sql = "select CONCAT(act_fecha,': ',act_hora) as act from saldos limit 1";        
+    $rc= $db1 -> query($sql);    
+    if($f = $rc -> fetch_array())
+    { 
+        return $f['act'];
+    } else { return '';}
+    
+        
+}
+
+
 function Tickets($NoSol, $NPago){
     require("rintera-config.php");   
     $sql="select * from corte where nosol='".$NoSol."' and no='".$NPago."' order by fecha";
