@@ -109,49 +109,62 @@ if (Preference("MostrarApps", "", "")=='TRUE'){
 
 <div id='Dashboard'>
     <div id="DashboardCol1"  style="vertical-align: top;" >
-        <?php
-        $QueryG = "
-             
-            select CONCAT('Aprobadas') as Label,count(*) as Data from cuentas WHERE valoracion='APROBADO' UNION
-            select CONCAT('No Aprobadas') as Label,count(*) as Data from cuentas WHERE valoracion<>'APROBADO'
- 
-   
+    <?php
+     $Datas = ""; $Labels="";
+     $QueryG = "
+     select DISTINCT c.tipo, (select count(*) from contratos where tipo = c.tipo) as Contratos from contratos c where tipo <> ''
+     ";
+     $rF= $db1 -> query($QueryG);    
+     $Datas = ""; $Labels="";
+     while($Fr = $rF -> fetch_array()) {   
+         $Datas.= $Fr['Contratos'].", ";
+         $Labels.="'".$Fr['tipo']."',";
+     }
+     unset($rf);unset($Fr);
+     $Datas = substr($Datas, 0, -1); //quita la ultima coma.
+     $Labels = substr($Labels, 0, -1); //quita la ultima coma.
+         echo '<div style="" class="Graficas">';
+         GraficaPie($Labels,$Datas,"Tipos de Creditos",1);
+         echo '</div>';
+
+
+       $QueryG = "
+            select * from estadistica
         ";
-        $rF= $db1 -> query($QueryG);    
-        $Datas = ""; $Labels="";
-        while($Fr = $rF -> fetch_array()) {   
-            $Datas.= $Fr['Data'].", ";
-            $Labels.="'".$Fr['Label']."',";
-        }
-        unset($rf);unset($Fr);
-        $Datas = substr($Datas, 0, -1); //quita la ultima coma.
-        $Labels = substr($Labels, 0, -1); //quita la ultima coma.
+        $rc= $db1 -> query($QueryG);    
+        if($f = $rc -> fetch_array())
+        { 
+            $Datas= $f['CarteraActiva_recuperacion'].", ".$f['CarteraVencida_recuperacion'];
+            $Labels="'Saldo', 'Moratorios'";
+        } else { return '';}
+        
+        unset($rc, $f, $QueryG);
 
             echo '<div style="" class="Graficas">';
-            GraficaBar($Labels,$Datas,"Solicitudes");
+            GraficaBar($Labels,$Datas,"Saldos y Moratorios");
             echo '</div>';
         unset($rF, $Datas, $Labels);
-        ?>
+    ?>
 
 
     <?php
-        $QueryG = "
-             
-        select CONCAT('Grupales') as Label,count(*) as Data from cuentas WHERE  grupo<>'' UNION
-        select CONCAT('Individuales') as Label,count(*) as Data from cuentas WHERE grupo=''
-   
-        ";
-        $rF= $db1 -> query($QueryG);    
         $Datas = ""; $Labels="";
-        while($Fr = $rF -> fetch_array()) {   
-            $Datas.= $Fr['Data'].", ";
-            $Labels.="'".$Fr['Label']."',";
-        }
-        unset($rf);unset($Fr);
-        $Datas = substr($Datas, 0, -1); //quita la ultima coma.
-        $Labels = substr($Labels, 0, -1); //quita la ultima coma.
+        $QueryG = "
+            select * from estadistica
+        ";
+        $rc= $db1 -> query($QueryG);    
+        if($f = $rc -> fetch_array())
+        { 
+            $Datas= $f['CarteraActiva'].", ".$f['CarteraVencida'];
+            $Labels="'Contratos con Saldo ', 'Contratos Vencidos'";
+        } else { return '';}
+       
+        unset($rc, $f, $QueryG);
+        // $Datas = substr($Datas, 0, -1); //quita la ultima coma.
+        // $Labels = substr($Labels, 0, -1); //quita la ultima coma.
+        // echo $Datas.' | '.$Labels;
             echo '<div style="" class="Graficas">';
-            GraficaPie($Labels,$Datas,"Tipo de Cuentas");
+            GraficaPie($Labels,$Datas,"Cartera Activa y Vencida ");
             echo '</div>';
         ?>
 
@@ -184,6 +197,31 @@ if (Preference("MostrarApps", "", "")=='TRUE'){
             echo '<div style="" class="Graficas">';
             GraficaBarLine($Labels,$Datas,"Contrataciones",1);
             echo '</div>';
+        ?>
+
+
+
+        
+    <?php
+        // $QueryG = "
+             
+      
+	
+        // select DISTINCT c.tipo, (select count(*) from contratos where tipo = c.tipo) as Contratos from contratos c where tipo <> ''
+   
+        // ";
+        // $rF= $db1 -> query($QueryG);    
+        // $Datas = ""; $Labels="";
+        // while($Fr = $rF -> fetch_array()) {   
+        //     $Datas.= $Fr['contratos'].", ";
+        //     $Labels.="'".$Fr['MES']."',";
+        // }
+        // unset($rf);unset($Fr);
+        // $Datas = substr($Datas, 0, -1); //quita la ultima coma.
+        // $Labels = substr($Labels, 0, -1); //quita la ultima coma.
+        //     echo '<div style="" class="Graficas">';
+        //     GraficaBarLine($Labels,$Datas,"Contrataciones",1);
+        //     echo '</div>';
         ?>
 
     
@@ -272,7 +310,7 @@ if (Preference("MostrarApps", "", "")=='TRUE'){
         margin-top:10px;
      '
      >Actualizar Saldos </button>
-     <label style='font-size:7pt;'>aut. cada 3hr <br>Ultima Act. ".UltimaActSaldos()."</label>
+     <label style='font-size:7pt;'>Ultima Act. ".UltimaActSaldos()."</label>
      ";
 
     

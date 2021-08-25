@@ -118,6 +118,7 @@ if ($PagosQueDebe<= 0){
             $Curp = $Sol['CURP'];
             $GranTotal = $GranTotal + $Sol['TOTAL'];
         }
+        if ($GranTotal<=0){$GranTotal=0;}
         echo "<td colspan='3' style='background-color:orange; cursor:pointer;' onclick='CajaComponents(0);'>
         <b style='font-size:14pt;'>".Pesos($GranTotal)."</b><br>
         <cite>".NumToLetras_Moneda($GranTotal)."</cite>

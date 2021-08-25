@@ -18,6 +18,7 @@ if ($PagosQueDebe<= 0){
 
     } else {//Selecciono un pago
         $DebeTotal=DebePago($NoSol,$NSelect);
+        if ($DebeTotal<=0){$DebeTotal=0;}
         echo "<script>$('#CajaPago_distribucion').html('');</script>";
     }
     // $DebeTotal=DebeTotal($NoSol);
@@ -26,6 +27,7 @@ if ($PagosQueDebe<= 0){
         $IdElement = "CantidadRecibida";
         $Label="Recibida:";
         $SmallText="Cantidad que recibe en caja";
+        if ($DebeTotal<=0){$DebeTotal=0;}
         $Value = Moneda($DebeTotal);
         echo '<table width=100%><tr><td>';
         echo '

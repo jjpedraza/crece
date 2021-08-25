@@ -3,7 +3,7 @@ include("seguridad.php");
 require ("rintera-config.php");
 require ("components.php");
 // require ("app_funciones.php");
-
+$OK = FALSE;
 $NoSol = VarClean($_POST['NoSol']);
 $CantidadRecibida = VarClean($_POST['recibe']);
 $CantidadRecibida_calculada = $CantidadRecibida;
