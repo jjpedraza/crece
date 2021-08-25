@@ -40,7 +40,7 @@ if ($PagosQueDebe<= 0){
             //REPARTIMOS LA CANTIDAD RECIBIDA
             if ($CantidadRecibida_calculada > 0){
                 $Deuda = number_format($Sol['mora_debe']); 
-                echo "Deuda=".$Deuda;
+                // echo "Deuda=".$Deuda;
                 $CantidadRecibida_calculada = $CantidadRecibida_calculada -  $Deuda;         
                 if ($CantidadRecibida_calculada >= 0 ){$Reparto_Moratorios = $Deuda;} 
                 else {$Reparto_Moratorios = $CantidadRecibida_calculada + $Deuda;}
