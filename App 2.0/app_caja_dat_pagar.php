@@ -39,7 +39,7 @@ if ($PagosQueDebe<= 0){
             
             //REPARTIMOS LA CANTIDAD RECIBIDA
             if ($CantidadRecibida_calculada > 0){
-                
+                $CantidadRecibida_calculada = $CantidadRecibida_calculada  + $Sol['Descuento_cantidad'];    
 
                 $Deuda = $Sol['mora_debe']; $CantidadRecibida_calculada = $CantidadRecibida_calculada -  $Deuda;         
                 if ($CantidadRecibida_calculada >= 0 ){$Reparto_Moratorios = $Deuda;} 
@@ -89,6 +89,45 @@ if ($PagosQueDebe<= 0){
                     $OK = TRUE;
                     Toast("Guardado Correctamente ",4,"");
                     Historia($RinteraUser, "CAJA", "Inserto Pago ".$Sol['NPago']." por ".$CantidadRecibida."  SQL = ".addslashes($sqlIn));
+                    
+            
+                    
+                    
+                    
+
+                    if (
+                        $Reparto_Capital == $Sol['abono'] and
+                        $Reparto_Financiamiento == $Sol['interes'] and
+                        $Reparto_Impuestos == $Sol['iva'] and
+                        $Reparto_Extras == $Sol['CargoExtraOrdinario_cantidad'] and
+                        $Reparto_CargoSemanal == $Sol['CargoSemanal'] and
+                        $Reparto_Moratorios == $Sol['mora_debe']
+                    ){//PAGO COMPLETADO
+                        $sqlPago = "UPDATE tabladepagos SET
+                        estado='X'
+                        WHERE nosol='".$NoSol."' and no ='".$Sol['NPago']."'
+                        ";
+                        if ($db1->query($sqlPago) == TRUE){
+                            Toast("Se ha liquidado correctamente el pago No. ".$Sol['NPago'],4,"");
+                            Historia($RinteraUser, "CAJA", "Liquido el Pago ".$Sol['NPago']." por ".$CantidadRecibida."  SQL = ".addslashes($sqlIn));
+                        } else {
+                            Toast("Error al marcar como pagado en Pago No.".$Sol['NPago'],2,"");
+                        }
+                        unset($sqlPago);
+
+                    } else {
+                        Toast("Error",0,"");
+                        echo "No. de Pago ".$Sol['NPago'].": <br>";
+                        echo "Reparto_Moratorios $Reparto_Moratorios = ".$Sol['mora_debe']."<br>";
+                        echo "Reparto_CargoSemanal $Reparto_CargoSemanal = ".$Sol['CargoSemanal']."<br>";
+                        echo "Reparto_Extras $Reparto_Extras = ".$Sol['CargoExtraOrdinario_cantidad']."<br>";
+                        echo "Reparto_Financiamiento $Reparto_Financiamiento = ".$Sol['interes']."<br>";
+                        echo "Reparto_Impuestos $Reparto_Impuestos = ".$Sol['iva']."<br>";
+                        echo "Reparto_Capital $Reparto_Capital = ".$Sol['abono']."<br>";
+                        echo "CantidadRecibida_calculada =  $CantidadRecibida_calculada  "."<hr><br>";
+                        
+                        
+                    }
                     echo "
                     <script>
 

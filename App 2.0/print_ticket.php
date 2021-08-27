@@ -54,7 +54,7 @@ if (isset($_GET['id'])){ //Ticket
         // echo 'Pago: '.Pesos($f['valor']).'<br>';
         // echo 'Pago: '.Pesos($f['valor']).'<br>';
 
-        
+        echo "Descuento: ".NPago_Descuento($f['nosol'],$f['no'])."<br>";
         echo '</p>';
 
         echo '<br><p style="font-size:7.5pt; text-transform:uppercase; font-family:courier new;">Contratar prestamos <br>por arriba de tu capacidad de pago,<br>puede afectar tu patrimonio<br>y tu historial crediticio.<br></p>';

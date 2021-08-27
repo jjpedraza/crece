@@ -65,20 +65,17 @@ if ($PagosQueDebe<= 0){
                 padding: 6px;
             '>Detalles del Pago No.".$Sol['NPago']."</h5>";
                 // echo "<b>Numero de Pago </b>: ".$Sol['NPago']."<br>";
-                echo "<b>Abono </b>: ".Pesos($Sol['abono'])."<br>";
-                echo "<b>Interes </b>: ".Pesos($Sol['interes'])."<br>";
-                echo "<b>Impuesto (IVA) </b>: ".Pesos($Sol['iva'])."<br>";
-                echo "<b>Dias Moratorios </b>: ".$Sol['mora_dias']."<br>";
-                echo "<b>Forma de Pago </b>: (".$Sol['formadepago'].") ".$Sol['formadepago_tipo']."<br>";
-                echo "<b>Tasa Int. Moratorio</b>: ".$Sol['mora_tasa']."%<br>";
-                echo "<b>Interes Moratorio por Dia </b>: ".Pesos($Sol['mora_dia'])."<br>";
-                echo "<b>Interes Moratorio </b>: ".Pesos($Sol['mora_debe'])."<br>";
-                echo "<b>Semanas de Retraso </b>: ".$Sol['Semanas']."<br>";
-                echo "<b>Cargo por cada Semana </b>: ".Pesos($Sol['CargoSemana'])."<br>";
-                echo "<b>Cargo Semanal </b>: ".Pesos($Sol['CargoSemanal'])."<br>";
-                echo "<b>Cargo Extraordinario ".$Sol['CargoExtraOrdinario_concepto']." </b>: ".Pesos($Sol['CargoExtraOrdinario_cantidad'])."<br>";
+                echo "<b>  Abono </b>: ".Pesos($Sol['abono'])."<br>";
+                echo "<b>+ Interes </b>: ".Pesos($Sol['interes'])."<br>";
+                echo "<b>+ Impuesto (IVA) </b>: ".Pesos($Sol['iva'])."<br>";                
+                echo "<b>+ Interes Moratorio </b>: ".Pesos($Sol['mora_debe'])."<br>";                
+                echo "<b>+ Cargo Semanal </b>: ".Pesos($Sol['CargoSemanal'])."<br>";
+                echo "<b>+ Cargo Extraordinario ".$Sol['CargoExtraOrdinario_concepto']." </b>: ".Pesos($Sol['CargoExtraOrdinario_cantidad'])."<br>";
                 echo "<hr><b style='font-size:12pt;'>Subtotal: ".Pesos($Sol['subTOTAL'])."</b><br>";                
-                echo "<b>Descuento ".$Sol['Descuento_concepto']." </b>: ".$Sol['Descuento_cantidad']."<br><hr>";
+                echo "<b> - Descuento ".$Sol['Descuento_concepto']." </b>: ".$Sol['Descuento_cantidad']."<br><hr>";
+                
+                
+
 
                 echo "<div style='
                     background-color: #680632;
@@ -93,6 +90,13 @@ if ($PagosQueDebe<= 0){
                 echo "<b>Fecha en que Pago: </b>: ".$Sol['CajaFecha']." | ";
                 echo "<b>Estatus: </b>: ".$Sol['CarteraEstatus']."<br>";
 
+                echo "<p style='font-size:8pt; color:gray;'>Interes Moratorio por Dia </b>: ".Pesos($Sol['mora_dia']).", ";
+                echo "Dias Moratorios </b>: ".$Sol['mora_dias'].",";
+                echo "Forma de Pago </b>: (".$Sol['formadepago'].") ".$Sol['formadepago_tipo'].", ";
+                echo "Tasa Int. Moratorio</b>: ".$Sol['mora_tasa']."%, ";
+                echo "Semanas de Retraso </b>: ".$Sol['Semanas'].", ";
+                echo "Cargo por cada Semana </b>: ".Pesos($Sol['CargoSemana']).".</p>";
+                
                 
                     
                 Tickets($NoSol, $Sol['NPago']);

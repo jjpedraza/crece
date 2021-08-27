@@ -192,9 +192,10 @@ function ProyeccionCheck($modo){
 }
 
 
-function TableData($QueryM, $Tit="", $IdDiv="TableData_Div", $IdTabla="TableData_table", $Clase="", $Tipo=2){
+function TableData($QueryM, $Tit="", $IdDiv="TableDataDiv", $IdTabla="TableData_table", $Clase="", $Tipo=2){
 require("rintera-config.php");
-	
+	$IdDiv = $IdDiv.EasyName();
+    $IdTabla = $IdTabla.EasyName();
         $r= $db1 -> query($QueryM);
         // echo $sql;
         // var_dump($r);
@@ -472,7 +473,7 @@ function DebeTotal($NoSol){
 function DebePago($NoSol,$NPago){
     require("rintera-config.php");   
     $sql = "select sum(TOTAL) as total from cartera WHERE nosol='".$NoSol."' and EstadoPago='SIN PAGAR' and NPago='".$NPago."'";        
-    echo $sql;
+    // echo $sql;
     $rc= $db1 -> query($sql);    
     if($f = $rc -> fetch_array())
     { 
@@ -507,6 +508,17 @@ function NPago_Moratorio($NoSol, $NPago){
         
 }
 
+function NPago_Descuento($NoSol, $NPago){
+    require("rintera-config.php");   
+    $sql = "select sum(Descuento_cantidad) as resultado from cartera WHERE nosol='".$NoSol."' and NPago='".$NPago."'";        
+    $rc= $db1 -> query($sql);    
+    if($f = $rc -> fetch_array())
+    { 
+        return $f['resultado'];
+    } else { return 0;}
+    
+        
+}
 
 function NPago_ExtraOrdinario($NoSol, $NPago){
     require("rintera-config.php");   

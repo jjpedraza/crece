@@ -446,7 +446,7 @@ echo '
             margin-top: -2px;">'.$SmallText.'</small>
         </div>';
 
-        $sql = "select nosol, NPago, TOTAL, EstadoPago from cartera where nosol='20140530151' and EstadoPago='SIN PAGAR'";
+        $sql = "select nosol, NPago, TOTAL, EstadoPago from cartera where nosol='".$NoSol."' and EstadoPago='SIN PAGAR'";
         $r= $db1 -> query($sql);
 
         echo '<div class="form-group disable" id="'.$IdDiv.'2" style="margin: 4px;
@@ -486,6 +486,11 @@ echo '
 
         echo "<button class='btn btn-success' onclick='Descontar();'>Crear Descuento</button>";
 
+        echo "<hr>";
+        $sql="select * from descuentos_html where nosol='".$NoSol."' and EstadoPago='SIN PAGAR'";
+        TableData($sql,"Descuentos autorizados:"); //0 = Basica, 1 = ScrollVertical, 2 = Scroll Horizontal
+    
+       
 echo "</div>";
 
 ?>
@@ -582,6 +587,24 @@ function Descontar(){
                 type: 'post',
                 data: {
                     NoSol:NoSol, DescuentoCantidad:DescuentoCantidad,NPago:NPago, DescuentoConcepto:DescuentoConcepto
+       
+                },
+                success: function(data) {
+                    $('#R').html(data);
+                    $('#PreLoader').hide();
+                }
+            });
+}
+
+function CancelarDescuento(IdDescuento){
+    console.log('Cancelando '+IdDescuento);
+    NoSol = '<?php echo $_GET['n']; ?>';
+    $('#PreLoader').show();
+            $.ajax({
+                url: 'app_data_cancelardescuento.php',
+                type: 'post',
+                data: {
+                    IdDescuento:IdDescuento, NoSol:NoSol
        
                 },
                 success: function(data) {
