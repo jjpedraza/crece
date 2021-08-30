@@ -424,7 +424,7 @@ if ($Sol['valoracion']==''){
 
 
 
-
+if (isset($NoSol)){
 echo "<div id='mas' class='container' style='background-color:#fde1ab; border-radius:5px;padding:5px; margin-top:20px; margin-bottom:20px;'>";
 echo "<h4>CAPTURAR DESCEUNTO</h4>";
 $IdDiv = "DivCaptura1";
@@ -492,6 +492,7 @@ echo '
     
        
 echo "</div>";
+    }
 
 ?>
 <script>

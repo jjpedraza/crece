@@ -36,11 +36,12 @@ if ($PagosQueDebe<= 0){
         
         $Deuda = 0; $GTotal = 0; $GranTotal = 0;
         while($Sol = $r -> fetch_array()) {    
-            
+            // var_dump($CantidadRecibida_calculada);
             //REPARTIMOS LA CANTIDAD RECIBIDA
             if ($CantidadRecibida_calculada > 0){
-                $Deuda = number_format($Sol['mora_debe']); 
+                $Deuda = $Sol['mora_debe']; 
                 // echo "Deuda=".$Deuda;
+                // var_dump($Deuda);
                 $CantidadRecibida_calculada = $CantidadRecibida_calculada -  $Deuda;         
                 if ($CantidadRecibida_calculada >= 0 ){$Reparto_Moratorios = $Deuda;} 
                 else {$Reparto_Moratorios = $CantidadRecibida_calculada + $Deuda;}
