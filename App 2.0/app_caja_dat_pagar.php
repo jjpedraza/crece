@@ -117,14 +117,14 @@ if ($PagosQueDebe<= 0){
 
                     } else {
                         Toast("Error",0,"");
-                        echo "No. de Pago ".$Sol['NPago'].": <br>";
-                        echo "Reparto_Moratorios $Reparto_Moratorios = ".$Sol['mora_debe']."<br>";
-                        echo "Reparto_CargoSemanal $Reparto_CargoSemanal = ".$Sol['CargoSemanal']."<br>";
-                        echo "Reparto_Extras $Reparto_Extras = ".$Sol['CargoExtraOrdinario_cantidad']."<br>";
-                        echo "Reparto_Financiamiento $Reparto_Financiamiento = ".$Sol['interes']."<br>";
-                        echo "Reparto_Impuestos $Reparto_Impuestos = ".$Sol['iva']."<br>";
-                        echo "Reparto_Capital $Reparto_Capital = ".$Sol['abono']."<br>";
-                        echo "CantidadRecibida_calculada =  $CantidadRecibida_calculada  "."<hr><br>";
+                        // echo "No. de Pago ".$Sol['NPago'].": <br>";
+                        // echo "Reparto_Moratorios $Reparto_Moratorios = ".$Sol['mora_debe']."<br>";
+                        // echo "Reparto_CargoSemanal $Reparto_CargoSemanal = ".$Sol['CargoSemanal']."<br>";
+                        // echo "Reparto_Extras $Reparto_Extras = ".$Sol['CargoExtraOrdinario_cantidad']."<br>";
+                        // echo "Reparto_Financiamiento $Reparto_Financiamiento = ".$Sol['interes']."<br>";
+                        // echo "Reparto_Impuestos $Reparto_Impuestos = ".$Sol['iva']."<br>";
+                        // echo "Reparto_Capital $Reparto_Capital = ".$Sol['abono']."<br>";
+                        // echo "CantidadRecibida_calculada =  $CantidadRecibida_calculada  "."<hr><br>";
                         
                         
                     }
