@@ -116,7 +116,7 @@ if ($PagosQueDebe<= 0){
                         unset($sqlPago);
 
                     } else {
-                        Toast("Error",0,"");
+                        Toast("El pago ".$Sol['NPago']." no se cubrio por completo",0,"");
                         // echo "No. de Pago ".$Sol['NPago'].": <br>";
                         // echo "Reparto_Moratorios $Reparto_Moratorios = ".$Sol['mora_debe']."<br>";
                         // echo "Reparto_CargoSemanal $Reparto_CargoSemanal = ".$Sol['CargoSemanal']."<br>";
