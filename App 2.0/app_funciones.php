@@ -484,6 +484,186 @@ function DebePago($NoSol,$NPago){
 }
 
 
+function DebePago_moratorios($NoSol,$NPago){
+    require("rintera-config.php");   
+    $sql = "select sum(mora_debe) as total from cartera WHERE nosol='".$NoSol."' and EstadoPago='SIN PAGAR' and NPago='".$NPago."'";        
+    // echo $sql;
+    $rc= $db1 -> query($sql);    
+    if($f = $rc -> fetch_array())
+    { 
+        return $f['total'];
+    } else { return 0;}
+    
+        
+
+}
+
+
+function DescuentosList_mora($NoSol,$NPago){
+    require("rintera-config.php");   
+    $sql = "
+    select 
+        GROUP_CONCAT(Resumen) as Descuentos
+        from descuentos     
+    WHERE nosol='".$NoSol."' and no='".$NPago."' and IdTipoDescuento='1'";        
+    // echo $sql;
+    $rc= $db1 -> query($sql);    
+    if($f = $rc -> fetch_array())
+    { 
+        return $f['Descuentos'];
+    } else { return 0;}
+    
+        
+}
+
+
+function DescuentosMoratorios($NoSol,$NPago){
+    require("rintera-config.php");   
+    $sql = "
+    select 
+        sum(cantidad) as Descuentos
+    from descuentos     
+    WHERE nosol='".$NoSol."' and no='".$NPago."' and IdTipoDescuento='1'";        
+    // echo $sql;
+    $rc= $db1 -> query($sql);    
+    if($f = $rc -> fetch_array())
+    { 
+        return $f['Descuentos'];
+    } else { return 0;}
+    
+        
+}
+
+
+
+function DebePago_cargosemanal($NoSol,$NPago){
+    require("rintera-config.php");   
+    $sql = "select sum(CargoSemanal) as total from cartera WHERE nosol='".$NoSol."' and EstadoPago='SIN PAGAR' and NPago='".$NPago."'";        
+    // echo $sql;
+    $rc= $db1 -> query($sql);    
+    if($f = $rc -> fetch_array())
+    { 
+        return $f['total'];
+    } else { return 0;}
+    
+        
+}
+
+
+function DescuentosList_cargosemanal($NoSol,$NPago){
+    require("rintera-config.php");   
+    $sql = "
+    select 
+        GROUP_CONCAT(Resumen) as Descuentos
+        from descuentos     
+    WHERE nosol='".$NoSol."' and no='".$NPago."' and IdTipoDescuento=4";        
+    // echo $sql;
+    $rc= $db1 -> query($sql);    
+    if($f = $rc -> fetch_array())
+    { 
+        return $f['Descuentos'];
+    } else { return 0;}
+    
+        
+}
+
+
+function DebePago_cargoextraordinarios($NoSol,$NPago){
+    require("rintera-config.php");   
+    $sql = "select sum(CargoExtraOrdinario) as total from cartera WHERE nosol='".$NoSol."' and EstadoPago='SIN PAGAR' and NPago='".$NPago."'";        
+    // echo $sql;
+    $rc= $db1 -> query($sql);    
+    if($f = $rc -> fetch_array())
+    { 
+        return $f['total'];
+    } else { return 0;}
+    
+        
+}
+
+
+function DescuentosList_cargoextraordinarios($NoSol,$NPago){
+    require("rintera-config.php");   
+    $sql = "
+    select 
+        GROUP_CONCAT(Resumen) as Descuentos
+        from descuentos     
+    WHERE nosol='".$NoSol."' and no='".$NPago."' and IdTipoDescuento=3";        
+    // echo $sql;
+    $rc= $db1 -> query($sql);    
+    if($f = $rc -> fetch_array())
+    { 
+        return $f['Descuentos'];
+    } else { return 0;}
+    
+        
+}
+
+
+function DebePago_financiamiento($NoSol,$NPago){
+    require("rintera-config.php");   
+    $sql = "select sum(interes) as total from cartera WHERE nosol='".$NoSol."' and EstadoPago='SIN PAGAR' and NPago='".$NPago."'";        
+    // echo $sql;
+    $rc= $db1 -> query($sql);    
+    if($f = $rc -> fetch_array())
+    { 
+        return $f['total'];
+    } else { return 0;}
+    
+        
+}
+
+
+function DescuentosList_financiamiento($NoSol,$NPago){
+    require("rintera-config.php");   
+    $sql = "
+    select 
+        GROUP_CONCAT(Resumen) as Descuentos
+        from descuentos     
+    WHERE nosol='".$NoSol."' and no='".$NPago."' and IdTipoDescuento=2";        
+    // echo $sql;
+    $rc= $db1 -> query($sql);    
+    if($f = $rc -> fetch_array())
+    { 
+        return $f['Descuentos'];
+    } else { return 0;}
+    
+        
+}
+
+function DebePago_capital($NoSol,$NPago){
+    require("rintera-config.php");   
+    $sql = "select sum(abono) as total from cartera WHERE nosol='".$NoSol."' and EstadoPago='SIN PAGAR' and NPago='".$NPago."'";        
+    echo $sql;
+    $rc= $db1 -> query($sql);    
+    if($f = $rc -> fetch_array())
+    { 
+        return $f['total'];
+    } else { return 0;}
+    
+        
+}
+
+
+function DescuentosList_capital($NoSol,$NPago){
+    require("rintera-config.php");   
+    $sql = "
+    select 
+        GROUP_CONCAT(Resumen) as Descuentos
+        from descuentos     
+    WHERE nosol='".$NoSol."' and no='".$NPago."' and IdTipoDescuento=5";        
+    // echo $sql;
+    $rc= $db1 -> query($sql);    
+    if($f = $rc -> fetch_array())
+    { 
+        return $f['Descuentos'];
+    } else { return 0;}
+    
+        
+}
+
+
+
 function IdCorte(){
     require("rintera-config.php");   
     $sql = "select max(id)+1 as id from corte";        

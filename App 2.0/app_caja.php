@@ -77,6 +77,9 @@ btn.addEventListener("keydown", function (e) {
     }
 });  
 function CargaContrato(n){
+
+$('#CajaPago').html('<div id="CajaPago_recibe"></div><div id="CajaPago_distribucion"></div><div id="CajaAhorro"></div>');
+
     NoSol = $('#NoSol').val();
     $('#PreLoader').show();           
     $.ajax({
@@ -119,6 +122,7 @@ function CargaContrato_full(n){
 }  
 
 function CajaComponents(n){
+    $('#CajaPago').html('<div id="CajaPago_recibe"></div><div id="CajaPago_distribucion"></div><div id="CajaAhorro"></div>');
     NoSol = $('#NoSol').val();
     $('#PreLoader').show();           
     $.ajax({
@@ -186,27 +190,6 @@ function Pagar(){
 }  
 
 
-function AhorroDiv(){
-    NoSol = $('#NoSol').val();
-    
-
-    $('#PreLoader').show();           
-    $.ajax({
-        url: 'app_caja_dat_ahorro.php',
-        type: 'post',        
-        data: {
-            NoSol:NoSol
-            
-        },
-    success: function(data){
-        $('#CajaAhorro').html(data);                
-        $('#PreLoader').hide();
-        
-    }
-    });
-
-
-}  
 
 function AhorroDiv(){
     NoSol = $('#NoSol').val();
@@ -271,6 +254,27 @@ function Ahorrar_retiro(){
         },
     success: function(data){
         $('#R').html(data);                
+        $('#PreLoader').hide();
+        
+    }
+    });
+
+
+} 
+
+function CajaNPago(NoSol, NPago){
+    
+    
+    $('#PreLoader').show();           
+    $.ajax({
+        url: 'app_caja_dat_npago.php',
+        type: 'post',        
+        data: {
+            NoSol:NoSol, NPago:NPago
+            
+        },
+    success: function(data){
+        $('#CajaPago').html(data);                
         $('#PreLoader').hide();
         
     }

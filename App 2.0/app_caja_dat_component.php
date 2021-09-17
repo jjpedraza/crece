@@ -3,7 +3,9 @@ include("seguridad.php");
 require ("rintera-config.php");
 require ("components.php");
 // require ("app_funciones.php");
+?>
 
+<?php
 $NoSol = VarClean($_POST['NoSol']);
 $PagosQueDebe = NDebe($NoSol);
 
