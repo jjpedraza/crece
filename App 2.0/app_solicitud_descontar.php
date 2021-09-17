@@ -25,6 +25,7 @@ if (isset($_POST['NoSol'])) {
                                         {
                                             $OK = TRUE;
                                             Toast("Descuento Guardado Correctamente ",4,"");
+                                            echo "<script>CargaDescuentos();</script>";
                                             // Toast("<a   target=_blank href=print_ticket.php?id=".$IdCorte.">Imprimir Ticket ".$IdCorte."</a>",5,"");
                                             Historia($RinteraUser, "CAJA", "Inserto Descuento ".$NoSol." por ".$DescuentoCantidad." al pago no ".$NPago." por ".$DescuentoConcepto." SQL = ".addslashes($sqlIn));
                                             

@@ -12,6 +12,7 @@ if ($db1->query($sqlPago) == TRUE){
 
     Historia($RinteraUser, "DESCUENTO", "Cancelo el Descuento con Id ".$IdDescuento." de la Solicitud ".$NoSol);
     Toast("Descuento Cancelado correctamente",4,"");
+    echo "<script>CargaDescuentos();</script>";
 } else {
     Toast("Error ",0,"");
 }

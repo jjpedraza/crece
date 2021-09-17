@@ -51,6 +51,8 @@ echo "<td valign=top style='font-size:10pt;'>Moratorios</td>";
         CONCAT('',act_fecha, ' ', act_user) as Autorizado
         from descuentos where nosol='".$NoSol."' and no='".$NPago."'";
     TableData($sql, "Descuentos Autorizados del Pago ".$Sol['NPago']);
+    
+    echo "<a href='app_solicitud.php?n=".$NoSol."' class='btn btn-secondary'>Gestionar Descuentos de este Contrato</a>";
     echo "</div>";
     }
 

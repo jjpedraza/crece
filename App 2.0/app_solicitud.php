@@ -487,8 +487,10 @@ echo '
         echo "<button class='btn btn-success' onclick='Descontar();'>Crear Descuento</button>";
 
         echo "<hr>";
+        echo "<div id='DivDescuentos'>";
         $sql="select * from descuentos_html where nosol='".$NoSol."' and EstadoPago='SIN PAGAR'";
         TableData($sql,"Descuentos autorizados:"); //0 = Basica, 1 = ScrollVertical, 2 = Scroll Horizontal
+        echo "</div>";
     
        
 echo "</div>";
@@ -610,6 +612,24 @@ function CancelarDescuento(IdDescuento){
                 },
                 success: function(data) {
                     $('#R').html(data);
+                    $('#PreLoader').hide();
+                }
+            });
+}
+
+function CargaDescuentos(){
+    
+    NoSol = '<?php echo $_GET['n']; ?>';
+    $('#PreLoader').show();
+            $.ajax({
+                url: 'app_dat_descuentos.php',
+                type: 'post',
+                data: {
+                    NoSol:NoSol
+       
+                },
+                success: function(data) {
+                    $('#DivDescuentos').html(data);
                     $('#PreLoader').hide();
                 }
             });
