@@ -511,7 +511,7 @@ function DescuentosList_mora($NoSol,$NPago){
     if($f = $rc -> fetch_array())
     { 
         return $f['Descuentos'];
-    } else { return 0;}
+    } else { return "";}
     
         
 }
@@ -562,7 +562,7 @@ function DescuentosList_cargosemanal($NoSol,$NPago){
     if($f = $rc -> fetch_array())
     { 
         return $f['Descuentos'];
-    } else { return 0;}
+    } else { return "";}
     
         
 }
@@ -570,7 +570,7 @@ function DescuentosList_cargosemanal($NoSol,$NPago){
 
 function DebePago_cargoextraordinarios($NoSol,$NPago){
     require("rintera-config.php");   
-    $sql = "select sum(CargoExtraOrdinario) as total from cartera WHERE nosol='".$NoSol."' and EstadoPago='SIN PAGAR' and NPago='".$NPago."'";        
+    $sql = "select sum(CargoExtraOrdinario_cantidad) as total from cartera WHERE nosol='".$NoSol."' and EstadoPago='SIN PAGAR' and NPago='".$NPago."'";        
     // echo $sql;
     $rc= $db1 -> query($sql);    
     if($f = $rc -> fetch_array())
@@ -589,12 +589,12 @@ function DescuentosList_cargoextraordinarios($NoSol,$NPago){
         GROUP_CONCAT(Resumen) as Descuentos
         from descuentos     
     WHERE nosol='".$NoSol."' and no='".$NPago."' and IdTipoDescuento=3";        
-    // echo $sql;
+    
     $rc= $db1 -> query($sql);    
     if($f = $rc -> fetch_array())
     { 
         return $f['Descuentos'];
-    } else { return 0;}
+    } else { return "";}
     
         
 }
@@ -626,7 +626,7 @@ function DescuentosList_financiamiento($NoSol,$NPago){
     if($f = $rc -> fetch_array())
     { 
         return $f['Descuentos'];
-    } else { return 0;}
+    } else { return "";}
     
         
 }
@@ -657,7 +657,7 @@ function DescuentosList_capital($NoSol,$NPago){
     if($f = $rc -> fetch_array())
     { 
         return $f['Descuentos'];
-    } else { return 0;}
+    } else { return "";}
     
         
 }
@@ -739,6 +739,18 @@ function NPago_CargoSemanal($NoSol, $NPago){
         
 }
 
+function PorcentajeFi($NoSol){
+    require("rintera-config.php");   
+    $sql = "select * from cuentas WHERE nosol='".$NoSol."'";        
+    $rc= $db1 -> query($sql);    
+    if($f = $rc -> fetch_array())
+    { 
+        return $f['tasa_interes'];
+    } else { return 0;}
+    
+        
+}
+
 
 function UltimaActSaldos(){
     require("rintera-config.php");   
@@ -747,6 +759,19 @@ function UltimaActSaldos(){
     if($f = $rc -> fetch_array())
     { 
         return $f['act'];
+    } else { return '';}
+    
+        
+}
+
+
+function UltimoPago($NoSol){
+    require("rintera-config.php");   
+    $sql = "select CONCAT(fecha,' por ',valor,' no=',no) as UltimoPago from corte where nosol='".$NoSol."' order by fecha DESC limit 1";        
+    $rc= $db1 -> query($sql);    
+    if($f = $rc -> fetch_array())
+    { 
+        return $f['UltimoPago'];
     } else { return '';}
     
         

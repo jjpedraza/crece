@@ -123,6 +123,134 @@ if ($PagosQueDebe<= 0){
 
         
     }
+
+    function DescontarCargoSemanal_save(NPago){
+        NoSol = $('#NoSol').val();
+        
+        Descuento = $('#_'+NPago+'_CargoSemanal_Descuento').val();
+        console.log('Descuento='+Descuento);
+        $('#PreLoader').show();           
+        $.ajax({
+            url: 'app_descuento_cargosemanal.php',
+            type: 'post',        
+            data: {
+                NoSol:NoSol, NPago:NPago, Descuento:Descuento
+                
+            },
+        success: function(data){
+            $('#R').html(data);                
+            $('#PreLoader').hide();
+            
+        }
+        });
+
+        
+    }
+
+    function DescontarCargoExtraOrdinario_save(NPago){
+        NoSol = $('#NoSol').val();
+        
+        Descuento = $('#_'+NPago+'_CargoExtraOrdinario_Descuento').val();
+        console.log('Descuento='+Descuento);
+        $('#PreLoader').show();           
+        $.ajax({
+            url: 'app_descuento_cargoextraordinario.php',
+            type: 'post',        
+            data: {
+                NoSol:NoSol, NPago:NPago, Descuento:Descuento
+                
+            },
+        success: function(data){
+            $('#R').html(data);                
+            $('#PreLoader').hide();
+            
+        }
+        });
+
+        
+    }
+
+
+    function DescontarFi_save(NPago){
+        NoSol = $('#NoSol').val();
+        
+        Descuento = $('#_'+NPago+'_Fi_Descuento').val();
+        console.log('Descuento='+Descuento);
+        $('#PreLoader').show();           
+        $.ajax({
+            url: 'app_descuento_fi.php',
+            type: 'post',        
+            data: {
+                NoSol:NoSol, NPago:NPago, Descuento:Descuento
+                
+            },
+        success: function(data){
+            $('#R').html(data);                
+            $('#PreLoader').hide();
+            
+        }
+        });
+
+        
+    }
+
+    function DescontarCapital_save(NPago){
+        NoSol = $('#NoSol').val();
+        
+        Descuento = $('#_'+NPago+'_Capital_Descuento').val();
+        
+        $('#PreLoader').show();           
+        $.ajax({
+            url: 'app_descuento_capital.php',
+            type: 'post',        
+            data: {
+                NoSol:NoSol, NPago:NPago, Descuento:Descuento
+                
+            },
+        success: function(data){
+            $('#R').html(data);                
+            $('#PreLoader').hide();
+            
+        }
+        });
+
+        
+    }
+
+
+
+    function CargoExtraOrdinario_agregar(NPago){
+        NoSol = $('#NoSol').val();
+        var Cargo_concepto = prompt("Concepto del Cargo ExtraOrdinario", "");
+        if (Cargo_concepto != ''){
+            var Cargo_cantidad = prompt("Cantidad para " + Cargo_concepto, "");
+            
+            if (Cargo_cantidad > 0){
+                    $('#PreLoader').show();           
+                    $.ajax({
+                        url: 'app_dat_cargoextraordinario_agregar.php',
+                        type: 'post',        
+                        data: {
+                            NoSol:NoSol, NPago:NPago, Cargo_concepto:Cargo_concepto, Cargo_cantidad:Cargo_cantidad
+                            
+                        },
+                    success: function(data){
+                        $('#R').html(data);                
+                        $('#PreLoader').hide();
+                        
+                    }
+                    });
+            } else {
+                $.toast('Cargo '+Cargo_concepto+' cancelado');   
+            }
+            
+
+    } else {
+        $.toast('Cargo cancelado');   
+    }
+        
+    }
+
     function DescontarMora_calcular(NPago){
         Moratorios = $('#_'+NPago+'_Mora_debe').val();
         Porcentaje = $('#_'+NPago+'_Mora_DescontarPorciento').val();
