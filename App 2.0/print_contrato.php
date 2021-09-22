@@ -71,6 +71,9 @@ if (isset($_GET['id'])){
 
 
                             if ($Sol['tipo']=='INDIVIDUAL'){
+                                $htmlPDF.='El suscriptor acepta que mientras deba este contrato, no puede disponer, tratar o alguna promesa de compra-venta de la Garantia otorgada, hasta no liquidar dicho adeudo.<br>';
+
+                                
                                     $htmlPDF .= '<table style="
                                     
                                     ">';

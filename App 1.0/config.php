@@ -32,4 +32,7 @@ $nivel_admin= array('edgar', 'admin');
 
 //COLORES DE ENFASIS
 $tabla='#000000'
+
+
+
 ?>

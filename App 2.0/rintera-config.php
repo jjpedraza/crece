@@ -1,4 +1,9 @@
 <?php
+// if (isset($_SESSION['RinteraUser'])){
+//     session_start();
+//     $RinteraUser = $_SESSION['RinteraUser'];
+// }
+
 // require_once("components.php");
 
 date_default_timezone_set('America/Mexico_City');
@@ -209,4 +214,7 @@ if ($Error ==''){
 $session_auto_start = 1;
 
 $PorcentajeIVA = 0.16;
+
+
+
 ?>

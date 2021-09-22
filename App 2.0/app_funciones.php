@@ -663,6 +663,24 @@ function DescuentosList_capital($NoSol,$NPago){
 }
 
 
+function DescuentosList_($NoSol,$NPago){
+    require("rintera-config.php");   
+    $sql = "
+    select 
+        GROUP_CONCAT(Resumen) as Descuentos
+        from descuentos     
+    WHERE nosol='".$NoSol."' and no='".$NPago."' and IdTipoDescuento=0";        
+    // echo $sql;
+    $rc= $db1 -> query($sql);    
+    if($f = $rc -> fetch_array())
+    { 
+        return $f['Descuentos'];
+    } else { return "";}
+    
+        
+}
+
+
 
 function IdCorte(){
     require("rintera-config.php");   
@@ -804,5 +822,119 @@ function TicketsHoy($NoSol){
         echo "</div>";
 }
 
+
+function Ahorro_retiro($NoSol, $NPago, $Descuento, $Concepto){
+    require("rintera-config.php");   
+    $RinteraUser = $_SESSION['RinteraUser'];
+     //Descontar del Ahorro
+     $IdCorte = IdCorte();
+     $sqlA = "INSERT INTO corte (id, fecha, usuario, nosol, ahorro_retiro, comentario ) 
+     VALUES ('".$IdCorte."','".$fecha."', '".$RinteraUser."', '".$NoSol."', '".$Descuento."','".$Concepto."')";                
+     if ($db1->query($sqlA) == TRUE)
+     {
+             Toast("retiro ".$Descuento." -> Como Descuento para ".$NPago." Guardado Correctamente ",4,"");
+             Toast("<a   target=_blank href=print_ticket.php?id=".$IdCorte.">Imprimir Ticket ".$IdCorte."</a>",5,"");
+             Historia($RinteraUser, "CAJA", "Paso Ahorro del contrato ".$NoSol." por ".$NPago." como descuento para el pago No. ".$NPago."  SQL = ".addslashes($sqlA));
+             return TRUE;
+
+     }
+     else {
+        return FALSE;
+     
+     }
+
+}
+
+
+function Descuento_crear($NoSol, $NPago, $Descuento, $Concepto){
+    $RinteraUser = $_SESSION['RinteraUser'];
+    require("rintera-config.php");   
+     //Descontar del Ahorro
+     
+    //  $IdCorte = IdCorte();
+     $sqlIn="INSERT INTO descuetos (nosol, no, concepto, cantidad, act_user, act_fecha, act_hora, IdTipoDescuento) VALUES (
+         '".$NoSol."',
+         '".$NPago."',
+         '".$Concepto."',
+         '".$Descuento."',
+         '".$RinteraUser."',
+         '".$fecha."',
+         '".$hora."',
+         '0')";
+     if ($db1->query($sqlIn) == TRUE)
+     {
+             Toast("Descuento ".$Descuento." - ".$Concepto." Guardado Correctamente ",4,"");
+            //  Toast("<a   target=_blank href=print_ticket.php?id=".$IdCorte.">Imprimir Ticket ".$IdCorte."</a>",5,"");
+             Historia($RinteraUser, "CAJA", "Descuento para el contrato ".$NoSol." por ".$Descuento." como descuento para el pago No. ".$NPago."  SQL = ".addslashes($sqlIn));
+             return TRUE;
+
+     }
+     else {
+        return FALSE;
+     
+     }
+
+}
+
+
+function Contrato_Curp($NoSol){
+    require("rintera-config.php");   
+        $sql = "select * from cuentas where nosol='".$NoSol."'";
+        $rc= $db1 -> query($sql);    
+        if($f = $rc -> fetch_array())
+        { 
+            return $f['curp'];
+        } else { return '';}
+    
+        
+}
+
+function Contrato_Nombre($NoSol){
+    require("rintera-config.php");   
+        $sql = "select * from clientes where curp='".Contrato_Curp($NoSol)."'";
+        $rc= $db1 -> query($sql);    
+        if($f = $rc -> fetch_array())
+        { 
+            return $f['nombre'];
+        } else { return '';}
+        
+}
+
+function Contrato_Grupo($NoSol){
+    require("rintera-config.php");   
+        $sql = "select * from cuentas where nosol='".$NoSol."'";
+        $rc= $db1 -> query($sql);    
+        if($f = $rc -> fetch_array())
+        { 
+            return $f['grupo'];
+        } else { return '';}
+    
+        
+}
+
+function Contrato_cambioTitular($NoSol, $CurpNuevo){
+require("rintera-config.php");
+$RinteraUser = $_SESSION['RinteraUser'];
+$CurpActual = Contrato_Curp($NoSol);
+
+    $QueryUpdate="UPDATE cuentas  SET curp='".$CurpNuevo."'  WHERE nosol='".$NoSol."'";
+    if ($db1->query($QueryUpdate) == TRUE)
+    {
+        Historia($RinteraUser, "CONTRATO", "Cambio de Titular el Contrato ".$NoSol." de ".$CurpActual." a ".$CurpNuevo);
+
+        $QueryUpdate2="UPDATE tabladepagos  SET curp='".$CurpNuevo."'  WHERE nosol='".$NoSol."'";
+        if ($db1->query($QueryUpdate2) == TRUE)
+        {
+            return TRUE;
+        }  else {
+            return FALSE;
+        }
+        
+    }
+    else {
+        return FALSE;
+    }
+    unset($QueryCalculo);
+}
 
 ?>

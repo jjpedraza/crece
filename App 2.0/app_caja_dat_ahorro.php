@@ -22,7 +22,10 @@ if ($NoSol <> '') {
     echo "<h4 style='
     color: white;
     font-size: 13pt;
-    '>Ahorro para $NoSol</h4>";
+    '>Ahorro para el contrato $NoSol</h4>";
+    echo "<table width=100% border=0>";
+
+    echo "<tr><td width=30%>";
 
     echo "<input type='number' id='CantidadAhorro' placeholder='Cuanto Ahorraras?' style='
         height: 50px;
@@ -30,27 +33,46 @@ if ($NoSol <> '') {
         border-radius: 5px;
         border: 0px;
     '>";
+    echo "</td><td align=left width=30px>";
+
     echo "<button class='btn btn-success' style='
         height:50px;
         margin-top: -7px;
         margin-left: 6px;
     ' onclick='Ahorrar();'>Ahorrar!</button><br>";
 
-    echo '<br>';
+    echo '</td><td ></td></tr>';
 
+    echo "<tr><td align=center>";
     echo "<input type='number' id='CantidadAhorro_retirar' placeholder='Cuanto?' style='
         height: 50px;
         font-size: 14pt;
         border-radius: 5px;
         border: 0px;
     '>";
+    echo "</td><td align=left width=30px>";
     echo "<button class='btn btn-warning' style='
         height:50px;
-        margin-top: -7px;
+        margin-top: -5px;
         margin-left: 6px;
         background-color: #ffc107a1;
         color: white;
-    ' onclick='Ahorrar_retiro();'>Retirar</button><br>";
+    ' onclick='Ahorrar_retiro();'>Retirar</button>
+    ";
+
+    echo "</td><td align=left>";
+    echo "
+
+      <button class='btn btn-warning' style='
+        height:50px;
+        margin-top: -5px;
+        margin-left: 6px;
+        background-color: #ffc107a1;
+        color: white; font-size:9pt;
+    ' onclick='Ahorrar_crearDescuento();'><b>Ahorro <img src='icons/derecha.png' style='width:12px;'>Descuento</b></button>
+    
+    ";
+    echo "</td></tr></table>";
     
 
     echo "<br><br>";
@@ -76,7 +98,7 @@ if ($NoSol <> '') {
         '>Felicidades lleva ahorrado ".Pesos($MiAhorro)."</b>";
         echo "<a class='btn btn-primary' style='
         
-        margin-top: -7px;
+        margin-top: 6px;
         margin-left: 6px;
     '
     target=_blank 

@@ -39,6 +39,10 @@ if (isset($_GET['n'])){
     
     echo "<div id='mas' class='container' style='background-color:white; border-radius:5px;padding:5px; margin-top:20px;'>";
         
+        echo "<div id='Titular'>";
+        
+
+        echo "</div>";
         
         FormElement_input("CURP: ",$Sol['curp'],"", "","text","ClienteCurp",TRUE );
 
@@ -100,6 +104,7 @@ if (isset($_GET['n'])){
             echo '
             </div>';
         }
+
         
         if ($Sol['valoracion']==''){
             FormElement_input("Cantidad de Credito: ",$Sol['cantidad'],"", "","text","CreditoCantidad");
@@ -200,14 +205,50 @@ if (isset($_GET['n'])){
 
 
         FormElement_input("Cargo Moratorio: (semanal) ",$Sol['cargoporsemana'],"", "","text","CreditoCargoPorSemana");
-        FormElement_textarea("Garantia: ",$Sol['garantia'],"", "","text","CreditoGarantia");
+        
+        
+        
+        
+
+
 
         FormElement_textarea("Comentarios: ",$Sol['comentario'],"", "","text","CreditoComentarios");
+
+
+
+        FormElement_textarea("Descripcion de la Garantia y Antecedentes: ",$Sol['garantia'],"", "","text","CreditoGarantia");
+        
+
+        echo '
+        <div class="form-group disable" id="DivGarantiaFila" style="margin: 4px;
+        padding: 4px;
+        border-radius: 5px; background-color: #e8e8e8;
+        vertical-align: top;">';
+
+        $fotoFile = 'fotos/'.$NoSol.'_garantia.jpg';
+        if (is_file($fotoFile)){
+            echo "<a href='".$fotoFile."' target=_blank><img name='foto' id='foto'  src='".$fotoFile."' style='width:100%; border-radius:5px;'></a>";
+
+        } else {
+            echo "<img name='foto' id='foto' src='icons/nofoto.jpg' style='width:100%;'>";
+        }
+
+
+
+        echo '<br>
+        <table width=100%><tr><td>
+            <label  style="font-size:8pt;">Archivo de la Garantia</label>
+            <form id="FormGarantia" method="POST" enctype="multipart/form-data"><input type="file" name="GarantiaFile" id="GarantiaFile" accept=".jpg" class="form-control" style="font-size:8pt;">            </form>
+            </td><td width=30%>
+            
+            <button class="btn btn-success" onclick="GuardarFoto();">Guardar Foto</button></td></tr></table>
+        </div>';
+
 
         if ($Sol['valoracion']==''){
             echo '
             <div class="form-group" id="DivValoracion" style="margin: 4px;
-            padding: 4px;
+            padding: 4px; width: 100%;
             border-radius: 5px;
             vertical-align: top;">';
 
@@ -414,8 +455,19 @@ if ($Sol['valoracion']==''){
     // </div>";
 
 
-    $sql="select * from sol_ where valoracion = ''";
-    TableData($sql,"Solicitudes sin aprobar"); //0 = Basica, 1 = ScrollVertical, 2 = Scroll Horizontal
+    if (isset($_GET['all'])){
+        $sql="select * from sol_ where valoracion <> ''";
+        TableData($sql,"Solicitudes registradas:"); //0 = Basica, 1 = ScrollVertical, 2 = Scroll Horizontal
+        echo "<br><a class='btn btn-secondary' href='?='>Solicitudes sin Aprobar</a>";
+    
+    } else {
+        $sql="select * from sol_ where valoracion = ''";
+        TableData($sql,"Solicitudes sin aprobar"); //0 = Basica, 1 = ScrollVertical, 2 = Scroll Horizontal
+        echo "<br><a class='btn btn-secondary' href='?all='>Solicitudes Aprobadas</a>";
+    
+    }
+    
+    
 
    
     }
@@ -634,6 +686,40 @@ function CargaDescuentos(){
                 }
             });
 }
+
+function GuardarFoto(){    
+    NoSol = '<?php echo $NoSol; ?>';
+    // $('#GarantiaFile').html($('#VFile').val());        
+    var formData = new FormData(document.getElementById('FormGarantia'));        
+        formData.append('NoSol',  NoSol);
+    $('#progressbar').show();
+    $.ajax({
+    url: 'app_dat_garantia.php',
+    type: 'post',
+    dataType: 'html',
+    data: formData,             
+    cache: false,
+    contentType: false,
+    processData: false,
+    beforeSend:function(){
+        // console.log('Cargando..');
+    },
+    success:function(data){
+        // console.log(data);
+        $('#R').html(data);
+        $('#progressbar').hide();
+    }
+});
+}
+
+function ActualizaFoto(){
+    d = new Date();    
+    NoSol = '<?php echo $NoSol; ?>';
+    
+    src='fotos/'+NoSol+'_garantia.jpg?';
+    $("#foto").attr("src",src+d.getTime());
+}
+
 </script>
 
 <?php

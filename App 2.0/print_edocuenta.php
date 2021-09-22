@@ -37,10 +37,10 @@ if (isset($_GET['id'])){
             >';
             $htmlPDF.='<td style="background-color: #cc0044; color:white;">No'.'</td>'; //1                            
             $htmlPDF.='<td style="background-color: #cc0044; color:white;">Fecha de Pago'.'</td>'; //1                            
-            $htmlPDF.='<td style="background-color: #cc0044; color:white;">Cantidad'.'</td>'; //1                            
+            $htmlPDF.='<td style="background-color: #cc0044; color:white;">Debe'.'</td>'; //1                            
             $htmlPDF.='<td style="background-color: #009933; color:white;">Pago Realizado'.'</td>'; //1                            
             $htmlPDF.='<td style="background-color: #009933; color:white;">Estado del Pago'.'</td>'; //1                            
-            $htmlPDF.='<td style="background-color: #00ace6; color:white;">Ahorro'.'</td>'; //1                            
+            // $htmlPDF.='<td style="background-color: #00ace6; color:white;">Ahorro'.'</td>'; //1                            
             $htmlPDF.='</tr>';
 
             $c = 0; $GranAbono=0; $GranMoratorio = 0; $GranTotal = 0; $GranInteres = 0; $GranExtras=0; $GranSemanal=0; $DiasMax = 0;
@@ -80,29 +80,30 @@ if (isset($_GET['id'])){
             if ($c%2==0){ 
                 $htmlPDF.='<td style="border: 1px solid #e0e0e0; background-color: #ccffdd;"><b>'.Pesos($Pagos['Caja']).'</b></td>'; //1                            
                 $htmlPDF.='<td style="border: 1px solid #e0e0e0; background-color: #ccffdd;">'.$Pagos['EstadoPago'].'</td>'; //1                            
-                $htmlPDF.='<td style="border: 1px solid #e0e0e0; background-color: #b3ecff">'.$Pagos['CajaAhorro'].'</td>'; //1                            
+                // $htmlPDF.='<td style="border: 1px solid #e0e0e0; background-color: #b3ecff">'.$Pagos['CajaAhorro'].'</td>'; //1                            
             } else {
                 $htmlPDF.='<td style="border: 1px solid #e0e0e0; background-color: #66ff99;"><b>'.Pesos($Pagos['Caja']).'</b></td>'; //1                            
                 $htmlPDF.='<td style="border: 1px solid #e0e0e0; background-color: #66ff99;">'.$Pagos['EstadoPago'].'</td>'; //1                            
-                $htmlPDF.='<td style="border: 1px solid #e0e0e0; background-color: #66d9ff;">'.$Pagos['CajaAhorro'].'</td>'; //1                            
+                // $htmlPDF.='<td style="border: 1px solid #e0e0e0; background-color: #66d9ff;">'.$Pagos['CajaAhorro'].'</td>'; //1                            
             }
                 $htmlPDF.='</tr>';
 
                 $htmlPDF.='<tr>';
                 if ($c%2==0){ 
                     if (isset($_GET['full'])){
-                        $htmlPDF.='<td colspan="3" style="font-style: italic; font-size:6pt; text-align:center; border: 1px solid #e0e0e0; background-color: #ffccdd;">'.$Pagos['Descripcion_larga'];
+                        $htmlPDF.='<td colspan="3" style="font-style: italic; font-size:6pt; text-align:center; border: 1px solid #e0e0e0; background-color: #ffccdd;">'.$Pagos['Descripcion'];
                         $htmlPDF.='<br></td>';
                     } else {
-                        $htmlPDF.='<td colspan="3" style="font-style: italic; font-size:6pt; text-align:center; border: 1px solid #e0e0e0; background-color: #ffccdd;">'.$Pagos['Descripcion'];
+                        $htmlPDF.='<td colspan="3" style="font-style: italic; font-size:6pt; text-align:center; border: 1px solid #e0e0e0; background-color: #ffccdd;">'.' ';
                         $htmlPDF.='<br></td>';
                     }
                 } else {
                     if (isset($_GET['full'])){
-                        $htmlPDF.='<td colspan="3" style="font-style: italic; font-size:6pt; text-align:center; border: 1px solid #e0e0e0; background-color: #ff99bb;">'.$Pagos['Descripcion_larga'];
+                        $htmlPDF.='<td colspan="3" style="font-style: italic; font-size:6pt; text-align:center; border: 1px solid #e0e0e0; background-color: #ff99bb;">'.$Pagos['Descripcion'];
                         $htmlPDF.='<br></td>';
                     } else {
-                        $htmlPDF.='<td colspan="3" style="font-style: italic; font-size:6pt; text-align:center; border: 1px solid #e0e0e0; background-color: #ff99bb;">'.$Pagos['Descripcion'];
+                    
+                        $htmlPDF.='<td colspan="3" style="font-style: italic; font-size:6pt; text-align:center; border: 1px solid #e0e0e0; background-color: #ff99bb;">'.' ';
                         $htmlPDF.='<br></td>';
 
                     }
@@ -110,14 +111,27 @@ if (isset($_GET['id'])){
                 }
 
                 if ($c%2==0){ 
-                    $htmlPDF.='<td colspan="2" style="font-size:6pt; text-align:center; border: 1px solid #e0e0e0;  background-color: #ccffdd;">'.$Pagos['CajaDescripcion'];
-                    $htmlPDF.='</td>';
-                    $htmlPDF.='<td style="background-color: #b3ecff;"></td>';
-                } else {
-                    $htmlPDF.='<td colspan="2" style="font-size:6pt; text-align:center; border: 1px solid #e0e0e0;  background-color: #66ff99;">'.$Pagos['CajaDescripcion'];
-                    $htmlPDF.='</td>';
+
                     
-                    $htmlPDF.='<td style="background-color: #66d9ff;"></td>';
+                    if (isset($_GET['full'])){
+                        $htmlPDF.='<td colspan="2" style="font-size:6pt; text-align:center; border: 1px solid #e0e0e0;  background-color: #ccffdd;">';
+                        $htmlPDF.=$Pagos['CajaDescripcion'];
+                        $htmlPDF.='</td>';
+                       
+                    }
+                    $htmlPDF.='<td style="background-color: #b3ecff;"></td>';
+                    
+                    
+                } else {
+                    if (isset($_GET['full'])){
+                        $htmlPDF.='<td colspan="2" style="font-size:6pt; text-align:center; border: 1px solid #e0e0e0;  background-color: #66ff99;">';                    
+                        $htmlPDF.=$Pagos['CajaDescripcion'];
+                        $htmlPDF.='</td>';
+                        // $htmlPDF.='<td style="background-color: #b3ecff;"></td>';
+                    }
+                    $htmlPDF.='<td style="background-color: #b3ecff;"></td>';
+                    
+                    
                 }
                 $htmlPDF.='</tr>';
 

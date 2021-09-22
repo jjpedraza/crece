@@ -262,6 +262,29 @@ function Ahorrar_retiro(){
 
 } 
 
+
+function Ahorrar_crearDescuento(){
+    NoSol = $('#NoSol').val();
+    CantidadAhorro_retirar = $('#CantidadAhorro_retirar').val();
+    
+
+    $('#PreLoader').show();           
+    $.ajax({
+        url: 'app_caja_dat_ahorrar_creardescuento.php',
+        type: 'post',        
+        data: {
+            NoSol:NoSol, CantidadAhorro_retirar:CantidadAhorro_retirar            
+        },
+    success: function(data){
+        $('#R').html(data);                
+        $('#PreLoader').hide();
+        
+    }
+    });
+
+
+} 
+
 function CajaNPago(NoSol, NPago){
     
     

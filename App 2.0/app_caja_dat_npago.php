@@ -49,7 +49,7 @@ if($Sol = $rc -> fetch_array())
         <input style='font-size: 10pt; background-color: orange; color: white;' id='_".$Sol['NPago']."_Mora_Descuento' placeholder='' class='form-control' type='number' min='1' max='".$Sol['mora_debe']."' style='' value='0'>";
         echo "</td>";    
         echo "<td width=70px valign=top align=right>
-        <img onclick='DescontarMora_save(".$Sol['NPago'].");'  src='icons/saveas.png' style='width:30px; cursor:pointer;'></td>";    
+        <img onclick='DescontarMora_save(".$Sol['NPago'].");'  src='icons/check3.png' style='width:30px; cursor:pointer;'></td>";    
     echo "</tr>";
 
 
@@ -86,7 +86,7 @@ if($Sol = $rc -> fetch_array())
         <input style='font-size: 10pt; background-color: orange; color: white;' id='_".$Sol['NPago']."_CargoSemanal_Descuento' placeholder='' class='form-control' type='number' min='1' max='".$Sol['CargoSemanal']."' style='' value='0'>";
         echo "</td>";    
         echo "<td width=70px valign=top align=right>
-        <img onclick='DescontarCargoSemanal_save(".$Sol['NPago'].");'  src='icons/saveas.png' style='width:30px; cursor:pointer;'></td>";    
+        <img onclick='DescontarCargoSemanal_save(".$Sol['NPago'].");'  src='icons/check3.png' style='width:30px; cursor:pointer;'></td>";    
     echo "</tr>";
 
 
@@ -138,7 +138,7 @@ if($Sol = $rc -> fetch_array())
         <input style='font-size: 10pt; background-color: orange; color: white;' id='_".$Sol['NPago']."_CargoExtraOrdinario_Descuento' placeholder='' class='form-control' type='number' min='1' max='".$Sol['CargoExtraOrdinario_cantidad']."' style='' value='0'>";
         echo "</td>";    
         echo "<td width=70px valign=top align=right>
-        <img onclick='DescontarCargoExtraOrdinario_save(".$Sol['NPago'].");'  src='icons/saveas.png' style='width:30px; cursor:pointer;'></td>";    
+        <img onclick='DescontarCargoExtraOrdinario_save(".$Sol['NPago'].");'  src='icons/check3.png' style='width:30px; cursor:pointer;'></td>";    
     echo "</tr>";
 
 
@@ -176,7 +176,7 @@ if($Sol = $rc -> fetch_array())
         <input style='font-size: 10pt; background-color: orange; color: white;' id='_".$Sol['NPago']."_Fi_Descuento' placeholder='' class='form-control' type='number' min='1' max='".$Sol['mora_debe']."' style='' value='0'>";
         echo "</td>";    
         echo "<td width=70px valign=top align=right>
-        <img onclick='DescontarFi_save(".$Sol['NPago'].");'  src='icons/saveas.png' style='width:30px; cursor:pointer;'></td>";    
+        <img onclick='DescontarFi_save(".$Sol['NPago'].");'  src='icons/check3.png' style='width:30px; cursor:pointer;'></td>";    
     echo "</tr>";
 
 
@@ -208,7 +208,7 @@ if($Sol = $rc -> fetch_array())
         <input style='font-size: 10pt; background-color: orange; color: white;' id='_".$Sol['NPago']."_Capital_Descuento' placeholder='' class='form-control' type='number' min='1' max='".$Sol['mora_debe']."' style='' value='0'>";
         echo "</td>";    
         echo "<td width=70px valign=top align=right>
-        <img onclick='DescontarCapital_save(".$Sol['NPago'].");'  src='icons/saveas.png' style='width:30px; cursor:pointer;'></td>";    
+        <img onclick='DescontarCapital_save(".$Sol['NPago'].");'  src='icons/check3.png' style='width:30px; cursor:pointer;'></td>";    
     echo "</tr>";
 
 
@@ -216,7 +216,27 @@ if($Sol = $rc -> fetch_array())
     echo "<tr style='height:50px; background-color:green;'>";
     echo "<td align=left>TOTAL</td>";
     echo "<td align=left>";
-    echo Pesos(DebePago($NoSol,$NPago));
+    echo "<b>". Pesos(DebePago($NoSol,$NPago))."</b>";
+
+    $DescuentosAutorizados = DescuentosList_($NoSol,$NPago);
+        if ($DescuentosAutorizados <>""){
+            echo "<a class='' style='padding:2px; margin-left:2px;' href='#Descuentos0de".$NPago."' rel=MyModal:open title='Descuento Autorizado = ".$DescuentosAutorizados.", haz clic para ver mas...'><img src='icons/alerta2.png' style='width:16px;'></a>";
+            echo "<div id='Descuentos0de".$NPago."' class='MyModal'>";
+                $sql="
+                    select 
+                    d.cantidad AS Descuento,
+                    d.concepto,
+                	d.act_fecha as Fecha,
+            	    (select cat_tipodescuento.TipoDescuento from cat_tipodescuento WHERe IdTipoDescuento =  d.IdTipoDescuento) as Tipo
+
+                    from descuentos d where nosol='".$NoSol."' and no='".$NPago."' and IdTipoDescuento=0";
+                    
+                TableData($sql, "Descuentos Autorizados del Pago ".$Sol['NPago']);
+        
+            echo "<a href='app_solicitud.php?n=".$NoSol."' class='btn btn-secondary'>Gestionar Descuentos de este Contrato</a>";
+            echo "</div>";
+        }       
+
     echo "</td>";
     echo "<td  valign=top  align=center  width=30%>";    
     echo "</td>";    
