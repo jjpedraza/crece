@@ -18,7 +18,12 @@ if (isset($_GET['id'])){
         $rx = $db1->query($sqlX);    
         if ($db1->query($sqlX) == TRUE){   
             $PDFTitulo="ESTADO DE CUENTA";
-            $PDFSubTitulo="No. ".$NoSol."";
+            if (Contrato_Activo($NoSol) ==TRUE){
+                $PDFSubTitulo="No. ".$NoSol." | ACTIVO";
+            } else {
+                $PDFSubTitulo="No. ".$NoSol." | CANCELADO";
+            }
+            
             $PDFSubTitulo2=$Cliente;
             include("_print_head.php");
 

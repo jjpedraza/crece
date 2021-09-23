@@ -892,6 +892,7 @@ function Contrato_Curp($NoSol){
 function Contrato_Nombre($NoSol){
     require("rintera-config.php");   
         $sql = "select * from clientes where curp='".Contrato_Curp($NoSol)."'";
+        // echo $sql;
         $rc= $db1 -> query($sql);    
         if($f = $rc -> fetch_array())
         { 
@@ -921,14 +922,15 @@ $CurpActual = Contrato_Curp($NoSol);
     if ($db1->query($QueryUpdate) == TRUE)
     {
         Historia($RinteraUser, "CONTRATO", "Cambio de Titular el Contrato ".$NoSol." de ".$CurpActual." a ".$CurpNuevo);
+        return TRUE;
 
-        $QueryUpdate2="UPDATE tabladepagos  SET curp='".$CurpNuevo."'  WHERE nosol='".$NoSol."'";
-        if ($db1->query($QueryUpdate2) == TRUE)
-        {
-            return TRUE;
-        }  else {
-            return FALSE;
-        }
+        // $QueryUpdate2="UPDATE tabladepagos  SET curp='".$CurpNuevo."'  WHERE nosol='".$NoSol."'";
+        // if ($db1->query($QueryUpdate2) == TRUE)
+        // {
+        //     return TRUE;
+        // }  else {
+        //     return FALSE;
+        // }
         
     }
     else {
@@ -937,4 +939,70 @@ $CurpActual = Contrato_Curp($NoSol);
     unset($QueryCalculo);
 }
 
+
+function MiembroDelGrupo($NoSol, $Curp){
+    require("rintera-config.php");
+    $RinteraUser = $_SESSION['RinteraUser']; 
+    $sql = "select count(*) as n from clientes where grupo=(select grupo from cuentas where nosol='".$NoSol."') and curp='".$Curp."'";
+    $rc= $db1 -> query($sql);    
+    if($f = $rc -> fetch_array())
+    { 
+        if ($f['n']==0){
+            return FALSE;
+        } else {
+            return TRUE;
+        }
+    } else { return FALSE;}
+
+}
+
+
+function Contrato_Activo($NoSol){
+    require("rintera-config.php");
+    $RinteraUser = $_SESSION['RinteraUser']; 
+    $sql = "select IdEstatus from cuentas where nosol='".$NoSol."'";
+    $rc= $db1 -> query($sql);    
+    if($f = $rc -> fetch_array())
+    { 
+        if ($f['IdEstatus']==0){
+            return TRUE;
+        } else {
+            return FALSE;
+        }
+    } else { return FALSE;}
+
+}
+  
+function CancelarContrato($NoSol){
+    require("rintera-config.php");
+    $RinteraUser = $_SESSION['RinteraUser']; 
+
+    $QueryUpdate="UPDATE cuentas SET IdEstatus=1 WHERE nosol='".$NoSol."'";
+    if ($db1->query($QueryUpdate) == TRUE)
+    {
+        Historia($RinteraUser, "CONTRATOS", "Cancelo el contrato ".$NoSol);
+        return TRUE;
+    }
+    else {
+        return FALSE;
+    }
+    unset($QueryCalculo);
+}
+
+
+function ActivarContrato($NoSol){
+    require("rintera-config.php");
+    $RinteraUser = $_SESSION['RinteraUser']; 
+
+    $QueryUpdate="UPDATE cuentas SET IdEstatus=0 WHERE nosol='".$NoSol."'";
+    if ($db1->query($QueryUpdate) == TRUE)
+    {
+        Historia($RinteraUser, "CONTRATOS", "Activo el contrato ".$NoSol);
+        return TRUE;
+    }
+    else {
+        return FALSE;
+    }
+    unset($QueryCalculo);
+}
 ?>

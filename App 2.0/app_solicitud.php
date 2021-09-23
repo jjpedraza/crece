@@ -21,8 +21,14 @@ if (isset($_GET['n'])){
     
     // echo $NoSol;
     echo "<div id='mas' class='container' style='background-color:#f7f4f563; border-radius:5px;padding:5px; margin-top:20px; color: #62032c;'>
-    <span><table width=100%><tr>
-    <td ><h3 style='font-size:12pt;'> SOLICITUD <b>".$NoSol."</b></h3></td>";
+    <span><table width=100%><tr>";
+
+    if (Contrato_Activo($NoSol)==TRUE){
+        echo "<td ><h3 style='font-size:12pt; color:green;'> CONTRATO <b>".$NoSol."</b> | ACTIVO</h3></td>";
+    } else {
+        echo "<td ><h3 style='font-size:12pt;color:red;'> CONTRATO <b>".$NoSol."</b> | CANCELADO</h3></td>";
+    }
+    
 
         echo "
         <td align=right>
@@ -39,10 +45,62 @@ if (isset($_GET['n'])){
     
     echo "<div id='mas' class='container' style='background-color:white; border-radius:5px;padding:5px; margin-top:20px;'>";
         
-        echo "<div id='Titular'>";
+        echo "<div id='Titular' style='
+            background-color: #d2d0d0;
+            border-top-left-radius: 5px; padding:5px;
+            border-top-right-radius: 5px;
+        '>";
+        $Curp = Contrato_Curp($NoSol);
+        $Nombre = Contrato_Nombre($NoSol);
+        if ($Sol['tipo']=='GRUPO'){
+            echo "<h3>".$Nombre."<img src='icons/actualizar.png'  title='Haz clic para cambiar la titularidad'
+            style='
+                width: 23px;
+                margin-left: 15px;
+                cursor: pointer;    
+                margin-top: -6px;
+                border-radius: 50%;
+            ' onclick='Selector();'>"."</h3>";
+
+            echo "<div id='Selector' style='
+                display: block;
+                background-color: #b9b2c1;
+                padding: 5px;
+            '>";
+            $sqlMiembros = "select curp, nombre, grupo, grupo_cargo from clientes where grupo=(select grupo from cuentas where nosol='".$NoSol."') and curp<>'".$Curp."'";
+            $rM = $db1->query($sqlMiembros);    
+            if ($db1->query($sqlMiembros) == TRUE){        
+                echo "<table width=100%><tr><td width=80%>";
+                echo "<select id='Miembro' name='Miembro' class='form-control'>";
+                while($M= $rM -> fetch_array()) {  
+                    echo "<option value='".$M['curp']."'>".$M['nombre']." - ".$M['grupo_cargo']."</option>";
+                }
+                echo "</select>";
+                echo "</td><td>";
+                echo "<button style='width:100%;' onclick='CambiarTitularidad();' class='btn btn-success'>Cambiar Titular</button>";
+
+                echo "</td></tr></table>";
+                
+            } else {
+                echo "No Se encontraron mas miembros en el Grupo";
+            }
+            echo "</div>";
+            unset($rM, $M, $sqlMiembros);
+
+            
+            
+    
+
+        } else {
+            echo "<h3>".$Nombre."</h3>";
+        }
+
+        
         
 
         echo "</div>";
+
+        echo "<table width=100% border=0><tr><td valign=top align=left width=75%>";
         
         FormElement_input("CURP: ",$Sol['curp'],"", "","text","ClienteCurp",TRUE );
 
@@ -216,34 +274,7 @@ if (isset($_GET['n'])){
 
 
 
-        FormElement_textarea("Descripcion de la Garantia y Antecedentes: ",$Sol['garantia'],"", "","text","CreditoGarantia");
         
-
-        echo '
-        <div class="form-group disable" id="DivGarantiaFila" style="margin: 4px;
-        padding: 4px;
-        border-radius: 5px; background-color: #e8e8e8;
-        vertical-align: top;">';
-
-        $fotoFile = 'fotos/'.$NoSol.'_garantia.jpg';
-        if (is_file($fotoFile)){
-            echo "<a href='".$fotoFile."' target=_blank><img name='foto' id='foto'  src='".$fotoFile."' style='width:100%; border-radius:5px;'></a>";
-
-        } else {
-            echo "<img name='foto' id='foto' src='icons/nofoto.jpg' style='width:100%;'>";
-        }
-
-
-
-        echo '<br>
-        <table width=100%><tr><td>
-            <label  style="font-size:8pt;">Archivo de la Garantia</label>
-            <form id="FormGarantia" method="POST" enctype="multipart/form-data"><input type="file" name="GarantiaFile" id="GarantiaFile" accept=".jpg" class="form-control" style="font-size:8pt;">            </form>
-            </td><td width=30%>
-            
-            <button class="btn btn-success" onclick="GuardarFoto();">Guardar Foto</button></td></tr></table>
-        </div>';
-
 
         if ($Sol['valoracion']==''){
             echo '
@@ -280,7 +311,37 @@ if (isset($_GET['n'])){
             echo "<input type='hidden' id='CreditoValoracion' value='NOT'>";
         }
 
+        FormElement_textarea("Descripcion de la Garantia y Antecedentes: ",$Sol['garantia'],"", "","text","CreditoGarantia");
+        echo "</td><td>";
+        
+        
 
+        echo '
+        <div class="form-group disable" id="DivGarantiaFila" style="margin: 4px;
+        padding: 4px;
+        border-radius: 5px; background-color: #e8e8e8; width:100%;
+        vertical-align: top;">';
+
+        $fotoFile = 'fotos/'.$NoSol.'_garantia.jpg';
+        if (is_file($fotoFile)){
+            echo "<a href='".$fotoFile."' target=_blank><img name='foto' id='foto'  src='".$fotoFile."' style='width:100%; border-radius:5px;'></a>";
+
+        } else {
+            echo "<img name='foto' id='foto' src='icons/nofoto.jpg' style='width:100%;'>";
+        }
+
+
+
+        echo '<br>
+        <table width=100%><tr><td>
+            <label  style="font-size:8pt;">Archivo de la Garantia</label>
+            <form id="FormGarantia" method="POST" enctype="multipart/form-data"><input type="file" name="GarantiaFile" id="GarantiaFile" accept=".jpg" class="form-control" style="font-size:8pt;">            </form>
+            </td><td width=30%>
+            
+            <button class="btn btn-success" onclick="GuardarFoto();">Guardar Foto</button></td></tr></table>
+        </div>';
+
+        echo "</td><tr></table>";
 
 
 if ($Sol['valoracion']==''){
@@ -328,7 +389,16 @@ if ($Sol['valoracion']==''){
     ";
         // if ($Sol['valoracion']==''){
         echo "
-<button style='margin:5px;' class='btn btn-success' onclick='GuardarSolicitud();'>Guardar </button>
+        <button style='margin:5px;' class='btn btn-success' onclick='GuardarSolicitud();'>Guardar </button>";
+
+        if (Contrato_Activo($NoSol)==TRUE){
+            echo "<button style='margin:5px;' class='btn btn-danger' onclick='CancelarSolicitud();'>CANCELAR </button><br>";
+        } else {
+            echo "<button style='margin:5px;' class='btn btn-primary' onclick='ActivarSolicitud();'>ACTIVAR </button><br>";
+        }
+        
+
+        echo "
 <button style='margin:5px;' class='btn btn-warning' onclick='CorridaF();'>Simular Corrida Financiera</button>
 <a target=_blank href='print_solicitud.php?id=".$NoSol."' style='margin:5px;' class='btn btn-primary' download='Solicitud-".$NoSol.".pdf'> 
     <img src='icons/pdf.png' style='width:23px; margin-top:-5px; margin-right:5px;'> Imprimir Solicitud</a>
@@ -403,8 +473,88 @@ if ($Sol['valoracion']==''){
 
         
 
+if (isset($NoSol)){
+    echo "<div id='mas' class='container' style='background-color:#fde1ab; border-radius:5px;padding:5px; margin-top:20px; margin-bottom:20px;'>";
+    echo "<h4>CAPTURAR DESCUENTO</h4>";
+    $IdDiv = "DivCaptura1";
+    
+    echo '
+            <div class="form-group disable" id="'.$IdDiv.'" style="margin: 4px;
+            padding: 4px;
+            border-radius: 5px;
+            vertical-align: top;">';
+            $IdElement = "DescuentoCantidad";
+            $Value = 0;
+            $Label = "Cantidad a descontar";
+            $SmallText = "Solo se puede agregar un descuento si tiene pagos pendientes";
+    
+            echo '
+                <label for="'.$IdElement.'" style="font-size:8pt;">'.$Label.'</label>
+                <input title="'.$Value.'" style="cursor:pointer; font-size:9pt; margin-top:-7px;" type="number" class="form-control" id="'.$IdElement.'" placeholder="" value="'.$Value.'" >
+                <small id="'.$IdElement.'_smalltext'.'" class="form-text text-muted" style="font-size: 7pt;
+                margin-top: -2px;">'.$SmallText.'</small>
+            </div>';
+    
+            $sql = "select nosol, NPago, TOTAL, EstadoPago from cartera where nosol='".$NoSol."' and EstadoPago='SIN PAGAR'";
+            $r= $db1 -> query($sql);
+    
+            echo '<div class="form-group disable" id="'.$IdDiv.'2" style="margin: 4px;
+            padding: 4px;
+            border-radius: 5px;
+            vertical-align: top;">
+            <label>NPago:<label><br>
+            <select id="NPago" class="form-control">
+            ';
+            
+            while($f = $r -> fetch_array()) {      
+                echo '<option value="'.$f['NPago'].'">'.$f['NPago'].' = '.$f['TOTAL'].'</div>';
+            }
+            echo '</select>';
+            unset($f,$sql);
+            echo '</div>';
+        
+            echo '<div class="form-group disable" id="'.$IdDiv.'2" style="margin: 4px;
+            padding: 4px;
+            border-radius: 5px;
+            vertical-align: top;">
+            
+            
+            ';
+            $IdElement = "DescuentoConcepto";
+            $Value = 0;
+            $Label = "Concepto";
+            $SmallText = "";
+    
+            echo '
+                <label for="'.$IdElement.'" style="font-size:8pt;">'.$Label.'</label>
+                <input title="'.$Value.'" style="cursor:pointer; font-size:9pt; margin-top:-7px;" type="text" class="form-control" id="'.$IdElement.'" placeholder="" value="'.$Value.'" >
+                <small id="'.$IdElement.'_smalltext'.'" class="form-text text-muted" style="font-size: 7pt;
+                margin-top: -2px;">'.$SmallText.'</small>
+            </div>';
+            echo "<br>";
+    
+            echo "<button class='btn btn-success' onclick='Descontar();'>Crear Descuento</button>";
+    
+            echo "<hr>";
+            echo "<div id='DivDescuentos'>";
+            $sql="select * from descuentos_html where nosol='".$NoSol."' and EstadoPago='SIN PAGAR'";
+            TableData($sql,"Descuentos autorizados:"); //0 = Basica, 1 = ScrollVertical, 2 = Scroll Horizontal
+            echo "</div>";
+        
+           
+        echo "</div>";
+        }
+
     }else{
-        echo "No se encontro solicitud";
+        echo "<div style='
+            background-color:white;
+            padding:10px;
+            margin-top:10%;
+            margin-left:25%;
+            border-radius:10px;
+            width:50%;
+
+        '><b>No se encontro la solicitud<b> ".$NoSol."</div>";
     }
     unset($sql, $r, $Sol);
         
@@ -475,78 +625,6 @@ if ($Sol['valoracion']==''){
 }
 
 
-
-if (isset($NoSol)){
-echo "<div id='mas' class='container' style='background-color:#fde1ab; border-radius:5px;padding:5px; margin-top:20px; margin-bottom:20px;'>";
-echo "<h4>CAPTURAR DESCUENTO</h4>";
-$IdDiv = "DivCaptura1";
-
-echo '
-        <div class="form-group disable" id="'.$IdDiv.'" style="margin: 4px;
-        padding: 4px;
-        border-radius: 5px;
-        vertical-align: top;">';
-        $IdElement = "DescuentoCantidad";
-        $Value = 0;
-        $Label = "Cantidad a descontar";
-        $SmallText = "Solo se puede agregar un descuento si tiene pagos pendientes";
-
-        echo '
-            <label for="'.$IdElement.'" style="font-size:8pt;">'.$Label.'</label>
-            <input title="'.$Value.'" style="cursor:pointer; font-size:9pt; margin-top:-7px;" type="number" class="form-control" id="'.$IdElement.'" placeholder="" value="'.$Value.'" >
-            <small id="'.$IdElement.'_smalltext'.'" class="form-text text-muted" style="font-size: 7pt;
-            margin-top: -2px;">'.$SmallText.'</small>
-        </div>';
-
-        $sql = "select nosol, NPago, TOTAL, EstadoPago from cartera where nosol='".$NoSol."' and EstadoPago='SIN PAGAR'";
-        $r= $db1 -> query($sql);
-
-        echo '<div class="form-group disable" id="'.$IdDiv.'2" style="margin: 4px;
-        padding: 4px;
-        border-radius: 5px;
-        vertical-align: top;">
-        <label>NPago:<label><br>
-        <select id="NPago" class="form-control">
-        ';
-        
-        while($f = $r -> fetch_array()) {      
-            echo '<option value="'.$f['NPago'].'">'.$f['NPago'].' = '.$f['TOTAL'].'</div>';
-        }
-        echo '</select>';
-        unset($f,$sql);
-        echo '</div>';
-    
-        echo '<div class="form-group disable" id="'.$IdDiv.'2" style="margin: 4px;
-        padding: 4px;
-        border-radius: 5px;
-        vertical-align: top;">
-        
-        
-        ';
-        $IdElement = "DescuentoConcepto";
-        $Value = 0;
-        $Label = "Concepto";
-        $SmallText = "";
-
-        echo '
-            <label for="'.$IdElement.'" style="font-size:8pt;">'.$Label.'</label>
-            <input title="'.$Value.'" style="cursor:pointer; font-size:9pt; margin-top:-7px;" type="text" class="form-control" id="'.$IdElement.'" placeholder="" value="'.$Value.'" >
-            <small id="'.$IdElement.'_smalltext'.'" class="form-text text-muted" style="font-size: 7pt;
-            margin-top: -2px;">'.$SmallText.'</small>
-        </div>';
-        echo "<br>";
-
-        echo "<button class='btn btn-success' onclick='Descontar();'>Crear Descuento</button>";
-
-        echo "<hr>";
-        echo "<div id='DivDescuentos'>";
-        $sql="select * from descuentos_html where nosol='".$NoSol."' and EstadoPago='SIN PAGAR'";
-        TableData($sql,"Descuentos autorizados:"); //0 = Basica, 1 = ScrollVertical, 2 = Scroll Horizontal
-        echo "</div>";
-    
-       
-echo "</div>";
-    }
 
 ?>
 <script>
@@ -718,6 +796,74 @@ function ActualizaFoto(){
     
     src='fotos/'+NoSol+'_garantia.jpg?';
     $("#foto").attr("src",src+d.getTime());
+}
+
+function Selector(){
+    if ($("#Selector").css("display") =='block'){
+        $("#Selector").css("display","none");
+    } else {
+        $("#Selector").css("display","block");
+    }
+}
+Selector();
+
+
+function CambiarTitularidad(){    
+    NoSol = '<?php echo $_GET['n']; ?>';
+    NuevoTitular = $('#Miembro').val();
+    $('#PreLoader').show();
+            $.ajax({
+                url: 'app_dat_cambiartitular.php',
+                type: 'post',
+                data: {
+                    NoSol:NoSol, NuevoTitular:NuevoTitular
+       
+                },
+                success: function(data) {
+                    $('#R').html(data);
+                    $('#PreLoader').hide();
+                }
+            });
+}
+
+
+
+
+function CancelarSolicitud(){    
+    NoSol = '<?php echo $_GET['n']; ?>';
+    
+    $('#PreLoader').show();
+            $.ajax({
+                url: 'app_dat_cancelarcontrato.php',
+                type: 'post',
+                data: {
+                    NoSol:NoSol
+       
+                },
+                success: function(data) {
+                    $('#R').html(data);
+                    $('#PreLoader').hide();
+                }
+            });
+}
+
+
+function ActivarSolicitud(){    
+    NoSol = '<?php echo $_GET['n']; ?>';
+    
+    $('#PreLoader').show();
+            $.ajax({
+                url: 'app_dat_activarcontrato.php',
+                type: 'post',
+                data: {
+                    NoSol:NoSol
+       
+                },
+                success: function(data) {
+                    $('#R').html(data);
+                    $('#PreLoader').hide();
+                }
+            });
 }
 
 </script>

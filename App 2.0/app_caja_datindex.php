@@ -20,7 +20,7 @@ FROM
 	INNER JOIN	clientes	ON 		c.curp = clientes.curp
 	
 WHERE
-	valoracion = 'APROBADO'
+	valoracion = 'APROBADO' and IdEstatus=0
 ";
 $r= $db1 -> query($sql);
 while($f = $r -> fetch_array()) {          
