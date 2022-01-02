@@ -22,6 +22,7 @@ $CreditoGarantia = VarClean($_POST['CreditoGarantia']);
 $CreditoValoracion = VarClean($_POST['CreditoValoracion']);
 $CreditoComentarios = VarClean($_POST['CreditoComentarios']);
 $CreditoFechaContrato = VarClean($_POST['CreditoFechaContrato']);
+$CreditoFechaInicio = VarClean($_POST['CreditoFechaInicio']);
 $CreditoIvaTipo = VarClean($_POST['CreditoIvaTipo']);
 
 // Historia($RinteraUser, "PROYECCION", "Vio la proyeccion ".$Anio);
@@ -80,7 +81,8 @@ if ($CreditoValoracion == "NOT"){
       valoracion='".$CreditoValoracion."',
       fechacontrato='".$CreditoFechaContrato."',
       comentario='".$CreditoComentarios."',
-      iva_tipo='".$CreditoIvaTipo."'
+      iva_tipo='".$CreditoIvaTipo."',
+      fechainicio ='".$CreditoFechaInicio."'
 
 
       WHERE nosol = '".$NoSol."'
@@ -156,7 +158,9 @@ if ($CreditoValoracion == "NOT"){
                $nOK=0;
                while($n<=$NPlazo){
                   if ($n==1){ // si es el primer pago es la fecha del contrato
-                     $FechaSig = $CreditoFechaContrato;
+                     // $FechaSig = $CreditoFechaContrato;
+                     $FechaSig = $CreditoFechaInicio;
+
                   } else {
                      $FechaSig = date('Y-m-d', strtotime("$FechaSig + ".$CreditoFormaDePago."day"));
                   }

@@ -114,6 +114,13 @@ if (isset($_GET['n'])){
             FormElement_input("Fecha de Contrato: ",$Sol['fechacontrato'],"", "","date","CreditoFechaContrato",TRUE );
         }
 
+        if ($Sol['valoracion']==''){
+            
+            FormElement_input("Fecha de Inicio: ",$Sol['fechainicio'],"", "","date","CreditoFechaInicio");
+        } else {
+            FormElement_input("Fecha de Inicio: ",$Sol['fechainicio'],"", "","date","CreditoFechaInicio",TRUE );
+        }
+
         FormElement_input("Grupo al que pertenece: ",$Sol['grupo'],"", "","text","",TRUE );
         
 
@@ -642,6 +649,7 @@ function GuardarSolicitud(){
    CreditoValoracion = $('#CreditoValoracion').val();
    CreditoComentarios = $('#CreditoComentarios').val();
    CreditoFechaContrato = $('#CreditoFechaContrato').val();
+   CreditoFechaInicio = $('#CreditoFechaInicio').val();
    CreditoIvaTipo = $('#CreditoIvaTipo').val();
     ClienteCurp = $('#ClienteCurp').val();
    
@@ -656,7 +664,8 @@ function GuardarSolicitud(){
                     CreditoTasaMoratorio: CreditoTasaMoratorio, CreditoCargoPorSemana: CreditoCargoPorSemana,
                     CreditoGarantia: CreditoGarantia, CreditoValoracion:CreditoValoracion,
                     CreditoComentarios:CreditoComentarios, CreditoFechaContrato:CreditoFechaContrato,
-                    CreditoIvaTipo:CreditoIvaTipo, ClienteCurp:ClienteCurp
+                    CreditoIvaTipo:CreditoIvaTipo, ClienteCurp:ClienteCurp,
+                    CreditoFechaInicio:CreditoFechaInicio
        
                 },
                 success: function(data) {

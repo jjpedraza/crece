@@ -128,12 +128,12 @@ if ($PagosQueDebe<= 0){
                         
                         
                     }
-                    echo "
-                    <script>
+                    // echo "
+                    // <script>
 
                     
-                        CargaContrato(0);
-                    </script>";
+                    //     CargaContrato(0);
+                    // </script>";
 
                 }
             else { $OK =  FALSE;
@@ -247,14 +247,14 @@ if ($PagosQueDebe<= 0){
         echo "<br>";
         if ($OK == TRUE){
             //Ticket y Recibo de Pago
-            // echo "<a target=_blank class='btn btn-primary' href='print_ticket.php?id=".$IdCorte."'>Ticket</a> ";
+            echo "<a target=_blank class='btn btn-primary' href='print_ticket.php?id=".$IdCorte."'>Ticket</a> ";
             // echo "<a target=_blank class='btn btn-primary' href='print_recibo.php?id=".$IdCorte."'>Recibo</a>";
-            TicketsHoy($NoSol);
+            
 
         } else{
             echo "<button class='btn btn-success' onclick='Pagar();'>PAGAR</button>";
         }
-        
+        // TicketsHoy($NoSol);
 }
 ?>
 

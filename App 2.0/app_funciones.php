@@ -811,14 +811,28 @@ function Tickets($NoSol, $NPago){
 
 function TicketsHoy($NoSol){
     require("rintera-config.php");   
-    $sql="select * from corte where nosol='".$NoSol."' and fecha='".$fecha."' order by id DESC";
+    $sql="select * from corte where nosol='".$NoSol."'  order by id DESC";
     $r= $db1 -> query($sql);
         echo "<div style='
-        font-family: Regular; font-size:10pt; background-color:#e3e3e3; border-radius:5px; padding:10px; width:100%; margin:5px;
-        '>Tickets de Hoy de este contrato ".$NoSol.": <br>";
+        font-family: Regular; font-size:10pt; background-color:#e3e3e3; border-radius:5px; padding:10px; margin:5px;
+        '>Tickets: (Contrato:".$NoSol.": )<br>";
+        echo "<table class='tabla'>";
+        echo "<th>IdTicket</th>";
+        echo "<th>Fecha</th>";
+        echo "<th>Valor</th>";
+        echo "<th>Imprimir</th>";
         while($f = $r -> fetch_array()) {      
-            echo " <a title='Haz clic aqui para imprimir el Ticket' target=_blank class='btn btn-primary' href='print_ticket.php?id=".$f['id']."'><img src='icons/embarques_print2.png' style='width:18px;'> ".$f['id']." - ".$f['no']."</a> ";
+            echo "<tr>";
+            echo "<td>".$f['id']."</td>";
+            echo "<td>".$f['fecha']."</td>";
+            echo "<td>".$f['valor']."</td>";
+            echo "<td>";
+            echo " <a title='Haz clic aqui para imprimir el Ticket' target=_blank class='btn btn-primary' href='print_ticket.php?id=".$f['id']."'><img src='icons/embarques_print2.png' style='width:18px;'> ".$f['id']."</a> ";
+            echo "</td>";            
+            echo "</tr>";
+            
         }
+        echo "</table>";
         echo "</div>";
 }
 

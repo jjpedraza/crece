@@ -91,8 +91,10 @@ if ($PagosQueDebe<= 0){
         echo "<a title='Estado de cuenta con descripcion muy detallada' target=_blank class='btn btn-warning' href='print_edocuenta.php?id=".$NoSol."&full='><img src='icons/correcto1.png' style='width:25px;'></a><br> ";
         echo "<a target=_blank class='btn btn-secondary' href='app_solicitud.php?n=".$NoSol."'>Cuenta</a> ";
         echo "<a target=_blank class='btn btn-secondary' href='app_carnet.php?id=".$Curp."'>Cliente</a>";
+
         unset($r,$sql, $Sol);
 
+        TicketsHoy($NoSol);
         echo "<script>CajaComponents(0);</script>";
 
 
