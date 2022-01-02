@@ -10,17 +10,13 @@ echo '<datalist id="contratos" style="
 
 ">';
 $sql="
-SELECT
-	c.nosol, 
-	c.curp, 
-	clientes.nombre
-	
-FROM
-	cuentas AS c
-	INNER JOIN	clientes	ON 		c.curp = clientes.curp
-	
-WHERE
-	valoracion = 'APROBADO' and IdEstatus=0
+select 
+DISTINCT
+s.Cliente as nombre,
+s.nosol
+
+from saldos s
+WHERE EstadoPago <> 'PAGADO'
 ";
 $r= $db1 -> query($sql);
 while($f = $r -> fetch_array()) {          
