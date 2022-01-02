@@ -200,6 +200,17 @@ if (Preference("MostrarApps", "", "")=='TRUE'){
      '
      >Actualizar Saldos </button>
      <label style='font-size:7pt;'>Ultima Act. ".UltimaActSaldos()."</label>
+
+     <a href='simularcorrida.php' title='' class='btn btn-secondary'
+     style='
+        // background-color: #e6e6e6;
+        // color: #625f5f;
+        width: 100%;
+        font-size: 10pt;
+        text-align:left;
+        margin-top:10px;
+     '
+     >Simulador de Corrida Financiera</a>
      ";
 
     
