@@ -178,6 +178,8 @@ require("components.php");
                         // session_start();                        
                         $_SESSION['RinteraUser'] = $f['IdUser']; //session		
                         $_SESSION['RinteraUserName'] = $f['UserName']; //session		
+                        // $_SESSION['IdSucursal'] = $f['UserName']; //session		
+
                         $RinteraUser = $f['IdUser'];
                         
                         

@@ -7,7 +7,7 @@ require ("components.php");
 $NoSol = VarClean($_POST['NoSol']);
 $PagosQueDebe = NDebe($NoSol);
 if (Contrato_Activo($NoSol)==FALSE){
-    Toast("Este Contrato ".$NoSol." esta CANCELADO",2,"");
+    Toast("Este Contrato ".$NoSol." no disponible ",2,"");
 } else {
 
 if ($PagosQueDebe<= 0){

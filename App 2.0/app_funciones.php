@@ -1019,4 +1019,35 @@ function ActivarContrato($NoSol){
     }
     unset($QueryCalculo);
 }
+
+function UserIdSucursal($IdUser){
+    require("rintera-config.php");   
+        $sql = "select * from users where IdUser='".$IdUser."'";
+        $rc= $db0 -> query($sql);    
+        if($f = $rc -> fetch_array())
+        {
+            return $f['IdSucursal'];
+        } else {
+            return "";
+        }
+}
+
+function SucursalName($IdSucursal){
+    require("rintera-config.php");   
+        $sql = "select * from sucursales where IdSucursal='".$IdSucursal."'";
+        $rc= $db0 -> query($sql);    
+        if($f = $rc -> fetch_array())
+        {
+            return $f['Sucursal'];
+        } else {
+            return "";
+        }
+}
+
+function UserSucursal($IdUser){
+    require("rintera-config.php");   
+    $IdSucursal = UserIdSucursal($IdUser);
+    return SucursalName($IdSucursal);
+}
+    
 ?>

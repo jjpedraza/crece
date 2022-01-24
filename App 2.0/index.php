@@ -112,8 +112,8 @@ if (Preference("MostrarApps", "", "")=='TRUE'){
     " >
 '>
     <div id="DashboardCol1"  style="vertical-align: top; text-align:left; color:white;">
-  
-    <button onclick='CargaGraficas();' class='btn btn-secondary' title='Cargar Graficas'><img src='icons/more.png' style='width:18px'></button>
+    
+    <!-- <button onclick='CargaGraficas();' class='btn btn-secondary' title='Cargar Graficas'><img src='icons/more.png' style='width:18px'></button> -->
     </div>
 
     <div id="DashboardCol2" >
@@ -189,7 +189,7 @@ if (Preference("MostrarApps", "", "")=='TRUE'){
      >Grupos</a>
 
 
-        <button onclick='Saldos()' title='Haga Clic aqui actualizar los saldos' class='btn btn-secondary'
+        <button onclick='Saldos()' title='Haga Clic aqui actualizar los saldos' class='btn btn-warning'
      style='
         // background-color: #e6e6e6;
         // color: #625f5f;
@@ -199,7 +199,6 @@ if (Preference("MostrarApps", "", "")=='TRUE'){
         margin-top:10px;
      '
      >Actualizar Saldos </button>
-     <label style='font-size:7pt;'>Ultima Act. ".UltimaActSaldos()."</label>
 
      <a href='simularcorrida.php' title='' class='btn btn-secondary'
      style='
@@ -210,7 +209,18 @@ if (Preference("MostrarApps", "", "")=='TRUE'){
         text-align:left;
         margin-top:10px;
      '
-     >Simulador de Corrida Financiera</a>
+     >Simulador de Corrida</a>
+
+     <a href='app_seguros.php' title='' class='btn btn-secondary'
+     style='
+        // background-color: #e6e6e6;
+        // color: #625f5f;
+        width: 100%;
+        font-size: 10pt;
+        text-align:left;
+        margin-top:10px;
+     '
+     >Config Seguros</a>
      ";
 
     

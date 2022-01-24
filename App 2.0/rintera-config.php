@@ -42,6 +42,7 @@ $db1_pass = '';
 // $db0_pass = ''; 
 $db1_name = 'crece';
 
+$db1_pdo = new PDO("mysql:host=localhost; dbname=crece", "root", "");
 
 if (function_exists('mysqli_connect')) {		
     $db1 = new mysqli($db1_host,$db1_user,$db1_pass,$db1_name);
