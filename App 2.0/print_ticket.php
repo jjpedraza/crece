@@ -11,7 +11,8 @@ if (isset($_GET['id'])){ //Ticket
     {   
         $Curp = NoSol_to_Curp($f['nosol']);
         $Cliente = Cliente_Nombre($Curp);    
-        $Grupo = Cliente_Grupo($Curp);
+        $IdGrupo = Cliente_IdGrupo($Curp);
+        $Grupo = GrupoName($IdGrupo);
 
         echo '<p>';
         echo'<img border="0" src="img/logo_color.png"  width="120" height="80" style="margin-left:50px;"/>
@@ -20,7 +21,7 @@ if (isset($_GET['id'])){ //Ticket
         
         echo '<b style="font-size:12pt; font-family:courier new;">'.$Cliente.'</b><br>';
         echo '<b style="font-size:10pt; font-family:courier new;">'.$Curp.'</b><br>';
-        echo '<b style="font-size:10pt; font-family:courier new;">'.$Grupo.'</b><br>';
+        echo '<b style="font-size:10pt; font-family:courier new;">('.$IdGrupo.')'.$Grupo.'</b><br>';
         echo '<b style="font-size:10pt; font-family:courier new;">Contrato: '.$f['nosol'].'</b><br>';
         echo '<b style="font-size:10pt; font-family:courier new;">IdTicket: '.$f['id'].'</b><br>';
         echo '<b style="font-size:10pt; font-family:courier new;">No: '.$f['no'].'/'.Cuenta_NPagos($f['nosol']).'</b>';
@@ -45,6 +46,7 @@ if (isset($_GET['id'])){ //Ticket
                 echo 'Int.Fi: '.Pesos($f['interes']).'<br>';
                 echo 'IVA: '.Pesos($f['impuesto']).'<br>';        
                 echo 'Cap: '.Pesos($f['capital']).'<br>';
+                echo 'Seg.: '.Pesos($f['cargoseguro']).'<br>';
                 echo'------------------------------------<br>';
                 echo 'Pago: '.Pesos($f['valor']).'<br>';
             }

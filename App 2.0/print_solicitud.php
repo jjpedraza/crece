@@ -64,16 +64,19 @@ if (isset($_GET['id'])){
 
                                 
                             $htmlPDF.='<td style="
+                                    
                                     text-align:center; font-size:8pt;
                                     border: 0.5px solid gray;
                                 ">Fotografia:<br>';
+                            $htmlPDF.="<table id='t2'><tr><td></td><td width=20%>";
                             $FileFoto ='fotos/'.$Cliente['curp'].".jpg";            
                             $NoFoto ='icons/nofoto.jpg';            
                             if (file_exists($FileFoto)){
                                 $htmlPDF.='<img src="'.$FileFoto.'">';
                             } else {
-                                $htmlPDF.='<img src="'.$NoFoto.'" style="width:150pt">';
+                                $htmlPDF.='<img src="'.$NoFoto.'" style="width:50px">';
                             }
+                            $htmlPDF.="</td></tr></table>";
                             $htmlPDF.='</td>';
                             $htmlPDF.='</tr>';
                             
@@ -235,7 +238,10 @@ if (isset($_GET['id'])){
                                     border: 0.5px solid gray;
                                 ">';
                             $htmlPDF.='Tipo de Credito: <b>'.$Sol['tipo'].'</b><br>';
-                            $htmlPDF.='Grupo al que pertenece: <b>'.$Cliente['grupo'].' '.$Cliente['grupo_cargo'].'</b><br>';
+                            if ($Sol['tipo']=='GRUPAL'){
+                                $htmlPDF.='Grupo al que pertenece: <b>'.GrupoName($Cliente['IdGrupo']).' '.$Cliente['grupo_cargo'].'</b><br>';
+                            }
+
                             $htmlPDF.='Garantia: <b>'.$Sol['garantia'].'</b><br>';
                             $htmlPDF.='<hr>Historial Crediticio:<br><span style="font-size:6pt;">';
                             $rH = $db1->query("select * from cartera_resumen where curp='".$Cliente['curp']."'");    

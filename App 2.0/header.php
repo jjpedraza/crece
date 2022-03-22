@@ -69,7 +69,8 @@ box-shadow: inset 0px -36px 13px -31px rgba(0,0,0,0.39);
     padding-right: 5px;
     ".$sombra."
     '>";
-    
+
+    $IdSucursal = UserIdSucursal($RinteraUser);
     if (UserSucursal($RinteraUser)==TRUE){
       //  echo "<img src='icons/admin.ico' style='width:25px;'>";
        echo "<img src='icons/admin.ico' style='width:23px;' class='pc'><span class='pc'> ".$RinteraUserName."<br><cite style='font-size:8pt;'>[".UserSucursal($RinteraUser)."]</cite></span> </td>";
@@ -82,7 +83,7 @@ box-shadow: inset 0px -36px 13px -31px rgba(0,0,0,0.39);
     echo "<td  valing=middle  style='
     text-align: right;
     background-color: ".Preference("ColorPrincipal", "", "").";
-    color: white;
+    color: white; 
     padding-right: 5px;
     ".$sombra."
     '><a href='nip.php'><img src='icons/candado.png' style='width:17px;'></a> </td>";

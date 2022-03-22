@@ -8,14 +8,15 @@ require ("components.php");
 // require ("app_funciones.php");
 
 
-
-$no_sol = NoSol_generar();
+$IdSucursal = $_POST['IdSucursal'];
+$no_sol = NoSol_generar($IdSucursal);
 
 Toast($no_sol,0,"");
+
 $Curp  = VarClean($_POST['IdCliente']);
 $sql="
-INSERT INTO cuentas(nosol, curp, fechasol) VALUES ('".$no_sol."', '".$Curp."','".$fecha."')";
-echo $sql;
+INSERT INTO cuentas(nosol, curp, fechasol, IdSucursal, tipo) VALUES ('".$no_sol."', '".$Curp."','".$fecha."', '".$IdSucursal."','INDIVIDUAL')";
+// echo $sql;
 if ($db1->query($sql) == TRUE){
         Historia($RinteraUser,"CLIENTES","Creo la solicitud ".$no_sol." para el Cliente con CURP= ".$Curp);
         Toast("Solicitud  ".$no_sol." creada correctamente",4,"");

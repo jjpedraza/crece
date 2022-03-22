@@ -22,7 +22,9 @@ $CreditoValoracion = VarClean($_POST['CreditoValoracion']);
 $CreditoComentarios = VarClean($_POST['CreditoComentarios']);
 $CreditoFechaContrato = VarClean($_POST['CreditoFechaContrato']);
 $CreditoIvaTipo = VarClean($_POST['CreditoIvaTipo']);
-
+$IdSeguro = VarClean($_POST['IdSeguro']);
+// echo "IdSeguro=php=".$IdSeguro;
+$SeguroCosto = Seguros_Costo($IdSeguro);
 
 // Historia($RinteraUser, "PROYECCION", "Vio la proyeccion ".$Anio);
    //Todos los campos y Ejecutar Tablas aledañas
@@ -53,6 +55,7 @@ $CreditoIvaTipo = VarClean($_POST['CreditoIvaTipo']);
    
          $n = 0;
          $NPlazo = 0;
+         $CargoSeguro = 0;
          if ($CreditoFormaDePago==7){$NPlazo=$CreditoPlazo*4;}
          if ($CreditoFormaDePago==15){$NPlazo=$CreditoPlazo*2;}
          if ($CreditoFormaDePago==30){$NPlazo=$CreditoPlazo*1;}
@@ -63,7 +66,10 @@ $CreditoIvaTipo = VarClean($_POST['CreditoIvaTipo']);
 
          $Impuestos = (($Abono  +  $Interes) /100) * $CreditoIvaTipo;
          
-         $AbonoFinal=$Abono+$Interes + $Impuestos;
+         $CargoSeguro = intval($SeguroCosto) / $CreditoPlazo;
+         
+         // var_dump($CargoSeguro, $SeguroCosto, $CreditoPlazo);
+         $AbonoFinal=$Abono+$Interes + $Impuestos+$CargoSeguro;
 
          $UltimoPago=$CreditoCantidad-($Abono*$NPlazo);
 
@@ -84,6 +90,7 @@ $CreditoIvaTipo = VarClean($_POST['CreditoIvaTipo']);
          echo "<th>Abono</th>";
          echo "<th>Interes</th>";
          echo "<th>IVA</th>";
+         echo "<th>Seguro</th>";
          echo "<th>Total</th>";
          while($n<=$NPlazo){
             if ($n==1){ // si es el primer pago es la fecha del contrato
@@ -110,6 +117,7 @@ $CreditoIvaTipo = VarClean($_POST['CreditoIvaTipo']);
             echo "<td>".Pesos($Abono). "</td>";
             echo "<td>".Pesos($Interes). "</td>";
             echo "<td>".Pesos($Impuestos). "</td>";
+            echo "<td>".Pesos($CargoSeguro). "</td>";
             echo "<td>".Pesos($AbonoFinal). "</td>";
             
 

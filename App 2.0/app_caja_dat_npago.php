@@ -213,6 +213,22 @@ if($Sol = $rc -> fetch_array())
 
 
 
+
+    //Seguro 
+    echo "<tr style='height:50px;'>";
+    echo "<td valign=top style='text-align:left; font-size:10pt; cursor:pointer;' title='Interes de Financiamiento'>Seguro</td>";
+        echo "<td  valign=top  align=left id='_".$Sol['NPago']."_seguro"."' title=''>".Pesos($Sol['cargoseguro']);
+        
+        echo "</td>";
+        echo "<td  valign=top  align=center  width=30%>        
+        ";
+        echo "</td>";    
+        echo "<td width=70px valign=top align=right>
+        ";
+    echo "</tr>";
+
+
+
     echo "<tr style='height:50px; background-color:green;'>";
     echo "<td align=left>TOTAL</td>";
     echo "<td align=left>";

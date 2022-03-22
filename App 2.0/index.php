@@ -139,20 +139,34 @@ if (Preference("MostrarApps", "", "")=='TRUE'){
 
 
      $repolist.= "
+     <div style='
+     background-color: #f8f9fa63;
+     padding: 5px;
+     border-radius: 6px
+     '>
      
-     <button onclick='ClienteNuevo();' title='Haga Clic aqui para ver el reporte' class='btn btn-success'
+     
+     <input type='text' id='txtCurp' placeholder='CURP' size='16' class='form-control'>
+     
+     
+     
+     <button onclick='ClienteNuevo();' title='Haga Clic aqui para ver el reporte' class='btn btn-primary'
      style='
         // background-color: #e6e6e6;
-        // color: #625f5f;
-        width: 100%;
+        // color: #625f5f;       
         font-size: 10pt;
         text-align:left;
+        margin-top:5px;
      '
      >
-    
-     <input type='text' id='txtCurp' placeholder='CURP' size='16' class='form-control'>
-     Registrar Cliente</button>
      
+    
+     
+     <b style='font-size:8pt;'>Registrar Cliente:</b>
+
+     </button>
+     
+     </div>
      <br><br>";
 
      $repolist.= "<a href='app_caja.php' title='Haga Clic aqui para ver el reporte' class='btn btn-success'
@@ -174,7 +188,7 @@ if (Preference("MostrarApps", "", "")=='TRUE'){
         text-align:left;
         margin-top:10px;
      '
-     >Solicitudes</a>
+     >Cuentas</a>
 
 
      <a href='app_grupos.php' title='Haga Clic aqui para ver' class='btn btn-secondary'
@@ -189,16 +203,7 @@ if (Preference("MostrarApps", "", "")=='TRUE'){
      >Grupos</a>
 
 
-        <button onclick='Saldos()' title='Haga Clic aqui actualizar los saldos' class='btn btn-warning'
-     style='
-        // background-color: #e6e6e6;
-        // color: #625f5f;
-        width: 100%;
-        font-size: 10pt;
-        text-align:left;
-        margin-top:10px;
-     '
-     >Actualizar Saldos </button>
+        
 
      <a href='simularcorrida.php' title='' class='btn btn-secondary'
      style='
@@ -223,6 +228,19 @@ if (Preference("MostrarApps", "", "")=='TRUE'){
      >Config Seguros</a>
      ";
 
+     if ($RinteraUser =='admin'){
+       $repolist.= "<a href='app_sucursales.php' title='' class='btn btn-secondary'
+       style='
+          // background-color: #e6e6e6;
+          // color: #625f5f;
+          width: 100%;
+          font-size: 10pt;
+          text-align:left;
+          margin-top:10px;
+       '
+       >Representantes de<br> Sucursales</a>
+       ";  
+     }
     
      unset($rf);unset($Fr);
      if ($repos > 0 ){

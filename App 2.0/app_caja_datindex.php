@@ -11,16 +11,14 @@ echo '<datalist id="contratos" style="
 ">';
 $sql="
 select 
-DISTINCT
-s.Cliente as nombre,
-s.nosol
-
-from saldos s
+DISTINCT c.Cliente, c.nosol,
+c.IdSucursal
+from cartera c
 WHERE EstadoPago <> 'PAGADO'
 ";
 $r= $db1 -> query($sql);
 while($f = $r -> fetch_array()) {          
-  echo '<option  value="'.$f['nosol'].'">'.$f['nosol'].' - '.$f['nombre'].'</option>';
+  echo '<option  value="'.$f['nosol'].'">'.$f['nosol'].' - '.$f['Cliente'].'</option>';
 }
 unsert($r, $f);
   

@@ -9,7 +9,7 @@ require ("components.php");
 
 $NoSol = VarClean($_POST['NoSol']);
 $CreditoTipo = VarClean($_POST['CreditoTipo']);
-$ClienteCurp = VarClean($_POST['ClienteCurp']);
+$ClienteCurp = NoSol_to_CurpCliente($NoSol);
 
 $CreditoCantidad = VarClean($_POST['CreditoCantidad']);
 $CreditoPlazo = VarClean($_POST['CreditoPlazo']);
@@ -24,9 +24,12 @@ $CreditoComentarios = VarClean($_POST['CreditoComentarios']);
 $CreditoFechaContrato = VarClean($_POST['CreditoFechaContrato']);
 $CreditoFechaInicio = VarClean($_POST['CreditoFechaInicio']);
 $CreditoIvaTipo = VarClean($_POST['CreditoIvaTipo']);
+$IdSeguro = VarClean($_POST['IdSeguro']);
+$SeguroCosto = Seguros_Costo($IdSeguro);
 
 // Historia($RinteraUser, "PROYECCION", "Vio la proyeccion ".$Anio);
-if ($CreditoValoracion == "NOT"){
+// if ($CreditoValoracion == "NOT" OR $CreditoValoracion=="APROBADO"){
+if (Valoracion($NoSol)=="APROBADO") {  
    //Solo puede guardar Cargo Semanal y Garantia
    $sql = "UPDATE cuentas SET
    garantia = '".$CreditoGarantia."',
@@ -34,20 +37,26 @@ if ($CreditoValoracion == "NOT"){
    comentario='".$CreditoComentarios."'
    WHERE nosol = '".$NoSol."'
    ";
+   echo $sql;
    if ($db1->query($sql) == TRUE){
       Toast("Actualizado con exito, (cargo Semanal, Garantia y Comentarios)",4,"");      
       Historia($RinteraUser,"CLIENTES","Actualizo Cargo Semanal = ".$CreditoCargoPorSemana.", Garantia = ".$CreditoGarantia.", Comentarios=".$CreditoComentarios);      
    } else {
-      Toast("Guardado con exito",2,"");
+      Toast("Guardado con exito",4,"");
    }
    unset($sql);
    
 } else { //addslashes($str);
    //Todos los campos y Ejecutar Tablas aledañas
    $GRABAR = TRUE;
-   echo "FechaContrato=".$CreditoFechaContrato;
+   // echo "FechaContrato=".$CreditoFechaContrato;
    if ($CreditoFechaContrato ==''){
       Toast("ERROR en la fecha del contrato",2,"");
+      $GRABAR = FALSE;
+   } 
+
+   if ($CreditoFechaInicio ==''){
+      Toast("ERROR en la fecha inicio del contrato",2,"");
       $GRABAR = FALSE;
    } 
 
@@ -82,11 +91,14 @@ if ($CreditoValoracion == "NOT"){
       fechacontrato='".$CreditoFechaContrato."',
       comentario='".$CreditoComentarios."',
       iva_tipo='".$CreditoIvaTipo."',
-      fechainicio ='".$CreditoFechaInicio."'
+      fechainicio ='".$CreditoFechaInicio."',
+      IdSeguro='".$IdSeguro."',
+      CargoSeguro='".$SeguroCosto."'
 
 
       WHERE nosol = '".$NoSol."'
       ";
+      
       if ($db1->query($sql) == TRUE){
          Toast("Actualizado con exito, (".$CreditoValoracion.")",4,"");      
          Historia($RinteraUser,"CLIENTES","Actualizo Cuenta = ".addslashes($sql));      
@@ -131,14 +143,18 @@ if ($CreditoValoracion == "NOT"){
                $Interes=(($CreditoCantidad/100)*$CreditoTasaInteres)*$CreditoPlazo;
                $Interes=$Interes/$NPlazo; //se reparte entre el numero de letras de pago
 
+               $CargoSeguro = $SeguroCosto / $NPlazo;
+
                $Impuestos = (($Abono  +  $Interes) /100) * $CreditoIvaTipo;
                
-               $AbonoFinal=$Abono+$Interes + $Impuestos;
+               $AbonoFinal=$Abono+$Interes + $Impuestos + $CargoSeguro;
 
                $UltimoPago=$CreditoCantidad-($Abono*$NPlazo);
 
                $UltimoPago=$Abono+$UltimoPago;
             
+            
+
                $nodepago =1;
                $Saldo=$CreditoCantidad;
                $n=1;
@@ -156,6 +172,7 @@ if ($CreditoValoracion == "NOT"){
                // echo "<th>IVA</th>";
                // echo "<th>Total</th>";
                $nOK=0;
+               $msgT = "";
                while($n<=$NPlazo){
                   if ($n==1){ // si es el primer pago es la fecha del contrato
                      // $FechaSig = $CreditoFechaContrato;
@@ -192,7 +209,8 @@ if ($CreditoValoracion == "NOT"){
                      inicio,
                      usuario,
                      act_fecha,
-                     act_hora
+                     act_hora,
+                     cargoseguro
 
                   )
                   VALUES (
@@ -207,16 +225,29 @@ if ($CreditoValoracion == "NOT"){
                      '".$finicio."',
                      '".$RinteraUser."',
                      '".$fecha."',
-                     '".$hora."'
+                     '".$hora."',
+                     '".$CargoSeguro."'
                   )
                   ";
+                  echo $sqlIn;
+                  
                   if ($db1->query($sqlIn) == TRUE){
                      $nOK= $nOK + 1;
                      // Toast("Actualizado con exito, (".$CreditoValoracion.")",4,"");      
                      Historia($RinteraUser,"TABLADEPAGOS","Inserto Corrida Financiera = ".addslashes($sqlIn));      
-                  } 
+                     // $msgT.="Generado pago ".$n."<br>";
+                  } else {
+                     $msgT.="Error en Tabla, pago ".$n."<br>";
+                     
+                  }
                   unset($sqlIn);
 
+                  if ($msgT==''){
+                     echo "<script>location.reload();</script>";
+                     Toast("Tabla de Pagos Guardad Correctamente",4,"");
+                  } else {
+                     Toast("ERROR al guardar tabla de pagos ".$msgT,2,"");
+                  }
                   // echo "<td>".$n."</td><td>".dia($finicio)." ".$finicio." ~ ".dia($ffin)." ".$ffin."". "</td>";
                   // echo "<td>".$n."</td><td>"." ".$finicio." ~ "." ".$ffin."". "</td>";
                   // echo "<td>".Pesos($Abono). "</td>";
@@ -244,7 +275,8 @@ if ($CreditoValoracion == "NOT"){
          // echo "</table>";
 
       } else {
-         Toast("Guardado con exito",2,"");
+         echo $sql;
+         Toast("Error al guardar",2,"");
       }
       unset($sql);
 
@@ -263,7 +295,9 @@ if ($CreditoValoracion == "NOT"){
       tasa_moratorio='".$CreditoTasaMoratorio."',
       valoracion='".$CreditoValoracion."',
       fechacontrato='".$CreditoFechaContrato."',
-      comentario='".$CreditoComentarios."'
+      comentario='".$CreditoComentarios."',
+      IdSeguro='".$IdSeguro."',
+      CargoSeguro='".$SeguroCosto."'
 
 
       WHERE nosol = '".$NoSol."'
@@ -272,7 +306,7 @@ if ($CreditoValoracion == "NOT"){
          Toast("Actualizado con exito, (".$CreditoValoracion.")",4,"");      
          Historia($RinteraUser,"CLIENTES","Actualizo Cuenta = ".addslashes($sql));      
       } else {
-         Toast("Guardado con exito",2,"");
+         Toast("Guardado con exito",4,"");
       }
       unset($sql);
    }
@@ -280,189 +314,6 @@ if ($CreditoValoracion == "NOT"){
    Toast("ERROR al guardar",2,"");
 }
 }
-
-// $sql="select count(*) as nPagos from tabladepagos where nosol='".$NoSol."'";
-// $NPagos = 0;
-// if ($db1->query($sql) == TRUE){
-//     $rc = $db1->query($sql);    
-//     if($f = $rc -> fetch_array())
-//     {
-//         $NPagos = $f['nPagos'];
-//     } 
-// }
-// unset($rc, $f);
-
-
-
-
-// if ($Existe == 0){ //INSERT
-//     $sqlIn =  "INSERT INTO clientes          
-//         (
-//         curp,
-//         nombre,
-//         domicilio,
-//         municipio,
-//         estado,
-//         IFE,
-//         correo,
-//         estadocivil,
-//         fechadenacimiento,
-//         profesion,
-//         sexo,
-//         telefono,
-//         trabajo_nombre,
-//         trabajo_domicilio,
-//         trabajo_telefono,
-//         trabajo_giro,
-//         trabajo_puesto,
-//         trabajo_salario,
-//         socio_dependen,
-//         socio_casapropia,
-//         minegocio_propio,
-//         minegocio_giro,
-//         minegocio_ingresos,
-//         minegocio_telefono,
-//         minegocio_empleados,
-//         minegocio_domicilio,
-//         minegocio_antiguedad,
-//         socio_hijos,
-//         socio_hogar,
-//         socio_renta,
-//         socio_agualuz,
-//         socio_drenaje,
-//         refc1_nombre,
-//         refc1_tel,
-//         refc1_domicilio,
-//         refc1_antiguedad,
-//         refc2_nombre,
-//         refc2_tel,
-//         refc2_domicilio,
-//         refc2_antiguedad,
-//         refc3_nombre,
-//         refc3_tel,
-//         refc3_domicilio,
-//         refc3_antiguedad,
-//         grupo,
-//         grupo_cargo)
-
-//     VALUES (
-//      '".$Curp."',
-//      '".$Nombre."',
-//      '".$Domicilio."',
-//      '".$Municipio."',
-//      '".$Estado."',
-//      '".$IFE."',
-//      '".$Correo."',
-//      '".$EstadoCivil."',
-//      '".$FechaDeNacimiento."',
-//      '".$Profesion."',
-//      '".$Sexo."',
-//      '".$Telefono."',
-//      '".$trabajo_nombre."',
-//      '".$trabajo_domicilio."',
-//      '".$trabajo_telefono."',
-//      '".$trabajo_giro."',
-//      '".$trabajo_puesto."',
-//      '".$trabajo_salario."',
-//      '".$socio_dependen."',
-//      '".$socio_casapropia."',
-//      '".$minegocio_propio."',
-//      '".$minegocio_giro."',
-//      '".$minegocio_ingresos."',
-//      '".$minegocio_telefono."',
-//      '".$minegocio_empleados."',
-//      '".$minegocio_domicilio."',
-//      '".$minegocio_antiguedad."',
-//      '".$socio_hijos."',
-//      '".$socio_hogar."',
-//      '".$socio_renta."',
-//      '".$socio_agualuz."',
-//      '".$socio_drenaje."',
-//      '".$refc1_nombre."',
-//      '".$refc1_tel."',
-//      '".$refc1_domicilio."',
-//      '".$refc1_antiguedad."',
-//      '".$refc2_nombre."',
-//      '".$refc2_tel."',
-//      '".$refc2_domicilio."',
-//      '".$refc2_antiguedad."',
-//      '".$refc3_nombre."',
-//      '".$refc3_tel."',
-//      '".$refc3_domicilio."',
-//      '".$refc3_antiguedad."',
-//      '".$grupo."',
-//      '".$grupo_cargo."')";
-    
-//     echo $sqlIn;
-//     if ($db1->query($sqlIn) == TRUE){
-//         Toast("Guardado ".$Nombre." correctamente",4,"");
-//         Historia($RinteraUser,"CLIENTES","Dio de Alta al cliente con IdCliente = ".$Curp);
-//     } else {
-//         Toast("Error al guardar ".$Nombre." correctamente",2,"");
-
-//     }
-    
-
-// } else { //UPDATE
-//     $sqlUp =  "UPDATE clientes  SET        
-        
-//         nombre = '".$Nombre."',
-//         domicilio = '".$Domicilio."',
-//         municipio = '".$Municipio."',
-//         estado = '".$Estado."',
-//         IFE = '".$IFE."',
-//         correo = '".$Correo."',
-//         estadocivil = '".$EstadoCivil."',
-//         fechadenacimiento = '".$FechaDeNacimiento."',
-//         profesion = '".$Profesion."',
-//         sexo = '".$Sexo."',
-//         telefono = '".$Telefono."',
-//         trabajo_nombre = '".$trabajo_nombre."',
-//         trabajo_domicilio = '".$trabajo_domicilio."',
-//         trabajo_telefono = '".$trabajo_telefono."',
-//         trabajo_giro = '".$trabajo_giro."',
-//         trabajo_puesto = '".$trabajo_puesto."',
-//         trabajo_salario = '".$trabajo_salario."',
-//         socio_dependen = '".$socio_dependen."',
-//         socio_casapropia = '".$socio_casapropia."',
-//         minegocio_propio = '".$minegocio_propio."',
-//         minegocio_giro = '".$minegocio_giro."',
-//         minegocio_ingresos = '".$minegocio_ingresos."',
-//         minegocio_telefono = '".$minegocio_telefono."',
-//         minegocio_empleados = '".$minegocio_empleados."',
-//         minegocio_domicilio = '".$minegocio_domicilio."',
-//         minegocio_antiguedad = '".$minegocio_antiguedad."',
-//         socio_hijos = '".$socio_hijos."',
-//         socio_hogar = '".$socio_hogar."',
-//         socio_renta = '".$socio_renta."',
-//         socio_agualuz = '".$socio_agualuz."',
-//         socio_drenaje = '".$socio_drenaje."',
-//         refc1_nombre = '".$refc1_nombre."',
-//         refc1_tel = '".$refc1_tel."',
-//         refc1_domicilio = '".$refc1_domicilio."',
-//         refc1_antiguedad = '".$refc1_antiguedad."',
-//         refc2_nombre = '".$refc2_nombre."',
-//         refc2_tel = '".$refc2_tel."',
-//         refc2_domicilio = '".$refc2_domicilio."',
-//         refc2_antiguedad = '".$refc2_antiguedad."',
-//         refc3_nombre = '".$refc3_nombre."',
-//         refc3_tel = '".$refc3_tel."',
-//         refc3_domicilio = '".$refc3_domicilio."',
-//         refc3_antiguedad = '".$refc3_antiguedad."',
-//         grupo = '".$grupo."',
-//         grupo_cargo = '".$grupo_cargo."'
-        
-//     WHERE curp='".$Curp."'";
-//     echo $sqlUp;
-//     if ($db1->query($sqlUp) == TRUE){
-//         Toast("Actulizado ".$Nombre." correctamente",4,"");
-//         Historia($RinteraUser,"CLIENTES","Actualizo al cliente con IdCliente = ".$Curp);
-//     } else {
-//         Toast("Error al guardar ".$Nombre." correctamente",2,"");
-
-//     }
-// }
-
 ?>
 
 <?php

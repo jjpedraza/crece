@@ -24,7 +24,7 @@ if ($PagosQueDebe<= 0){
         } else {
             $sql = "select * from cartera WHERE nosol='".$NoSol."' and EstadoPago='SIN PAGAR' order by NPago + 0";
         }
-
+        // echo $sql;
         $r= $db1 -> query($sql);
         if (isset($_POST['mode'])){
             echo "<img title='PAGOS QUE DEBE' onclick='CargaContrato(0);' src='icons/arriba.png' style='width:12px; cursor:pointer;'>";

@@ -352,14 +352,37 @@ require("rintera-config.php");
     }
 }
 
-function NoSol_generar(){
-require("rintera-config.php");   
 
-    $no_sol = date('Ymj').EasyName($LoPrimero="");
-    while (NoSol_existe($no_sol) == TRUE) {
-        $no_sol = date('Ymj').EasyName($LoPrimero="");
-    } 
-    return $no_sol;
+function NoSol_generar($IdSucursal){
+require("rintera-config.php");   
+    //NOMECLATURA DE CONTRATO O SOLICITUD
+    // YEARMMDDIDN0000
+    // AÑO-MES-DIA-IDSUCURSAL-CONSECUTIVO
+    $Anio = date('Y');
+    $Mes = date('m');
+    $Dia = date('j');
+    $Dia = str_pad($Dia,2,0,STR_PAD_LEFT); //Llena de 0 los 5 espacios, 1 -> 00001
+
+    $ProximoNo_sql = "select count(*) + 1 as ProximoNo  from cuentas where IdSucursal =  ".$IdSucursal;
+    // echo $ProximoNo_sql;
+    $r = $db1->query($ProximoNo_sql);
+    if ($f = $r->fetch_array()){
+        $ProximoNo = $f['ProximoNo'];
+    } else {
+        $ProximoNo = 0;
+    }
+    unset($r,$f);
+    
+    $ProximoNo = str_pad($ProximoNo,5,0,STR_PAD_LEFT); //Llena de 0 los 5 espacios, 1 -> 00001
+    $NoSol = $Anio.$Mes.$Dia.$IdSucursal.$ProximoNo;
+
+    return $NoSol;
+    // $no_sol = date('Ymj').EasyName($LoPrimero="");
+
+    // while (NoSol_existe($no_sol) == TRUE) {
+    //     $no_sol = date('Ymj').EasyName($LoPrimero="");
+    // } 
+    // return $no_sol;
 }
 
 
@@ -376,13 +399,26 @@ function Cliente_Nombre($IdCliente){
 }
 
     
-function Cliente_Grupo($IdCliente){
+function Cliente_Grupo_cargo($IdCliente){
     require("rintera-config.php");   
         $sql = "select * from clientes where curp='".$IdCliente."'";
         $rc= $db1 -> query($sql);    
         if($f = $rc -> fetch_array())
         { 
-            return $f['grupo']." ".$f['grupo_cargo'];
+            return $f['grupo_cargo'];
+        } else { return '';}
+    
+        
+}
+
+    
+function Cliente_IdGrupo($IdCliente){
+    require("rintera-config.php");   
+        $sql = "select * from clientes where curp='".$IdCliente."'";
+        $rc= $db1 -> query($sql);    
+        if($f = $rc -> fetch_array())
+        { 
+            return $f['IdGrupo'];
         } else { return '';}
     
         
@@ -769,6 +805,42 @@ function PorcentajeFi($NoSol){
         
 }
 
+function CargoSeguro($NoSol){
+    require("rintera-config.php");   
+    $sql = "select * from cuentas WHERE nosol='".$NoSol."'";        
+    $rc= $db1 -> query($sql);    
+    if($f = $rc -> fetch_array())
+    { 
+        return $f['CargoSeguro'];
+    } else { return 0;}
+    
+        
+}
+
+function Valoracion($NoSol){
+    require("rintera-config.php");   
+    $sql = "select * from cuentas WHERE nosol='".$NoSol."'";        
+    $rc= $db1 -> query($sql);    
+    if($f = $rc -> fetch_array())
+    { 
+        return $f['valoracion'];
+    } else { return '';}
+    
+        
+}
+
+function NoSol_to_IdSucursal($NoSol){
+    require("rintera-config.php");   
+    $sql = "select * from cuentas WHERE nosol='".$NoSol."'";        
+    $rc= $db1 -> query($sql);    
+    if($f = $rc -> fetch_array())
+    { 
+        return $f['IdSucursal'];
+    } else { return '';}
+    
+        
+}
+
 
 function UltimaActSaldos(){
     require("rintera-config.php");   
@@ -1049,5 +1121,157 @@ function UserSucursal($IdUser){
     $IdSucursal = UserIdSucursal($IdUser);
     return SucursalName($IdSucursal);
 }
+  
+function IdGrupo_to_IdSucursal($IdGrupo){
+    require("rintera-config.php");   
+    $sql = "select * from grupos_html WHERE IdGrupo='".$IdGrupo."'";        
+    $rc= $db1 -> query($sql);    
+    if($f = $rc -> fetch_array())
+    { 
+        return $f['IdSucursal'];
+    } else { return '';}
     
+        
+}
+
+  
+function GrupoName($IdGrupo){
+    require("rintera-config.php");   
+    $sql = "select * from grupos_html WHERE IdGrupo='".$IdGrupo."'";        
+    $rc= $db1 -> query($sql);    
+    if($f = $rc -> fetch_array())
+    { 
+        return $f['Grupo'];
+    } else { return '';}
+    
+        
+}
+
+function Grupo_Miembros($IdGrupo){
+    require("rintera-config.php");   
+    $sql = "select * from grupos_html WHERE IdGrupo='".$IdGrupo."'";        
+    $rc= $db1 -> query($sql);    
+    if($f = $rc -> fetch_array())
+    { 
+        return $f['Miembros'];
+    } else { return 0;}
+    
+        
+}
+
+
+function Grupo_Contratos($IdGrupo){
+    require("rintera-config.php");   
+    $sql = "select * from grupos_html WHERE IdGrupo='".$IdGrupo."'";        
+    $rc= $db1 -> query($sql);    
+    if($f = $rc -> fetch_array())
+    { 
+        return $f['Contratos'];
+    } else { return 0;}
+    
+        
+}
+
+
+function Grupo_delete($IdGrupo){
+    require("rintera-config.php");   
+    
+    if (Grupo_Contratos($IdGrupo)==0 ){
+        if (Grupo_Miembros($IdGrupo)==0 ){
+            $sql="delete from grupos where IdGrupo='".$IdGrupo."'";
+            if ($db1->query($sql) == TRUE){                   
+                    return TRUE;
+            } else {
+                return FALSE;
+            }
+        } else {
+            return FALSE;
+        }
+
+    } else {        
+        return FALSE;
+    }
+    
+        
+}
+
+function Grupo_Cargo($IdGrupo, $Cargo,$MiCurp){
+    require("rintera-config.php");   
+    $sql = "select * from gruposinfo WHERE IdGrupo='".$IdGrupo."' and grupo_cargo='".$Cargo."'";        
+    $rc= $db1 -> query($sql);    
+    if($f = $rc -> fetch_array())
+    { 
+        return TRUE;
+    } else { return FALSE;}
+    
+        
+}
+
+
+function Grupo_CuentasActivas($IdGrupo){
+    require("rintera-config.php");   
+    $sql = "select * from grupos_html WHERE IdGrupo='".$IdGrupo."'";        
+    $rc= $db1 -> query($sql);    
+    if($f = $rc -> fetch_array())
+    { 
+        return $f['CuentasActivas'];
+    } else { return 0;}
+    
+        
+}
+
+function Seguros_Costo($IdSeguro){
+    require("rintera-config.php");   
+    $sql = "select * from seguros_config WHERE IdSeguro='".$IdSeguro."'";        
+    // echo $sql;
+    $rc= $db1 -> query($sql);    
+    if($f = $rc -> fetch_array())
+    { 
+        return $f['costo'];
+    } else { return '';}
+    
+        
+}
+
+
+function NoSol_to_CurpCliente($NoSol){
+    require("rintera-config.php");   
+    $sql = "select * from cuentas WHERE nosol='".$NoSol."'";        
+    $rc= $db1 -> query($sql);    
+    if($f = $rc -> fetch_array())
+    { 
+        return $f['curp'];
+    } else { return '';}
+    
+        
+}
+
+
+function NoSol_to_IdSucrusal($NoSol){
+    require("rintera-config.php");   
+    $sql = "select * from cuentas WHERE nosol='".$NoSol."'";        
+    $rc= $db1 -> query($sql);    
+    if($f = $rc -> fetch_array())
+    { 
+        return $f['IdSucursal'];
+    } else { return '0';}
+    
+        
+}
+
+
+
+function RepresentanteLegal($IdSucursal){
+    require("rintera-config.php");   
+    $sql = "select * from sucursales WHERE IdSucursal='".$IdSucursal."'";        
+    $rc= $db1 -> query($sql);    
+    if($f = $rc -> fetch_array())
+    { 
+        return $f['representante'];
+    } else { return '';}
+    
+        
+}
+
+
 ?>

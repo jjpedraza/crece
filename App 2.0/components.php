@@ -572,10 +572,11 @@ function ReporteFooter($id_rep){
     $r= $db0 -> query($sql);
     if($f = $r -> fetch_array())
     {
-        $Footer = "<p clasS='ReporteFooter'>
-        Reporte realizado el ".$f['fecha']." a las ".$f['hora']." por ".UserName($f['IdUser']).", el usuario <b>Administrador de este reporte es ".UserName($f['admin']).".<br>
-        * Información extraida desde ".IdConInfo($f['IdCon'])."</p>
-        ";
+        // $Footer = "<p clasS='ReporteFooter'>
+        // Reporte realizado el ".$f['fecha']." a las ".$f['hora']." por ".UserName($f['IdUser']).", el usuario <b>Administrador de este reporte es ".UserName($f['admin']).".<br>
+        // * Información extraida desde ".IdConInfo($f['IdCon'])."</p>
+        // ";
+        
 
         return $Footer;
     } else {

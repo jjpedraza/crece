@@ -5,7 +5,8 @@ include("seguridad.php");
 
 if (isset($_GET['id'])){
     $NoSol = VarClean($_GET['id']);
-
+    $IdSucursal =  NoSol_to_IdSucrusal($NoSol);
+    $RepresentanteLegal = RepresentanteLegal($IdSucursal);
     if ($NoSol <> ''){
         Historia($RinteraUser, "PRINT", "Descargo el contrato NoSol=".$NoSol."");
         $sql = "select * from solicitudes where nosol='".$NoSol."'";
@@ -21,7 +22,7 @@ if (isset($_GET['id'])){
                             if ($Sol['tipo']=='INDIVIDUAL'){
                                     $PDFTitulo="PAGARE";
                             } else {
-                                    $PDFTitulo="PAGARE SOLIDARIO";
+                                    $PDFTitulo="PAGARE SOLIDARIO - ";
                             }
 
                             $PDFSubTitulo="No. ".$NoSol." - ".$Sol['fechasol'];
@@ -41,7 +42,7 @@ if (isset($_GET['id'])){
 
 
                             $htmlPDF.='<span style="text-align:justify;font-size:11pt">';
-                            $htmlPDF.='Por el presente pagare me obligo incondicionalmente a pagar a la orden de CRECE Y MAS S.A. DE C.V. Representada por el C. Edgar Treviño Sosa,  en sus oficinas en Aldama, Tamaulipas, o en cualquiera otra plaza que se nos indicará, en fechas y montos establecidos en el presente pagare. <br><br>';
+                            $htmlPDF.='Por el presente pagare me obligo incondicionalmente a pagar a la orden de CRECE Y MAS S.A. DE C.V. Representada por el C. <b>'.$RepresentanteLegal.'</b>,  en sus oficinas en Aldama, Tamaulipas, o en cualquiera otra plaza que se nos indicará, en fechas y montos establecidos en el presente pagare. <br><br>';
 
                             $como=""; $npago = 0;
                             if ($Sol['formadepago']==7){
@@ -93,7 +94,7 @@ if (isset($_GET['id'])){
 
                             } else {
                                     $htmlPDF.='<span style="text-align:justify;font-size:11pt">';
-                                    $htmlPDF.='El Grupo <b>'.$Cliente['grupo'].'</b> acepta los terminos de este pagare para su cumplimiento:<br><br>';
+                                    $htmlPDF.='El Grupo <b>'.GrupoName($Cliente['IdGrupo']).'</b> acepta los terminos de este pagare para su cumplimiento:<br><br>';
                                     $htmlPDF.='</span>';
                                     $htmlPDF.= '<table style="
                                         border:1px solid #e8e7e3;
@@ -131,7 +132,7 @@ if (isset($_GET['id'])){
                                     ">
                                     Firma'.'</td></tr>'; //1                            
 
-                                    $sqlg="select * from clientes where grupo='".$Cliente['grupo']."' ";
+                                    $sqlg="select * from clientes where IdGrupo='".$Cliente['IdGrupo']."' ";
                                     $rg = $db1->query($sqlg);    
                                     $n=1;
                                     $Presidente = "";

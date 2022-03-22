@@ -3,7 +3,7 @@ include("seguridad.php");
 require ("rintera-config.php");
 require ("components.php");
 // require ("app_funciones.php");
-$OK = FALSE;
+$OK = FALSE; $Valor = 0; $Ticket = "";
 $NoSol = VarClean($_POST['NoSol']);
 $CantidadRecibida = VarClean($_POST['recibe']);
 $CantidadRecibida_calculada = $CantidadRecibida;
@@ -24,6 +24,7 @@ if ($PagosQueDebe<= 0){
         $Reparto_Financiamiento = 0;
         $Reparto_Impuestos = 0;
         $Reparto_Capital = 0;
+        $Reparto_Seguro = 0;
         echo '<table class="tabla">';
         echo "<th>No</th>";
         echo "<th>Moratorios</th>";
@@ -32,6 +33,7 @@ if ($PagosQueDebe<= 0){
         echo "<th>Financiamiento</th>";
         echo "<th>IVA</th>";
         echo "<th>Capital</th>";
+        echo "<th>Seguro</th>";
         echo "<th>Restante</th>";
         
         $Deuda = 0; $GTotal = 0; $GranTotal = 0;
@@ -70,20 +72,28 @@ if ($PagosQueDebe<= 0){
                 }
 
                 if ($CantidadRecibida_calculada>0){
-                $Deuda = $Sol['abono']; $CantidadRecibida_calculada = $CantidadRecibida_calculada -  $Deuda;         
-                if ($CantidadRecibida_calculada >= 0 ){$Reparto_Capital = $Deuda;} 
-                else {$Reparto_Capital = $CantidadRecibida_calculada + $Deuda;}
+                    $Deuda = $Sol['abono']; $CantidadRecibida_calculada = $CantidadRecibida_calculada -  $Deuda;         
+                    if ($CantidadRecibida_calculada >= 0 ){$Reparto_Capital = $Deuda;} 
+                    else {$Reparto_Capital = $CantidadRecibida_calculada + $Deuda;}
                 }
 
-                $GranTotal = $GranTotal + floatval($Sol['TOTAL']);
+                if ($CantidadRecibida_calculada>0){
+                    $Deuda = $Sol['cargoseguro']; $CantidadRecibida_calculada = $CantidadRecibida_calculada -  $Deuda;         
+                    if ($CantidadRecibida_calculada >= 0 ){$Reparto_Seguro = $Deuda;} 
+                    else {$Reparto_Seguro = $CantidadRecibida_calculada + $Deuda;}
+                    }
 
+                $GranTotal = $GranTotal + floatval($Sol['TOTAL']);
+                
+                $Valor = $Reparto_Capital +  $Reparto_CargoSemanal + $Reparto_Extras + $Reparto_Financiamiento + $Reparto_Impuestos + $Reparto_Moratorios + $Reparto_Seguro;
             //GUARDAMOS    
             $IdCorte = IdCorte();
-            $sqlIn = "INSERT INTO corte (id, fecha, usuario, nosol, no, valor, moratorio, cargosemanal, extras, interes, impuesto, capital ) 
-            VALUES ('".$IdCorte."','".$fecha."', '".$RinteraUser."', '".$NoSol."', '".$Sol['NPago']."', '".$CantidadRecibida."', '".$Reparto_Moratorios.
-            "','".$Reparto_CargoSemanal."', '".$Reparto_Extras."', '".$Reparto_Financiamiento."', '".$Reparto_Impuestos."','".$Reparto_Capital."')";                    
+            $sqlIn = "INSERT INTO corte (id, fecha, usuario, nosol, no, valor, moratorio, cargosemanal, extras, interes, impuesto, capital, cargoseguro ) 
+            VALUES ('".$IdCorte."','".$fecha."', '".$RinteraUser."', '".$NoSol."', '".$Sol['NPago']."', '".$Valor."', '".$Reparto_Moratorios.
+            "','".$Reparto_CargoSemanal."', '".$Reparto_Extras."', '".$Reparto_Financiamiento."', '".$Reparto_Impuestos."','".$Reparto_Capital."','".$Reparto_Seguro."')";                    
             // echo $sqlIn;
             $OK = FALSE;
+
             if ($db1->query($sqlIn) == TRUE)
                 {
                     $OK = TRUE;
@@ -91,7 +101,7 @@ if ($PagosQueDebe<= 0){
                     Historia($RinteraUser, "CAJA", "Inserto Pago ".$Sol['NPago']." por ".$CantidadRecibida."  SQL = ".addslashes($sqlIn));
                     
             
-                    
+                    $Ticket.= "<a target=_blank class='btn btn-primary' href='print_ticket.php?id=".$IdCorte."'>Ticket ".$IdCorte."</a> ";
                     
                     
 
@@ -101,7 +111,8 @@ if ($PagosQueDebe<= 0){
                         $Reparto_Impuestos == $Sol['iva'] and
                         $Reparto_Extras == $Sol['CargoExtraOrdinario_cantidad'] and
                         $Reparto_CargoSemanal == $Sol['CargoSemanal'] and
-                        $Reparto_Moratorios == $Sol['mora_debe']
+                        $Reparto_Moratorios == $Sol['mora_debe'] and
+                        $Reparto_Seguro == $Sol['cargoseguro']
                     ){//PAGO COMPLETADO
                         $sqlPago = "UPDATE tabladepagos SET
                         estado='X'
@@ -163,6 +174,7 @@ if ($PagosQueDebe<= 0){
                 echo '<td style="background-color:#daf0da;"><b>'.Pesos($Sol['interes']).'</b></td>';
                 echo '<td style="background-color:#daf0da;"><b>'.Pesos($Sol['iva']).'</b></td>';
                 echo '<td style="background-color:#daf0da;"><b>'.Pesos($Sol['abono']).'</b></td>';
+                echo '<td style="background-color:#daf0da;"><b>'.Pesos($Sol['cargoseguro']).'</b></td>';
                 if ($Sol['Descuento_cantidad']>0){
                     echo '<td style="background-color:#daf0da;"><b>'.Pesos($Sol['TOTAL']).'</b><a rel=MyModal:open  href="#Descuento_'.$Sol['NPago'].'"><img src="icons/alerta.png" style="width:13px; cursor:pointer;"></a></td>';
                     echo "<div class='MyModal' id='Descuento_".$Sol['NPago']."'>";
@@ -176,15 +188,15 @@ if ($PagosQueDebe<= 0){
             
             echo '<tr>';
             // echo '<td >'.$Sol['NPago'].'</td>';
-                if ($Reparto_Moratorios>0) {echo '<td style="background-color:#a6ffe2;">'.Pesos($Reparto_Moratorios).'</td>';} else {
+                if ($Reparto_Moratorios>0) {echo '<td style="background-color:#3ddd5c;">'.Pesos($Reparto_Moratorios).'</td>';} else {
                     echo '<td>'.Pesos($Reparto_Moratorios).'</td>';
                 }
-                if ($Reparto_CargoSemanal>0){echo '<td style="background-color:#a6ffe2;">'.Pesos($Reparto_CargoSemanal).'</td>';} else{
+                if ($Reparto_CargoSemanal>0){echo '<td style="background-color:#3ddd5c;">'.Pesos($Reparto_CargoSemanal).'</td>';} else{
                     echo '<td>'.Pesos($Reparto_CargoSemanal);
                 }
                 if ($Reparto_Extras == $Sol['CargoExtraOrdinario_cantidad']) {
                     if ($Sol['CargoExtraOrdinario_cantidad']==0){
-                        echo '<td style="background-color:#a6ffe2;">'.Pesos($Reparto_Extras).' '.'</td>';
+                        echo '<td style="background-color:#3ddd5c;">'.Pesos($Reparto_Extras).' '.'</td>';
                         
                     } else {
                         echo '<td>'.Pesos($Reparto_Extras).' '.'</td>';    
@@ -192,22 +204,26 @@ if ($PagosQueDebe<= 0){
                     }
                 } else {
                     if ($Reparto_Extras>0){
-                        echo '<td style="background-color:#a6ffe2;">'.Pesos($Reparto_Extras).' '.'</td>';
+                        echo '<td style="background-color:#3ddd5c;">'.Pesos($Reparto_Extras).' '.'</td>';
                     } else {
                         echo '<td>'.Pesos($Reparto_Extras).' '.'</td>';    
                     }
                 }
                 
-                if ($Reparto_Financiamiento>0) { echo '<td style="background-color:#a6ffe2;">'.Pesos($Reparto_Financiamiento).'</td>';} else {
+                if ($Reparto_Financiamiento>0) { echo '<td style="background-color:#3ddd5c;">'.Pesos($Reparto_Financiamiento).'</td>';} else {
                     echo '<td>'.Pesos($Reparto_Financiamiento).'</td>';
                 }
                 
-                if ($Reparto_Impuestos>0) { echo '<td style="background-color:#a6ffe2;">'.Pesos($Reparto_Impuestos).'</td>';} else {
+                if ($Reparto_Impuestos>0) { echo '<td style="background-color:#3ddd5c;">'.Pesos($Reparto_Impuestos).'</td>';} else {
                     echo '<td>'.Pesos($Reparto_Impuestos).'</td>';
                 }
                 
-                if ($Reparto_Capital>0) {echo '<td style="background-color:#a6ffe2;">'.Pesos($Reparto_Capital).'</td>';} else {
+                if ($Reparto_Capital>0) {echo '<td style="background-color:#3ddd5c;">'.Pesos($Reparto_Capital).'</td>';} else {
                     echo '<td>'.Pesos($Reparto_Capital).'</td>';
+                }
+
+                if ($Reparto_Seguro>0) {echo '<td style="background-color:#3ddd5c;">'.Pesos($Reparto_Seguro).'</td>';} else {
+                    echo '<td>'.Pesos($Reparto_Seguro).'</td>';
                 }
                 $GTotal =  floatval($Sol['TOTAL']) - floatval($CantidadRecibida - $CantidadRecibida_calculada);
                 if ($GTotal<0) {$GTotal = 0;}
@@ -225,6 +241,8 @@ if ($PagosQueDebe<= 0){
             $Reparto_Extras = 0;
             $Reparto_Financiamiento = 0;
             $Reparto_Capital = 0;
+            $Reparto_Seguro = 0;
+            $GranTotal = 0;
             
 
         }
@@ -247,7 +265,8 @@ if ($PagosQueDebe<= 0){
         echo "<br>";
         if ($OK == TRUE){
             //Ticket y Recibo de Pago
-            echo "<a target=_blank class='btn btn-primary' href='print_ticket.php?id=".$IdCorte."'>Ticket</a> ";
+            echo $Ticket ;
+            
             // echo "<a target=_blank class='btn btn-primary' href='print_recibo.php?id=".$IdCorte."'>Recibo</a>";
             
 

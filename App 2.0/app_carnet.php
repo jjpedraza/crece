@@ -4,6 +4,8 @@ include("header.php");
 
 if (isset($_GET['id'])){
     $Curp = VarClean($_GET['id']);
+    $IdGrupo = Cliente_IdGrupo($Curp);
+    echo '<input type="hidden" name="IdSucursal" id="IdSucursal" value="'.$IdSucursal.'">';
 
     $sql = "select * from clientes where curp='".$Curp."'";
     // echo $sql;
@@ -11,19 +13,20 @@ if (isset($_GET['id'])){
     if ($db1->query($sql) == TRUE){
         if($f = $rc -> fetch_array())
         {
+            
             echo "<div id='ClienteForm'>";
             
             echo "<div class='row'>";
                 echo '
-                <div class="form-group col-sm btn btn-info">';
+                <div class="form-group col-sm btn " style="background-color:#e6e3e3;">';
 
               
                 $fotoFile = 'fotos/'.$f['curp'].'.jpg';
                 if (is_file($fotoFile)){
-                    echo "<img name='foto' id='foto'  src='".$fotoFile."' style='width:50%; border-radius:5px;'>";
+                    echo "<img name='foto' id='foto'  src='".$fotoFile."' style='width:150px; height:150px; border-radius:5px;'>";
 
                 } else {
-                    echo "<img name='foto' id='foto' src='icons/user.png' style='width:50%;'>";
+                    echo "<img name='foto' id='foto' src='icons/user.png' style='width:150px; height:150px;'>";
                 }
 
 
@@ -46,7 +49,19 @@ if (isset($_GET['id'])){
                 </div>';
 
                 echo '
-                <div class="form-group col-md">
+                <div class="form-group col-md">';
+
+                echo '<span
+                style="
+                margin: 10px;
+                background-color: #17a2b8;
+                padding: 7px;
+                border-radius: 6px;
+                color: white;
+                "
+                ><label>CURP:</label>'.$Curp.'</span><br><br>';
+
+                echo '
                     <label for="exampleFormControlInput1">Nombre del Cliente:</label>
                     <input style="
                         background-color: orange;
@@ -57,15 +72,7 @@ if (isset($_GET['id'])){
                 ';
 
 
-                        echo '<span
-                        style="
-                        margin: 10px;
-                        background-color: #17a2b8;
-                        padding: 7px;
-                        border-radius: 6px;
-                        color: white;
-                        "
-                        ><label>CURP:</label>'.$Curp.'</span>';
+                       
 
                 echo '
                 </div>';
@@ -121,9 +128,17 @@ if (isset($_GET['id'])){
 
                 echo '
                 <div class="form-group col-sm">
-                    <label for="exampleFormControlInput1">Estado Civil:</label>
-                    <input type="text" class="form-control" name="estadocivil" id="estadocivil" placeholder="" value="'.$f['estadocivil'].'">
-                </div>';
+                    <label for="exampleFormControlInput1">Estado Civil:</label>';
+
+                // echo '<input type="text" class="form-control" name="estadocivil" id="estadocivil" placeholder="" value="'.$f['estadocivil'].'">';
+                echo '<select id="estadocivil" name="estadocivil " class="form-control">';
+                echo '<option value="SOLTERO">Soltero(a)</option>';
+                echo '<option value="CASADO">Casado(a)</option>';
+                echo '<option value="UNION LIBRE">Union Libre</option>';
+                echo '<option value="VIUDEZ">Viudo(a)</option>';
+                echo '</select>';
+
+                echo '</div>';
             echo "</div>";
 
 
@@ -632,11 +647,27 @@ if (isset($_GET['id'])){
                 <select name="grupo" id="grupo" class="form-control bg-warning">
                 ';
                 
-                echo '<option  class="form-control" value="'.$f['grupo'].'" selected>'.$f['grupo'].'</option>';
+            // echo '<option  class="form-control" value="" selected></option>';
 
-            $r2= $db1 -> query("select * from grupos");
+            if ($IdSucursal == 0){
+                $sqlG = "select g.*, (select Sucursal from sucursales where IdSucursal = g.IdSucursal) as Sucursal from grupos_html g";    
+            } else {
+                $sqlG = "select g.*, (select Sucursal from sucursales where IdSucursal = g.IdSucursal) as Sucursal from grupos_html g where IdSucursal='".$IdSucursal."'";
+            }
+            
+            $r2= $db1 -> query($sqlG);
+            $ninguno = '';
             while($f2 = $r2 -> fetch_array()) {               
-                echo '<option  class="form-control" value="'.$f2['nombre'].'" >'.$f2['nombre'].'</option>';
+                if ($f2['IdGrupo']==$f['IdGrupo']){
+                    $ninguno = $f2['IdGrupo'];
+                    echo '<option  class="form-control" value="'.$f2['IdGrupo'].'" selected>'.$f2['Grupo'].' ('.$f2['Sucursal'].')</option>';
+                } else {
+                    echo '<option  class="form-control" value="'.$f2['IdGrupo'].'" >'.$f2['Grupo'].' ('.$f2['Sucursal'].')</option>';
+                }
+            }
+            echo '<option  class="form-control" value="" >Ningun grupo</option>';
+            if ($ninguno== ''){
+                echo '<option  class="form-control" value="" selected >Ningun grupo</option>';
             }
 
 
@@ -645,10 +676,43 @@ if (isset($_GET['id'])){
 
             echo '
             <div class="form-group col-sm">
-                <label for="exampleFormControlInput1">Cargo en el grupo</label>
-                <input onchange="checkTot();" type="tel" class="form-control" name="grupo_cargo" id="grupo_cargo" value="'.$f['grupo_cargo'].'">
-             
+                <label for="exampleFormControlInput1">Cargo en el grupo</label>';
+            // echo '
+            //     <input onchange="checkTot();" type="tel" class="form-control" name="grupo_cargo" id="grupo_cargo" value="'.$f['grupo_cargo'].'">'
+            //     ;
+            
+            // echo $f['grupo_cargo'];
+            echo '<select name="grupo_cargo" id="grupo_cargo" class="form-control">';
 
+            if ($f['grupo_cargo']=='PRESIDENTE') {
+                echo '<option value="PRESIDENTE" selected>Presidente</option>';
+            } else {
+                echo '<option value="PRESIDENTE">Presidente</option>';
+            }
+            
+            if ($f['grupo_cargo']=='SECRETARIO') {
+                echo '<option value="SECRETARIO" selected>Secretario</option>';
+            } else {
+                echo '<option value="SECRETARIO">Secretario</option>';
+            }
+
+            if ($f['grupo_cargo']=='TESORERO') {
+                echo '<option value="TESORERO" selected>Tesorero</option>';
+            }else {
+                echo '<option value="TESORERO">Tesorero</option>';
+            }
+            
+            if ($f['grupo_cargo']=='MIEMBRO') {
+                echo '<option value="MIEMBRO" selected>Miembro del grupo</option>';
+            } else {
+                echo '<option value="MIEMBRO" >Miembro del grupo</option>';
+            }
+
+
+            echo '</select>';
+
+            
+            echo '
             </div>';
 
 
@@ -663,24 +727,29 @@ if (isset($_GET['id'])){
         echo "
         <br><br>
         <div class='row' style='
+        background-color:#ddd; padding:10px;
 
             '>"; // ---------------------------------------- r  o  w --- begin
      
 
-            echo '
+            echo '<br>
             <div class="form-group col-sm">               
-               <button class="btn btn-success" onclick="Guardar();">Guardar </button>
+               <button  style="font-size:14pt;" class="btn btn-success" onclick="Guardar();">Guardar </button>
             </div>';
 
 
             echo '
             <div class="form-group col-sm">               
-               <a class="btn btn-primary" href="print_carnet.php?id='.$_GET['id'].'">Imprimir Registro </a>
+               <a  style="font-size:14pt;" class="btn btn-primary" href="print_carnet.php?id='.$_GET['id'].'">Imprimir Registro </a>
             </div>';
 
             echo '
             <div class="form-group col-sm">               
-               <button class="btn btn-secondary" onclick="CrearSolicitud();">Crear Solicitud </button>
+            <button style="font-size:14pt;"  class="btn btn-secondary" onclick="CrearSolicitud();">Solicitud-Individual </button>
+            </div>
+
+            <div class="form-group col-sm">               
+            <button style="font-size:14pt;"  class="btn btn-secondary" onclick="CrearSolicitud_grupo();">Solicitud-Grupal </button>
             </div>';
 
            
@@ -698,21 +767,102 @@ if (isset($_GET['id'])){
                 border-top-style: dashed;
                 border-top-color: gray;
                 border-top-width: 1px;"> ';
-            echo "<h5>Creditos obtenidos:</h5>";
+            echo "<h2>Creditos obtenidos:</h2>";
 
-            $sqlX = "select 
-c.curp, c.nosol, c.valoracion,c.cantidad,c.fechacontrato,
-ifnull((select sum(TOTAL) from cartera where nosol= c.nosol and EstadoPago<>'PAGADO'),0) as Debe
-from cuentas c where curp='".$Curp."'";    
+            $sqlX = "
+            select
+c.curp, c.nosol, 
+
+if(c.IdEstatus=1,'Cancelado-',
+	if(c.valoracion='','SOLICITUD',
+		c.valoracion
+	 )
+) as valoracion,
+c.cantidad,c.fechacontrato,
+IdSucursal,
+ifnull((select sum(TOTAL) from cartera where nosol= c.nosol and EstadoPago<>'PAGADO'),0) as Debe,
+
+if(c.tipo='GRUPAL',CONCAT(c.tipo,' (',c.IdGrupo,') ',ifnull((select Grupo from grupos where IdGrupo = c.IdGrupo),'')),c.tipo) as tipo,
+
+
+c.IdEstatus
+from cuentas c  where tipo='INDIVIDUAL' and curp='".$Curp."'
+
+
+UNION
+select
+c.curp, c.nosol, 
+
+if(c.IdEstatus=1,'Cancelado-',
+	if(c.valoracion='','SOLICITUD',
+		c.valoracion
+	 )
+) as valoracion,
+c.cantidad,c.fechacontrato,
+IdSucursal,
+ifnull((select sum(TOTAL) from cartera where nosol= c.nosol and EstadoPago<>'PAGADO'),0) as Debe,
+
+
+    if(c.tipo='GRUPAL',
+        CONCAT(c.tipo,' (',c.IdGrupo,') ',
+        ifnull((select Grupo from grupos where IdGrupo = c.IdGrupo),'')
+        
+    
+        ),
+    
+    c.tipo) 
+    
+
+as tipo,
+
+
+c.IdEstatus
+from cuentas c  where tipo='GRUPAL' and curp='".$Curp."'
+
+
+UNION
+select
+c.curp, c.nosol, 
+
+if(c.IdEstatus=1,'Cancelado-',
+	if(c.valoracion='','SOLICITUD',
+		c.valoracion
+	 )
+) as valoracion,
+c.cantidad,c.fechacontrato,
+IdSucursal,
+ifnull((select sum(TOTAL) from cartera where nosol= c.nosol and EstadoPago<>'PAGADO'),0) as Debe,
+
+
+    if(c.tipo='GRUPAL',
+        CONCAT(c.tipo,' (*',c.IdGrupo,') ',
+        ifnull((select Grupo from grupos where IdGrupo = c.IdGrupo),'')
+        
+    
+        ),
+    
+    c.tipo) 
+    
+
+as tipo,
+
+
+c.IdEstatus
+from cuentas c  where tipo='GRUPAL' and IdGrupo='".$IdGrupo."'
+
+            ";   
+// echo $sqlX; 
             $rx = $db1->query($sqlX);    
+            // var_dump($rx);
             if ($db1->query($sqlX) == TRUE){        
             echo "<table class='tabla'>";
             echo "
-                <th>NoSol</th>
-                <th>Estado</th>
-                <th>Cantidad</th>
-                <th>Fecha del Contrato</th>
-                <th>Adeudo</th>
+                <th style='text-align:center;'>NoSol</th>
+                <th style='text-align:center;'>Estado</th>
+                <th style='text-align:center;'>Cantidad</th>
+                <th style='text-align:center;'>Fecha del Contrato</th>
+                <th style='text-align:center;'>Adeudo</th>
+                <th style='text-align:center;'>Sucursal</th>
             ";
             while($fx= $rx -> fetch_array()) {  
             if ($fx['Debe']>0){
@@ -722,10 +872,11 @@ from cuentas c where curp='".$Curp."'";
             }
                 
                 echo "<td><a href='app_solicitud.php?n=".$fx['nosol']."' title='Haga clic aqui para ver la solicitud'>".$fx['nosol']."<a></td>";
-                echo "<td>".$fx['valoracion']."</td>";
+                echo "<td>".$fx['valoracion']." - ".$fx['tipo']."</td>";
                 echo "<td>".Pesos($fx['cantidad'])."</td>";
                 echo "<td>".$fx['fechacontrato']."</td>";
                 echo "<td>".Pesos($fx['Debe'])."</td>";
+                echo "<td>".SucursalName($fx['IdSucursal'])."</td>";
                 echo "</tr>";
             }
             unset($fx, $rx, $sqlX);
@@ -838,8 +989,11 @@ function Guardar(){
    Profesion = $('#profesion').val();
    Sexo = $('#sexo').val();    
    Telefono = $('#telefono').val();
-
+   IdSucursal = $('#IdSucursal').val();
+   
+   
    trabajo_nombre = $('#trabajo_nombre').val();
+
    trabajo_domicilio = $('#trabajo_domicilio').val();
    trabajo_telefono = $('#trabajo_telefono').val();
    trabajo_giro = $('#trabajo_giro').val();
@@ -932,7 +1086,8 @@ function Guardar(){
                     refc3_domicilio:refc3_domicilio,
                     refc3_antiguedad:refc3_antiguedad,
                     grupo : grupo,
-                    grupo_cargo:grupo_cargo
+                    grupo_cargo:grupo_cargo,
+                    IdSucursal:IdSucursal
                 },
                 success: function(data) {
                     $('#R').html(data);
@@ -970,12 +1125,14 @@ function GuardarFoto(){
 
 
 function CrearSolicitud(){
-   IdCliente = '<?php echo VarClean($_GET['id']); ?>';   
+    IdCliente = '<?php echo VarClean($_GET['id']); ?>';  
+    IdSucursal = '<?php echo $IdSucursal ?>';  
+    TipoCredito='Individual';
    $('#PreLoader').show();
             $.ajax({
                 url: 'app_dat_crearsol.php',
                 type: 'post',
-                data: {IdCliente:IdCliente},
+                data: {IdCliente:IdCliente, IdSucursal:IdSucursal, TipoCredito:TipoCredito},
                 success: function(data) {
                     $('#R').html(data);
                     $('#PreLoader').hide();
@@ -983,6 +1140,21 @@ function CrearSolicitud(){
             });
 }
 
+function CrearSolicitud_grupo(){
+    IdCliente = '<?php echo VarClean($_GET['id']); ?>';  
+    IdSucursal = '<?php echo $IdSucursal ?>';  
+    TipoCredito='GRUPAL';
+   $('#PreLoader').show();
+            $.ajax({
+                url: 'app_dat_crearsol2.php',
+                type: 'post',
+                data: {IdCliente:IdCliente, IdSucursal:IdSucursal, TipoCredito:TipoCredito},
+                success: function(data) {
+                    $('#R').html(data);
+                    $('#PreLoader').hide();
+                }
+            });
+}
 
 
 function ActualizaFoto(){

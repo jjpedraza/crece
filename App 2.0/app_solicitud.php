@@ -16,43 +16,49 @@ include("header.php");
 
 if (isset($_GET['n'])){
     $NoSol = VarClean($_GET['n']);
-    $sql = "select * from solicitudes where nosol='".$NoSol."'" ;    
-    $r= $db1 -> query($sql); if($Sol = $r -> fetch_array()){
-    
-    // echo $NoSol;
-    echo "<div id='mas' class='container' style='background-color:#f7f4f563; border-radius:5px;padding:5px; margin-top:20px; color: #62032c;'>
-    <span><table width=100%><tr>";
-
-    if (Contrato_Activo($NoSol)==TRUE){
-        echo "<td ><h3 style='font-size:12pt; color:green;'> CONTRATO <b>".$NoSol."</b> | ACTIVO</h3></td>";
-    } else {
-        echo "<td ><h3 style='font-size:12pt;color:red;'> CONTRATO <b>".$NoSol."</b> | CANCELADO</h3></td>";
+    $IdSucursalCuenta = NoSol_to_IdSucursal($NoSol);
+    $msg="";
+    if ($IdSucursal <> $IdSucursalCuenta){
+        $msg = "Esta cuenta no es de esta sucursal.";
     }
+    $sql = "select * from solicitudes where nosol='".$NoSol."' and IdSucursal = '".$IdSucursal."'";    
+    $r= $db1 -> query($sql); 
+    if($Sol = $r -> fetch_array()){
     
+        // echo $NoSol;
+        echo "<div id='mas' class='container' style='background-color:#f7f4f563; border-radius:5px;padding:5px; margin-top:20px; color: #62032c;'>
+        <span><table width=100%><tr>";
 
-        echo "
-        <td align=right>
-        <a href='?' class='btn btn-primary'>Regresar</a>
-        <a href='app_carnet.php?id=".$Sol['curp']."' class='btn btn-secondary'>Cliente</a>
+        if (Contrato_Activo($NoSol)==TRUE){
+            echo "<td ><h3 style='font-size:12pt; color:green;'> CONTRATO <b>".$NoSol."</b> | ACTIVO</h3></td>";
+        } else {
+            echo "<td ><h3 style='font-size:12pt;color:red;'> CONTRATO <b>".$NoSol."</b> | CANCELADO</h3></td>";
+        }
         
-        
-        ";
-    
 
-    echo "</tr></table></span>";
-    echo "</div>";
-
-    
-    echo "<div id='mas' class='container' style='background-color:white; border-radius:5px;padding:5px; margin-top:20px;'>";
+            echo "
+            <td align=right>
+            <a href='?' class='btn btn-primary'>Regresar</a>
+            <a href='app_carnet.php?id=".$Sol['curp']."' class='btn btn-secondary'>Cliente</a>
+            
+            
+            ";
         
-        echo "<div id='Titular' style='
-            background-color: #d2d0d0;
-            border-top-left-radius: 5px; padding:5px;
-            border-top-right-radius: 5px;
-        '>";
-        $Curp = Contrato_Curp($NoSol);
-        $Nombre = Contrato_Nombre($NoSol);
-        if ($Sol['tipo']=='GRUPO'){
+
+        echo "</tr></table></span>";
+        echo "</div>";
+
+        
+        echo "<div id='mas' class='container' style='background-color:white; border-radius:5px;padding:5px; margin-top:20px;'>";
+            
+            echo "<div id='Titular' style='
+                background-color: #d2d0d0;
+                border-top-left-radius: 5px; padding:5px;
+                border-top-right-radius: 5px;
+            '>";
+            $Curp = Contrato_Curp($NoSol);
+            $Nombre = Contrato_Nombre($NoSol);
+            if ($Sol['tipo']=='GRUPO'){
             echo "<h3>".$Nombre."<img src='icons/actualizar.png'  title='Haz clic para cambiar la titularidad'
             style='
                 width: 23px;
@@ -108,17 +114,21 @@ if (isset($_GET['n'])){
         FormElement_input("Fecha de Solicitud: ",$Sol['fechasol'],"", "","text","CreditoFechaSolicitud",TRUE );
         
         if ($Sol['valoracion']==''){
+            if ($Sol['fechacontrato']=='0000-00-00'){
+                FormElement_input("* Fecha de Contrato: ",$fecha,"", "","date","CreditoFechaContrato");
+            } else {
+                FormElement_input("* Fecha de Contrato: ",$Sol['fechacontrato'],"", "","date","CreditoFechaContrato");
+            }
             
-            FormElement_input("Fecha de Contrato: ",$Sol['fechacontrato'],"", "","date","CreditoFechaContrato");
         } else {
-            FormElement_input("Fecha de Contrato: ",$Sol['fechacontrato'],"", "","date","CreditoFechaContrato",TRUE );
+            FormElement_input("* Fecha de Contrato: ",$Sol['fechacontrato'],"", "","date","CreditoFechaContrato",TRUE );
         }
 
         if ($Sol['valoracion']==''){
             
-            FormElement_input("Fecha de Inicio: ",$Sol['fechainicio'],"", "","date","CreditoFechaInicio");
+            FormElement_input("* Fecha de Inicio: ",$Sol['fechainicio'],"", "","date","CreditoFechaInicio");
         } else {
-            FormElement_input("Fecha de Inicio: ",$Sol['fechainicio'],"", "","date","CreditoFechaInicio",TRUE );
+            FormElement_input("* Fecha de Inicio: ",$Sol['fechainicio'],"", "","date","CreditoFechaInicio",TRUE );
         }
 
         FormElement_input("Grupo al que pertenece: ",$Sol['grupo'],"", "","text","",TRUE );
@@ -135,15 +145,17 @@ if (isset($_GET['n'])){
                 <label for="CreditoTipo" style="font-size:8pt;">Tipo de Credito:</label>
                 ';
 
-            echo "<select id='CreditoTipo' class='form-control' style='font-size:9pt; margin-top:-7px;'>";
-            if ($Sol['tipo']=='GRUPO'){
-                echo "<option value='GRUPO' selected>GRUPO</option>";
-                echo "<option value='INDIVIDUAL'>INDIVIDUAL</option>";
-            } else {
-                echo "<option value='GRUPO'>GRUPO</option>";
-                echo "<option value='INDIVIDUAL' selected>INDIVIDUAL</option>";
-            }
-            echo "</select>";
+            echo "<input id='CreditoTipo' class='form-control' style='font-size:9pt; margin-top:-7px;' 
+            value='".$Sol['tipo']."'
+            readonly>";
+            // if ($Sol['tipo']=='GRUPO'){
+            //     echo "<option value='GRUPO' selected>GRUPO</option>";
+            //     echo "<option value='INDIVIDUAL'>INDIVIDUAL</option>";
+            // } else {
+            //     echo "<option value='GRUPO'>GRUPO</option>";
+            //     echo "<option value='INDIVIDUAL' selected>INDIVIDUAL</option>";
+            // }
+            // echo "</select>";
             echo '
             </div>';
         } else {
@@ -157,31 +169,33 @@ if (isset($_GET['n'])){
                 <label for="CreditoTipo" style="font-size:8pt;">Tipo de Credito:</label>
                 ';
 
-            echo "<select id='CreditoTipo' class='form-control disable' style='font-size:9pt; margin-top:-7px;' readonly>";
-            if ($Sol['tipo']=='GRUPO'){
-                echo "<option value='GRUPO' selected>GRUPO</option>";
-                //echo "<option value='INDIVIDUAL'>INDIVIDUAL</option>";
-            } else {
-                //echo "<option value='GRUPO'>GRUPO</option>";
-                echo "<option value='INDIVIDUAL' selected>INDIVIDUAL</option>";
-            }
-            echo "</select>";
+            echo "<input id='CreditoTipo' class='form-control disable' style='font-size:9pt; margin-top:-7px;' 
+            value='".$Sol['tipo']."'
+            readonly>";
+            // if ($Sol['tipo']=='GRUPO'){
+            //     echo "<option value='GRUPO' selected>GRUPO</option>";
+            //     //echo "<option value='INDIVIDUAL'>INDIVIDUAL</option>";
+            // } else {
+            //     //echo "<option value='GRUPO'>GRUPO</option>";
+            //     echo "<option value='INDIVIDUAL' selected>INDIVIDUAL</option>";
+            // }
+            // echo "</select>";
             echo '
             </div>';
         }
 
         
         if ($Sol['valoracion']==''){
-            FormElement_input("Cantidad de Credito: ",$Sol['cantidad'],"", "","text","CreditoCantidad");
+            FormElement_input("* Cantidad de Credito: ",$Sol['cantidad'],"", "","text","CreditoCantidad");
         } else {
-            FormElement_input("Cantidad de Credito: ",$Sol['cantidad'],"", "","text","CreditoCantidad",TRUE);
+            FormElement_input("* Cantidad de Credito: ",$Sol['cantidad'],"", "","text","CreditoCantidad",TRUE);
 
         }
 
         if ($Sol['valoracion']==''){
-            FormElement_input("Plazo (meses): ",$Sol['plazo'],"", "","number","CreditoPlazo");
+            FormElement_input("* Plazo (meses): ",$Sol['plazo'],"", "","number","CreditoPlazo");
         } else {
-            FormElement_input("Plazo (meses): ",$Sol['plazo'],"", "","number","CreditoPlazo", TRUE);
+            FormElement_input("* Plazo (meses): ",$Sol['plazo'],"", "","number","CreditoPlazo", TRUE);
         }
 
 
@@ -279,46 +293,30 @@ if (isset($_GET['n'])){
 
         FormElement_textarea("Comentarios: ",$Sol['comentario'],"", "","text","CreditoComentarios");
 
-
-
-        
-
-        if ($Sol['valoracion']==''){
-            echo '
-            <div class="form-group" id="DivValoracion" style="margin: 4px;
-            padding: 4px; width: 100%;
-            border-radius: 5px;
-            vertical-align: top;">';
-
-            echo '
-                <label for="CreditoValoracion" style="font-size:8pt;">Valoracion del Cuenta</label>
-                ';
-
-            echo "<select id='CreditoValoracion' class='form-control' style='font-size:9pt; margin-top:-7px;'>";
-            //SOLO PERMITIR CUANDO ESTE PENDIENTE DE APROBACION CAMPO EN BLANCO        
-            
-            
-                echo "<option value='APROBADO'>APROBADO</option>";
-                echo "<option value='RECHAZADO'>RECHAZADO</option>";
-                echo "<option value='' selected>PENDIENTE DE APROBACION</option>";
-        echo "</select>";
-
-
-        echo '
-        </div>';
-
-
-        
-
-
-
-        } else {
-            
-            FormElement_input("Estatus de la cuenta: ",$Sol['valoracion'],"", "","text","",TRUE );
-            echo "<input type='hidden' id='CreditoValoracion' value='NOT'>";
-        }
-
         FormElement_textarea("Descripcion de la Garantia y Antecedentes: ",$Sol['garantia'],"", "","text","CreditoGarantia");
+
+        echo "<div id='Seguros'>";
+        echo "<input type='hidden' id='IdSeguroSelect' name='IdSeguroSelect' value='".$Sol['IdSeguro']."'>";
+        
+        if ($Sol['valoracion']==''){
+            echo "<a  onclick='CalcularSeguros();' class='link' style='cursor:pointer'>Calcular Seguros</a>";
+        
+            
+        } else {
+ 
+        }
+        
+        echo "<div id='SegurosData'>";
+                
+        echo "</div>";
+
+        echo "</div>";
+
+
+
+        
+
+        
         echo "</td><td>";
         
         
@@ -383,6 +381,43 @@ if ($Sol['valoracion']==''){
 
             echo '
             </div>';
+
+            
+        if ($Sol['valoracion']==''){
+            echo '
+            <div class="form-group" id="DivValoracion" style="margin: 4px;
+            padding: 4px; width: 100%;
+            border-radius: 5px; background-color:orange;
+            vertical-align: top;">';
+
+            echo '
+                <label for="CreditoValoracion" style="font-size:8pt;">Valoracion del Cuenta</label>
+                ';
+
+            echo "<select id='CreditoValoracion' class='form-control' style='font-size:9pt; margin-top:-7px;'>";
+            //SOLO PERMITIR CUANDO ESTE PENDIENTE DE APROBACION CAMPO EN BLANCO        
+            
+            
+                echo "<option value='APROBADO'>APROBADO</option>";
+                echo "<option value='RECHAZADO'>RECHAZADO</option>";
+                echo "<option value='' selected>PENDIENTE DE APROBACION</option>";
+        echo "</select>";
+
+
+        echo '
+        </div>';
+
+
+        
+
+
+
+        } else {
+            
+            FormElement_input("Estatus de la cuenta: ",$Sol['valoracion'],"", "","text","",TRUE );
+            echo "<input type='hidden' id='CreditoValoracion' value='NOT'>";
+        }
+
         } else { //disable
             FormElement_input("Curp Aval: ",$Sol['curp_aval'],"", "","text","",TRUE );
             FormElement_input("Aval: ",$Sol['AvalNombre'],"", "","text","",TRUE );
@@ -394,14 +429,15 @@ if ($Sol['valoracion']==''){
         text-align: center; width:100%;
         vertical-align: top;'>
     ";
-        // if ($Sol['valoracion']==''){
+        if ($Sol['IdEstatus']==1){
+        } else {
         echo "
-        <button style='margin:5px;' class='btn btn-success' onclick='GuardarSolicitud();'>Guardar </button>";
+        <button style='margin:5px; font-size:14pt;' class='btn btn-success' onclick='GuardarSolicitud();'>Guardar </button>";
 
         if (Contrato_Activo($NoSol)==TRUE){
-            echo "<button style='margin:5px;' class='btn btn-danger' onclick='CancelarSolicitud();'>CANCELAR </button><br>";
+            echo "<button style='margin:5px;font-size:14pt;' class='btn btn-danger' onclick='CancelarSolicitud();'>CANCELAR </button><br>";
         } else {
-            echo "<button style='margin:5px;' class='btn btn-primary' onclick='ActivarSolicitud();'>ACTIVAR </button><br>";
+            echo "<button style='margin:5px;font-size:14pt;' class='btn btn-primary' onclick='ActivarSolicitud();'>ACTIVAR </button><br>";
         }
         
 
@@ -418,7 +454,7 @@ if ($Sol['valoracion']==''){
 
 
             ";
-            
+    }
         echo "</div>";
         echo '<hr style="border: dashed 1px rgba(0,0,0,.4);">';
 
@@ -561,7 +597,9 @@ if (isset($NoSol)){
             border-radius:10px;
             width:50%;
 
-        '><b>No se encontro la solicitud<b> ".$NoSol."</div>";
+        '><b>No se encontro la solicitud<b> ".$NoSol."
+        <br><h2>".$msg."</h2>
+        </div>";
     }
     unset($sql, $r, $Sol);
         
@@ -612,17 +650,34 @@ if (isset($NoSol)){
     // </div>";
 
 
-    if (isset($_GET['all'])){
-        $sql="select * from sol_ where valoracion <> ''";
-        TableData($sql,"Solicitudes registradas:"); //0 = Basica, 1 = ScrollVertical, 2 = Scroll Horizontal
-        echo "<br><a class='btn btn-secondary' href='?='>Solicitudes sin Aprobar</a>";
-    
+    $Sucursal =  SucursalName($IdSucursal);
+    if ($IdSucursal == 0){
+        if (isset($_GET['all'])){
+            $sql="select * from sol_ where valoracion <> ''";
+            TableData($sql,"Contratos Activos"); //0 = Basica, 1 = ScrollVertical, 2 = Scroll Horizontal
+            echo "<br><a class='btn btn-secondary' href='?='>Solicitudes</a>";
+        
+        } else {
+            $sql="select * from sol_ where valoracion = ''";
+            TableData($sql,"Solicitudes"); //0 = Basica, 1 = ScrollVertical, 2 = Scroll Horizontal
+            echo "<br><a class='btn btn-secondary' href='?all='>Contratos</a>";
+        
+        }
     } else {
-        $sql="select * from sol_ where valoracion = ''";
-        TableData($sql,"Solicitudes sin aprobar"); //0 = Basica, 1 = ScrollVertical, 2 = Scroll Horizontal
-        echo "<br><a class='btn btn-secondary' href='?all='>Solicitudes Aprobadas</a>";
-    
+        if (isset($_GET['all'])){
+            $sql="select * from sol_ where valoracion <> '' and Sucursal='".$Sucursal."'";
+            TableData($sql,"Contratos Activos de esta Sucursal:"); //0 = Basica, 1 = ScrollVertical, 2 = Scroll Horizontal
+            echo "<br><a class='btn btn-secondary' href='?='>Solicitudes</a>";
+        
+        } else {
+            $sql="select * from sol_ where valoracion = '' and Sucursal='".$Sucursal."'";
+            TableData($sql,"Solicitudes de esta Sucursal"); //0 = Basica, 1 = ScrollVertical, 2 = Scroll Horizontal
+            echo "<br><a class='btn btn-secondary' href='?all='>Contratos</a>";
+        
+        }
     }
+    
+    // echo "<br>".$sql;
     
     
 
@@ -651,7 +706,8 @@ function GuardarSolicitud(){
    CreditoFechaContrato = $('#CreditoFechaContrato').val();
    CreditoFechaInicio = $('#CreditoFechaInicio').val();
    CreditoIvaTipo = $('#CreditoIvaTipo').val();
-    ClienteCurp = $('#ClienteCurp').val();
+   ClienteCurp = $('#ClienteCurp').val();
+   IdSeguro = $('#CargoSeguro').val();
    
 
    $('#PreLoader').show();
@@ -665,7 +721,7 @@ function GuardarSolicitud(){
                     CreditoGarantia: CreditoGarantia, CreditoValoracion:CreditoValoracion,
                     CreditoComentarios:CreditoComentarios, CreditoFechaContrato:CreditoFechaContrato,
                     CreditoIvaTipo:CreditoIvaTipo, ClienteCurp:ClienteCurp,
-                    CreditoFechaInicio:CreditoFechaInicio
+                    CreditoFechaInicio:CreditoFechaInicio, IdSeguro:IdSeguro
        
                 },
                 success: function(data) {
@@ -691,6 +747,7 @@ function CorridaF(){
    CreditoComentarios = $('#CreditoComentarios').val();
    CreditoFechaContrato = $('#CreditoFechaContrato').val();
    CreditoIvaTipo = $('#CreditoIvaTipo').val();
+   IdSeguro =$('#CargoSeguro').val();
 
    
 
@@ -704,7 +761,8 @@ function CorridaF(){
                     CreditoTasaMoratorio: CreditoTasaMoratorio, CreditoCargoPorSemana: CreditoCargoPorSemana,
                     CreditoGarantia: CreditoGarantia, CreditoValoracion:CreditoValoracion,
                     CreditoComentarios:CreditoComentarios, CreditoFechaContrato:CreditoFechaContrato,
-                    CreditoIvaTipo:CreditoIvaTipo
+                    CreditoIvaTipo:CreditoIvaTipo,
+                    IdSeguro:IdSeguro
        
                 },
                 success: function(data) {
@@ -875,6 +933,29 @@ function ActivarSolicitud(){
             });
 }
 
+function CalcularSeguros(){
+    Cantidad = $('#CreditoCantidad').val();
+    CreditoPlazo = $('#CreditoPlazo').val();
+    IdSeguroSelect = $('#IdSeguroSelect').val();
+    NoSol = '<?php echo $_GET['n']; ?>';
+
+
+    $('#PreLoader').show();
+            $.ajax({
+                url: 'app_solicitud_calcularseguros.php',
+                type: 'post',
+                data: {
+                    NoSol:NoSol, Cantidad:Cantidad, CreditoPlazo:CreditoPlazo,
+                    IdSeguroSelect:IdSeguroSelect
+                },
+                success: function(data) {
+                    $('#SegurosData').html(data);
+                    $('#PreLoader').hide();
+                }
+    });
+
+}
+CalcularSeguros();
 </script>
 
 <?php
